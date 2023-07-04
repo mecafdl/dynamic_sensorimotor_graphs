@@ -63,24 +63,27 @@
 %\usepackage{algorithm}
 %\usepackage[]{algpseudocode}
 
-\usepackage[utf8]{inputenc}
-\usepackage{amsmath} % assumes amsmath package installed
-\usepackage{amssymb}  % assumes amsmath package installed
-\usepackage[english]{babel}
-\usepackage{bm}
-\usepackage{graphicx}
-\usepackage{caption}
-\usepackage{multicol}
-\usepackage{url}
-\usepackage{algorithm}
-\usepackage[]{algpseudocode}
-\usepackage[T1]{fontenc}
-\usepackage[T1]{xcolor}
-\usepackage{arydshln}
-\usepackage{soul}
-\usepackage{subfig}
 
 \usepackage{afterpage}
+\usepackage{algorithm}
+\usepackage[]{algpseudocode}
+\usepackage{amsmath}
+\usepackage{amssymb}  % assumes amsmath package installed
+\usepackage{arydshln}
+\usepackage[english]{babel}
+\usepackage{bm}
+\usepackage{caption}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage{multicol}
+\usepackage[T1]{xcolor}
+\usepackage{soul}
+\usepackage{subfig}
+\usepackage{tikz}
+\usepackage{url}
+\usepackage[backend=biber,style=ieee,sorting=none]{biblatex}
+\addbibresource{bib/references.bib}
 
 \newcommand\blankpage{%
     \null
@@ -88,30 +91,32 @@
     \addtocounter{page}{-1}%
     \newpage}
 
-\usepackage[backend=biber,style=ieee,sorting=none]{biblatex}
-\addbibresource{bib/references.bib}
 
+
+\newcommand*{\important}[1]{\textcolor{red}{\danger~\textbf{IMPORTANT:~}} \textcolor{red}{#1}}
+
+\newcommand*{\pending}[1]{\textcolor{blue}{$\bigstar$~\textbf{PENDING~#1}}}
+
+\newcommand\mybox[2][]{\tikz[overlay]\node[fill=blue!100,inner sep=4pt, anchor=text, rectangle, rounded corners=1mm,#1] {#2};\phantom{#2}}
+
+\newcommand{\TODO}{\mybox[fill=yellow]{\textcolor{blue}{\Large \textbf{TODO}}}}
 
 \newtheorem{prop}{Proposition}
 
 \title{\LARGE \bf
-First-Order-Principles-Based Constructive Network Topologies: An Application to Robot Inverse Dynamics
+Dynamic sensorimotor graphs
 }
 
 
-\author{Fernando D\'iaz Ledezma and Sami Haddadin$^{1}$% <-this % stops a space
-%\thanks{*This work was not supported by any organization}% <-this % stops a space
-\thanks{$^{1}$Both authors are with the Faculty of Electrical Engineering and Computer Science, Leibniz
-        Universit\"at Hannover, 30167 Hannover, Germany
-        {\tt\small \{diaz, haddadin\}@irt.uni-hannover.de}}%
-}
+\author{Some Guy, Nice Dude}
 
 \begin{document}
 
 \maketitle
 
 \begin{abstract}
-Typical neural networks are often applied to model physical systems. Their topology requires expert architects to determine the best number of nodes, layers and activation functions. For complex dynamical systems, such as articulated robot structures, reported results are limited in accuracy and generalization capabilities. In this work, we discuss how basic first-order principles and system knowledge can be used to construct topologies of parameterized operator networks and accurately model input-output mappings of physical systems. These topologies consist of meaningful building elements and connections as well as a reduced number of parameters that accurately describe the variables' interdependencies. In this way, learning speed can be boosted and model accuracy, precision and generalization power improved. We apply the methodology to the problem of articulated robots to discuss the existence of such topologies. The estimation and generalization capabilities of this network are tested with a 7 degrees-of-freedom LWR4 manipulator and compared to conventional Feed Forward Neural Networks as well as a state-of-the-art Deep Recurrent Neural Network.
+Regularities present in the sensorimotor signals of a robotic agent can reflect its embodiment, as well as the associations resulting from the active control policy. In this work, we analyze the functional connectivity of the sensorimotor signals based on pairwise mutual information. As the robot performs exploratory motions based on motor babbling we capture and study the time-varying changes in the relationships. We provide analysis of the instantaneous and average sharing of information and extrapolate the meaning in relation to the physical properties of the robot's body. Results from a simulated planar system validate the use of mutual information as a tool not only for the analysis of the relationships between the sensorimotor signals but also to drive exploratory motions.
+\TODO
 \end{abstract}
 % =============================================================================
 %                                                                             |
@@ -121,94 +126,18 @@ Typical neural networks are often applied to model physical systems. Their topol
 %                                                                             |
 % =============================================================================
 \section{Introduction}\label{sec:intro}
+\TODO
 
-\subsection{Classical neural networks model learning}
-%Conventional neural networks (NN) are often applied to model-learning problems as depicted in Figure~\ref{fig:NN_ID}. The process involves, mainly, the following steps:
-Model-learning problems using typical neural networks (NN) involves, mainly, the following steps:
-\begin{enumerate}
-\item Input/output data collection: assumed to be available
-\item Architecture design: usually found by trial and error
-\item Parameter optimization/learning: via well understood schemes, e.g., backpropagation and variants
-\end{enumerate}
-Overall, NN design involves many meta parameters, i.e. number of nodes, numbers of layers, connectivity, activation functions; requiring experts to determine the best topology for a particular problem \cite{Matteucci2006}. Furthermore, it is difficult to achieve an acceptable level of generalization \cite{RochaCorNev2005}\cite{He2015}\cite{Matteucci2006}\cite{KwokYeu1995}\cite{LawrenceGilTso1998}\cite{TalebiAbdPatKho2010} as the architecture needs to be balanced to obtain accurate results without overfitting, which may lead to poor generalization, \cite{He2015}\cite{MuzhouLee2013}\cite{TalebiAbdPatKho2010}. Therefore, if a non-parametric model, such as a NN, is used without any model information, large amounts of data are required to generalize to unknown data \cite{UrolaginPreRed2012}.
-%\begin{figure}
-%    \centering
-%    \includegraphics[width=0.3\textwidth]{fig/generalNN_ID}
-%    \caption{General model learning using neural networks.}
-%    \label{fig:NN_ID}
-%\end{figure}
+% SUBSECTION ==================================================================
+\subsection{Related works}
 
-\subsection{Topology learning related works}
-Finding NN topologies is an important and challenging step \cite{MiikkulainenLiaMeyRaw2017}\cite{RochaCorNev2005}\cite{BakerGupNaiRas2016}. Function approximation using NN uses subjective or empirical topologies that are, however, not suitable for interpretation and rely on numerous parameters. As a result, such models are not able to give insight into the actual relation between system variables. 
+Refer to Mannella, Gama, Marcel, Kanazawa, Husbands, Hoffmann (puppy).
 
-%As defined in \cite{Matteucci2006}: \textit{"The problem of finding an optimal topology can be thought of as a search problem, where the search space is the space of all possible network topologies, and where the goal is to minimize an error function while preserving generalization capabilities"}. 
-
-Recent works have aimed to find optimal topologies automatically. Evolutionary methods are commonly utilized to optimize the topology and the weights of NN by adding or deleting connections and weights, as shown in \cite{RochaCorNev2005} and \cite{Matteucci2006} for Feed Forward Neural Networks (FFNN) or \cite{MiikkulainenLiaMeyRaw2017} for deep NN. Results tend to show satisfactory generalization capabilities, comparable to human designs. Another method used for FFNN represents the network as a graph and reduces its degrees-of-freedom (DoF), as shown in \cite{He2015}. Constructive methods are also utilized for FFNN, shown in \cite{KwokYeu1995}, and pruning methods as applied in \cite{SrinivasBab2015}. Furthermore, reinforcement learning (through Q-learning) and topology learning (using variance analysis) have also been applied to generate the architectures, as shown in \cite{BakerGupNaiRas2016}\cite{CastilloSanAloCas2007}. Noticeably, for learning complex dynamical systems, such as articulated robot structures, results are still promising, however, limited in accuracy and generalization capabilities \cite{NguyenPet2011}\cite{NguyenPetSee2008}\cite{Nguyen2010}. 
-
-\begin{table*}[t]
-\begin{center}
-\begin{tabular}{ |l|l|l|l| } 
- \hline
-&  \textbf{Conventional NN} &  \textbf{FOP Network} & \textbf{Functional Network}\\ 
- \hline
-  \textbf{Topology} & Trial \& error & FOP \& system knowledge & System knowledge \\ 
- \hline
-  \textbf{Units} & Homogeneous neurons & Parameterized operators & Functions \\ 
-  \hline
-  \textbf{Activation function} & Sigmoid, tanh, ReLU & Functions & Functions \\   
- \hline
- \textbf{Learned parameters} & Connection weights & Operators parameters \& topology & Neuron function parameters \\
-  \hline
- \textbf{Training} & Backpropagation / optimization & Optimization algorithms  & Standard gradient descent and variants\\
- \hline
-\end{tabular}
-\end{center}
-  \caption{Comparison between traditional neural networks, first-order principles networks and functional networks.}
-  \label{tab:comparison}
-\end{table*}
-
+% SUBSECTION ==================================================================
 \subsection{Contributions}
+\TODO
+In this work we present an analysis based on the information theory of the dnyamic relationships exsiting among the sensorimotor signals of a robot. In the analysis we show how the amount of information sharing in the system is related to the motion of the robot and the tactile events that occur duting motion. Furthermore, using nonnegative matrix factoriztion we identify operation modes of the robot based only of the mutual information measurments. In a case study we demonstrate how by only foucsing on the mutual information and without having knowledge about the morphology of the robot, an excitation trajectory can be devised that avoids self contact. A comparison of this trajectory against conventional trajevetory design methods is presented.
 
-In this work, we discuss how \emph{first-order principles} (FOP) can define topologies of \emph{parameterized operator networks} that are used to model input-output mappings of physical systems. These topologies consist of a number of building elements and connections as well as a reduced number of parameters that accurately describe variable interdependencies. 
-
-We propose a conceptual framework to define the topologies for the FOP networks and the learning of their parameters. Prior knowledge about the system; i.e. topology, constraints, physical meaning of some parameters, etc., can support learning by increasing training speed, model accuracy and generalization capabilities. We consider the application of the methodology to the problem of articulated robots to discuss the existence of such topologies. The estimation and generalization capabilities of this network are tested in simulation and experiment with a model of a 7 DoF Lightweight Robot (LWR4) manipulator and compared to conventional FFNN.
-
-Section~\ref{sec:FOPnets} of this paper introduces the conceptual framework for the construction of FOP networks and their training. In Section~\ref{sec:classic_inv_dyn}, a brief review on recent NN approaches to model robot inverse dynamics is presented. Section~\ref{sec:case_study} details the redefinition of the robot inverse dynamics of a serial manipulator as a FOP network. Section~\ref{sec:param_est} describes the proposed estimation method in detail and is followed by simulation and experimental results in Sec.~\ref{sec:results}, where a 7-DoF LWR4 is used for validation and comparison to conventional FFNN.
-
-%Section~\ref{sec:FOPnets} of this paper introduces the conceptual framework for the construction of FOP networks and their training. In section~\ref{sec:classic_inv_dyn}, the classical approach to derive robot inverse dynamics, as well as some NN that tackle this problem, are briefly described. Section~\ref{sec:case_study} details the redefinition of the robot inverse dynamics of a serial manipulator as a FOP network. Section \ref{sec:param_est} describes the proposed estimation method in detail and is followed by simulation results in section \ref{sec:results}, where a 7-DoF LWR4 is used for validation and comparison to conventional FFNN. 
-
-\section{First-order principles Networks}\label{sec:FOPnets}
-We define the \emph{\textbf{model-learning problem}} as follows:
-
-Given a set of available signals from a physical system and very little prior information, learn its model by means of a set of predetermined parameterized operators (building blocks) that can be combined and connected to form a Directed Acyclic Graph (DAG) and are used to describe the interdependencies of the system's variables to derive an input-output mapping. Moreover, the topology of the computational graph, otherwise understood as a network of linear and nonlinear operators, should be \emph{optimal\footnote{Here optimal means the best topology that explains the dependencies between variables.}} and automatically derived.
-
-To approach this problem, we consider that physical systems have an inherent topology that is not necessarily evident when looking only at the available data. Additionally, we consider that such systems may be represented by a set of parameterized operators arranged in said topologies. Therefore, we formulate the following basic propositions:
-\begin{prop}
-Finding the topology of parameterized operator networks for model learning of physical systems boosts the learning speed and improves the model accuracy and generalization power.
-\end{prop}
-\begin{prop}
-Topology learning can lead to a transition from trial-and-error-based function approximators designed by experienced architects to informed operator network topologies for potentially exact learning.
-\end{prop}
-
-To support these, we argue that the network topology should emerge from FOP (i.e. physical laws) that apply to the system being described in such way that only a minimal set of connections are formed. Such a topology helps to define the interdependence of variables in model learning problems. Furthermore, the network would have a reduced number of parameters that could be physically interpreted.
-
-In addition to the use of FOP, we aim at exploiting the \textit{principle of compositionality} \cite{LakeUllTenGer2016}. The essence of compositionality is that primitive functions can be combined to generate more complex functions. In model learning, this means that the main function can be formed by finding sub-functions, in other words, the target function is a \emph{composite} function. Classical connectionist approaches do not aim at this when designing the NN architecture. However, works as \cite{MhaskarLiaPog2016} have discussed the importance of compositionality and related this to the success of deep learning approaches. 
-
-\subsection{Conceptual framework}
-We discuss a conceptual method that takes from FOP to define the topology of a network of parameterized operators that is used to model the input-output mapping of physical systems. We call these networks First-Order Principles (FOP) networks. The main steps of this method are:
-\begin{enumerate}
-\item Collect data from the physical system
-\item Identify the roles of the signals: input, output, intermediate variable
-\item Determine the building blocks for the model representation; i.e., the operators
-\item Determine the FOPs (known) of the physical system
-\item Determine whether known compositionality relations exist
-\item Determine if and what constraints are needed for the network and operator parameters
-\item Determine the cost functions for the learning problems
-\end{enumerate}
-The overall scheme is depicted in Fig.~\ref{fig:general_overview}. Two main learning problems stem from this representation: (a) learning topology and (b) learning parameters. 
-
-\subsection{Comparison}
-In comparison to the work of \cite{CastilloSanAloCas2007}, where functional networks were generalized using standard NN with arbitrary neural functions, our proposed network framework uses a set of parameterized operators that are identified as building blocks for the network. Moreover, although system knowledge plays a role in defining the topology of functional networks, we propose the addition of FOP to determine the topology. Hence, we aim at finding the \emph{true} topology. Table~\ref{tab:comparison} summarizes the differences between conventional NN, the proposed FOP networks and functional networks.
 % =============================================================================
 %                                                                             |
 %                                                                             |
@@ -216,15 +145,8 @@ In comparison to the work of \cite{CastilloSanAloCas2007}, where functional netw
 %                                                                             |
 %                                                                             |
 % =============================================================================
-\section{Robot inverse dynamics estimation via classical NN}\label{sec:classic_inv_dyn}
-NN have been applied in numerous variants to model robot inverse dynamics. In \cite{AtenciaJoy2015}, Hopfield NN were applied to identify the inertial parameters. Moreover, in \cite{ZhuMao2014} a FFNN that used the regressor matrix as training samples was applied. Extreme Learning Machines were utilized in \cite{BargstenGeaKas2016} with the same purpose. More recently a two-hidden-layers network with rectified linear activation units (ReLU) was used in \cite{ChristianoShaMorSch2016}. Similarly, recurrent NN have been used to account for the sequential nature of the data. In \cite{YanLi1997}, a recurrent NN in the hidden layer of an otherwise conventional three-layer FFNN was proposed. Additionally, self-organizing-networks, in conjunction with echo state networks, were used in \cite{PolydorosNalKru2015} via a real-time deep learning algorithm.
-\begin{figure}[ht]
-\begin{center}
-    \includegraphics[width=0.7\linewidth]{fig/conceptual_framework} 
-    \caption{First-order principles network construction framework.}
-    \label{fig:general_overview}
-\end{center}
-\end{figure}
+\section{The robot model}
+\TODO
 % =============================================================================
 %                                                                             |
 %                                                                             |
@@ -232,228 +154,9 @@ NN have been applied in numerous variants to model robot inverse dynamics. In \c
 %                                                                             |
 %                                                                             |
 % =============================================================================
-\section{Network topology of robot inverse dynamics}\label{sec:case_study}
-We take the model of a robot manipulator to make apparent the network topology that determines the interdependencies between the manipulator variables. The objective is to find the robot inverse dynamics as:
-\begin{equation}
-\bm{\tau} = f(\bm{q},\dot{\bm{q}},\ddot{\bm{q}};\bm{\lambda},\bm{\theta}).
-\label{eq:inverse_dynamics}
-\end{equation}
-Where $\bm{\lambda}$ is the vector that contains the DH parameters for every link, as:
-\begin{subequations}
-\begin{equation}
-\bm{\lambda}=\begin{bmatrix}
-\bm{\lambda}_1^\intercal & \bm{\lambda}_1^\intercal & \ldots & \bm{\lambda}_N^\intercal
-\end{bmatrix}^\intercal
-%\label{eq:kin_rep}
-\end{equation}
-\begin{equation}
-\bm{\lambda}_j=[\begin{matrix}
-a_j& \sin(\alpha_j) & \cos(\alpha_j) & d_j]^\intercal.
-\end{matrix}
-\label{eq:kin_training_par}
-\end{equation}
-\end{subequations} 
-The inertial parameters are contained in vector $\bm{\theta}$ as:
-\begin{subequations}
-\begin{equation}
-\bm{\theta}=\begin{bmatrix}
-\bm{\theta}_1^\intercal & \bm{\theta}_1^\intercal & \ldots & \bm{\theta}_N^\intercal
-\end{bmatrix}^\intercal
-%\label{eq:kin_rep}
-\end{equation}
-\begin{equation}
-\bm{\theta}_i=
-[\begin{smallmatrix}
-m_i & mX_i & mY_i & mZ_i & XX_i & XY_i & XZ_i & YY_i & YZ_i & ZZ_i
-\end{smallmatrix}]^\intercal.
-\label{eq:dyn_training_par}
-\end{equation}
-\end{subequations} 
-The reader is referred to \cite{AnAtkHol1985} for a detailed definition of the parameters meaning.
-The first step is to represent the inverse dynamics of an N-DoF robot, eq. (\ref{eq:inverse_dynamics}), as a network of parameterized operators. In this example, the Newton-Euler derivation of the inverse dynamics of a robot, as given in \cite{AnAtkHol1985}, are taken as the FOP that result in the constructive topology of this network. As opposed to the classical inverse dynamics estimation method were a calibrated kinematic model is already available, here we estimate both the kinematic structure and the inertial parameters of the robot. Moreover, it is made explicit how the inverse dynamics equation is a composite function of the manipulator kinematic variables. Ultimately, we wish to find a representation for the robot kinematics\footnote{By \emph{kinematics} we mean rigid body kinematic variables including angular velocities and accelerations, as opposed to forward kinematics which is a static mapping.} $\bm{k}$ and dynamics $\bm{\tau}$ of the form:
-\begin{subequations}
-\begin{equation}
-\bm{k}=f(\boldsymbol{q},\dot{\boldsymbol{q}},\ddot{\bm{q}};\bm{\lambda})
-\label{eq:kin_rep}
-\end{equation}
-\begin{equation}
-\bm{\tau}=f(\bm{q},\bm{k};\bm{\lambda},\bm{\theta}).
-\label{eq:dyn_rep}
-\end{equation}
-\end{subequations}
+\section{Graph decomposition}
+\TODO
 
-\subsection{Kinematics}
-The FOP that set the topology of these layers are the rigid body kinematics. They reflect the relationship of the one-dimensional joint positions, velocities, and accelerations to the three-dimensional link kinematic variables, eq.~\ref{eq:kin_rep}, where $\bm{k}$ is a 9$N$x1 vector containing the angular velocity ($\bm{\omega}$), acceleration ($\dot{\bm{\omega}}$), and linear acceleration ($\dot{\bm{v}}$) for each link of the manipulator. For link $j$, the corresponding kinematic variables are computed as\footnote{The notation $^{(j)}\bm{\omega}_{i}$ represents a vector variable for link $i$, angular velocity in this case, defined in  the coordinate frame of link ($j$).}:
-\begin{subequations}
-\begin{equation}
-^{(j)}\bm{\omega}_{j}= \bm{W}^\prime_{\bm{\lambda}_{j}}\bm{W}_{q_{j}}{^{(i)}\bm{\omega}_{i}}+\dot{q}_{j}\bm{z}
-\label{eq:ang_vel}
-\end{equation}
-\begin{align}
-^{(j)}\dot{\bm{\omega}}_{j}= &\bm{W}^\prime_{\bm{\lambda}_{j}}\bm{W}_{q_{j}}{^{(i)}\dot{\bm{\omega}}_{i}}\nonumber \\&+\bm{W}^\prime_{\bm{\lambda}_{j}}\bm{W}_{q_{j}}[-\dot{q}_{j}\bm{z}\times]{^{(i)}\bm{\omega}_{i}}+\ddot{q}_{j}\bm{z}
-\label{eq:ang_acc}
-\end{align}
-\begin{align}
-^{(j)}\dot{\bm{v}}_{j}= &\bm{W}^\prime_{\bm{\lambda}_{j}}\bm{W}_{q_{j}}\{[-^{(i)}\bm{p}_j(\bm{\lambda}_j)\times]{^{(i)}\dot{\bm{\omega}}_{i}} \nonumber \\& +\bm{W}_{cp}\bm{\omega}_{cp,i}(\bm{\lambda}_j,\bm{\omega}_i)+{^{(i)}\dot{\bm{v}}_{i}}\}.
-\label{eq:lin_acc}
-\end{align}
-\label{eq:kin_eq}
-\end{subequations}
-Here the term $\bm{z}$ represents the unit z-vector of the $j$th coordinate frame. The vector $\bm{p}_j(\bm{\lambda}_j)$ defines the origin of frame $j$ in frame $i$. It is a function of the link DH parameters $\bm{\lambda}_j$ as:
-\begin{equation}
-\bm{p}_j(\bm{\lambda}_j)= \begin{bmatrix} a_j & -\sin(\alpha_j)d_j & \cos(\alpha_j)d_j\end{bmatrix}^\intercal,
-\label{eq:p_vec}
-\end{equation}
-
-Terms of the form $[\bm{r}\times]$ represent the skew-symmetric matrix given vector $\bm{r}$. The matrix $^{i}\bm{R}_j(q_j)$ that rotates a vector from frame $j$ to frame $i$ (where $j>i$) by an angle $q_j$ is represented as the multiplication of two parameter matrices:
-\begin{subequations}
-\begin{equation}
-^{i}\bm{R}_j(q_j)=\bm{W}_{\bm{\lambda}_j}\bm{W}_{q_j}
-\label{eq:rot_mat_def}
-\end{equation}
-\begin{equation}
-^{i}\bm{R}^\intercal_j(q_j)=\bm{W}^\prime_{\bm{\lambda}_j}\bm{W}_{q_j}.
-\label{eq:rot_mat_trans_def}
-\end{equation}
-\end{subequations}
-Where:
-\begin{equation}
-\bm{W}_{\bm{\lambda}_j}= \begin{bmatrix}
-0 & 1 & -1 & 0 & 0 & 0 & 0 & 0 & 0\\
-c_{\alpha_j} & 0 & 0 & c_{\alpha_j} & 0 & 0 & 0 & 0 & -s_{\alpha_j}\\
-s_{\alpha_j}&0&0&s_{\alpha_j}& 0 & 0 & 0 & 0 & c_{\alpha_j}\end{bmatrix}
-\label{eq:kin_weights_mat}
-\end{equation}
-\begin{equation}
-\bm{W}^\prime_{\bm{\lambda}_j}=
- \begin{bmatrix}
-0 & 1 & c_{\alpha_j} & 0 & s_{\alpha_j} & 0 & 0 & 0 & 0\\
--1 & 0 & 0 & c_{\alpha_j} & 0 & s_{\alpha_j} & 0 & 0 & 0 \\
-0 & 0 & 0 & 0 & 0 & 0 & 0 & -s_{\alpha_j} & c_{\alpha_j}\end{bmatrix}
-\label{eq:kin_weights_mat_trans}
-\end{equation}
-\begin{equation}
-\bm{W}_{q_j}= \begin{bmatrix}
-\sin(q_j) & 0 & 0 \\
-\cos(q_j) & 0 & 0 \\
-0 & \sin(q_j) & 0 \\
-0 & \cos(q_j) & 0 \\
-0 & 0 & \sin(q_j) \\
-0 & 0 & \cos(q_j) \\
-&\bm{1}_{3\times3} &\end{bmatrix},
-\label{eq:weights_sincos}
-\end{equation}
-with $s_{\alpha_j}=\sin(\alpha_j)$ and $c_{\alpha_j}=\cos(\alpha_j)$. It is obvious from their definition in eqs. (\ref{eq:kin_weights_mat_trans}) and (\ref{eq:weights_sincos}), that matrices $\bm{W}_{q_j}$ and $[-\dot{q}_{j}\bm{z}\times]$ are \emph{known} variable weight matrices determined by the joint angular position and velocity, respectively.
-
-The term $\bm{W}_{cp}\bm{\omega}_{cp,i}$ in eq. (\ref{eq:lin_acc}) is a \emph{functional link NN} \cite{PatraPalChaPan1999} that represents the cross-product $\bm{u}\times\bm{v}$. Its input ($\bm{\omega}_{cp,i}$) is formed by component-wise combinations of the vectors $\bm{u}={^{(i)}\bm{\omega}_{i}}$ and $\bm{v}=[-^{(i)}\bm{p}_j(\bm{\lambda}_j)\times]{^{(i)}\bm{\omega}_{i}}$ in the form $(u_k,v_l)$, with $k\neq l$. The predefined matrix $\bm{W}_{cp}$ determines the input combinations to define the cross-product.
-
-From this point onward, it is assumed that a vector for the $j$th link is defined in the $j$th frame, unless otherwise specified; thus, we drop the left upper index to ease notation. Eqs. (\ref{eq:kin_eq}) can be represented as:
-\begin{equation}
-\bm{k}_j(\bm{k}_i,q_j,\dot{q}_j,\ddot{q}_j;\bm{\lambda}_j) =\begin{bmatrix} \dot{\bm{v}}^\intercal_j & \dot{\bm{\omega}}^\intercal_j & \bm{\omega}^\intercal_j\end{bmatrix}^\intercal.
-\label{eq:kin_vector}
-\end{equation}
-The term $\bm{k}_j$ is henceforth denominated as the \emph{kinematics network} for link $j$.
-
-\subsection{Dynamics}
-Now, let 
-\begin{equation}
-\bar{\bm{k}}_i(\bm{k}_i;\bm{\lambda}_i)= \begin{bmatrix} \dot{\bm{v}}^\intercal_i & \dot{\bm{\omega}}^\intercal_i & \tilde{\bm{\omega}}^\intercal_i & \bar{\bm{\omega}}^\intercal_i\end{bmatrix}^\intercal
-\end{equation}
-be the input vector to determine the dynamics of link $i$ and define the following vectors\footnote{See the Appendix for the definitions of $\tilde{\bm{\omega}}_i$ and $\bar{\bm{\omega}}_i$.}:
-\begin{equation}
-\bm{w}_{ii}(\bar{\bm{k}}_{i};\bm{\theta}_i)=\begin{bmatrix}
-\bm{f}^\intercal_{ii} & \bm{n}^\intercal_{ii}
-\end{bmatrix}^\intercal =\bm{W}_{\theta_i}\bar{\bm{k}}_{i}
-\label{eq:self_wrench}
-\end{equation}
-\begin{align}
-\bm{w}_{ij}(\bm{\omega}_{jj};\bm{\lambda}_{i},\bm{\lambda}_{i+1},\ldots,\bm{\lambda}_{j})& = \bm{T}_i\bm{T}_{i+1}\cdots\bm{T}_j\bm{w}_{jj} \nonumber \\&=\bm{U}_{ij}\bm{w}_{jj}
-\label{eq:ext_wrench}
-\end{align}
-%\begin{equation}
-%\bm{w}_{i}(\bm{\omega}_{jj};\bm{\lambda}_{i},\bm{\lambda}_{i+1},\ldots,\bm{\lambda}_{j})= \bm{w}_{ii} + \sum_{j=i+1}^{N} \bm{w}_{ij} .
-%\label{eq:wrench_link_i}
-%\end{equation}
-\begin{equation}
-\bm{w}_{i}(\bm{\omega}_{ii},\bm{\omega}_{ii+1},\ldots,\bm{\omega}_{iN})= \sum_{k=i}^{N} \bm{w}_{ik} .
-\label{eq:wrench_link_i}
-\end{equation}
-Where $N$ is the number of links. 
-
-The corresponding parameterized operator matrices are defined as follows:
-\begin{equation}
-\bm{W}_{\bm{\theta}_i}=\left[
-	\arraycolsep=1.9pt\def\arraystretch{1.2}
-    \begin{array}{c;{1pt/1pt}c;{1pt/1pt}c;{1pt/1pt}c}
-m_i \bm{1}_{3\times3} & [-\bm{mC}_i \times] & \tilde{\bm{mC}_i} & \bm{0}_{3\times18}\\ \hdashline[1pt/1pt]
-[\bm{mC}_i \times] & \bm{I}_i & \bm{0}_{3\times9} & \bar{\bm{I}}_i
-    \end{array}
-\right]
-\label{eq:dyn_weights_mat}
-\end{equation}
-\begin{equation}
-\bm{T}_{i}(\bm{\lambda}_i,q_i)=\left[
-	\arraycolsep=1.9pt\def\arraystretch{1.2}
-    \begin{array}{c;{1pt/1pt}c}
-\bm{W}_{\bm{\lambda}_i} & \bm{0}_{3\times9}\\ \hdashline[1pt/1pt]
-[\bm{p}_i(\bm{\lambda}_i) \times]\bm{W}_{\bm{\lambda}_i} & \bm{W}_{\bm{\lambda}_i}
-    \end{array}
-\right]\left[
-	\arraycolsep=1.9pt\def\arraystretch{1.2}
-    \begin{array}{c;{1pt/1pt}c}
-\bm{W}_{q_i} & \bm{0}_{9\times3}\\ \hdashline[1pt/1pt]
-\bm{0}_{9\times3} & \bm{W}_{q_i}
-    \end{array}
-\right]
-\label{eq:rot_mat}
-\end{equation}
-The \textit{wrench} vectors $\bm{w}_{ii}$ and $\bm{w}_{ij}$ contain the forces $\bm{f}$ and moments $\bm{n}$ exerted by link $i$ on itself and by link $j$ on link $i$ (with $i<j\leq N$). The matrices $\bm{I}_i$ and $\bm{\bar{I}}_i$ are formed from the elements of the inertia tensor of link $i$ (expressed with respect to the frame in joint $i$). $\bm{mC}_i$ is the vector of the center of mass coordinates of link $i$ in frame $i$. The remaining terms in these equations are given in the Appendix.
-
-Equations (\ref{eq:self_wrench}) and (\ref{eq:wrench_link_i}) define a network and are denoted as \emph{self-dynamics network} and \emph{inter-dynamics network}, respectively. Finally, the outputs of the inverse dynamics network correspond to the joint torque vectors given by:
-\begin{equation}
-\bm{\tau}= \bm{C}\begin{bmatrix}
-\bm{w}_1^\intercal & \bm{w}_2^\intercal & \ldots & \bm{w}_N^\intercal\end{bmatrix}^\intercal,
-\label{eq:inv_dyn}
-\end{equation}
-where the matrix $\bm{C}$ selects the 6th element of the wrench vectors, i.e., the torque along the z-axis, as it is the only measurable value. The network parameters are contained inside the matrices $\bm{W}_{\bm{\theta}_i}$, $\bm{W}_{\bm{\lambda}_i}$, $\bm{W}^\prime_{\bm{\lambda}_i}$, and $\bm{T}_i(\bm{\lambda}_i,q_j)$.
-
-The constructive approach for the inverse dynamics FOP network of an $N$-DoF manipulator is given in Algorithm \ref{alg:construction}. Likewise, a simplified graphical depiction is shown in Fig. \ref{fig:NN_rep}. 
-\begin{figure}[t!]
-    \centering
-    \includegraphics[width=0.8\linewidth]{fig/nn_architecture.pdf}    
-\par
-    \caption{FOP network for an N-DoF manipulator.}
-    \label{fig:NN_rep}
-\end{figure}
-\begin{algorithm}
-\caption{FOP network}\label{alg:construction}
-\begin{algorithmic}[1]
-\Procedure{Network construction}{$n$}
-\State $N\gets$number of links in the manipulator
-\For{$i\gets 1, N$}
-	\State Create kinematics network $\bm{k}_i$
-	\State Create self-dynamics network $\bm{w}_{ii}$
-	\State Create inter-dynamics network $\bm{w}_i$
-	\State Define inputs $\bm{x}_i = \begin{bmatrix} q_i &\dot{q}_i & \ddot{q}_i \end{bmatrix}^\intercal$
-\EndFor
-%	\State Connect inputs $\bm{x}_1$ to input of $\bm{k}_1$
-\For{$i\gets 1, N$}%\Comment{We have the answer if r is 0}
-	\State Connect inputs $\bm{x}_i$ to IN of $\bm{k}_i$
-	\State Connect OUT of $\bm{k}_i$ to IN of $\bm{w}_{ii}$
-\EndFor
-\For{$i\gets 1, N-1$}%\Comment{We have the answer if r is 0}
-	\State Connect OUT of $\bm{k}_i$ to IN of $\bm{k}_{i+1}$
-\EndFor
-\For{$i\gets 1, N$}
-	\For{$j\gets i, N$}
-		\State Connect OUT of $\bm{w}_{jj}$ to IN of $\bm{w}_i$
-	\EndFor
-\EndFor
-
-\State \textbf{return} OUT of $\bm{\tau}_i$ for $i=1,\ldots,N$ \Comment{joint torque}
-\EndProcedure
-\end{algorithmic}
-\end{algorithm}
 % =============================================================================
 %                                                                             |
 %                                                                             |
@@ -461,235 +164,29 @@ The constructive approach for the inverse dynamics FOP network of an $N$-DoF man
 %                                                                             |
 %                                                                             |
 % =============================================================================
-\section{Robot parameter estimation using FOP networks}\label{sec:param_est}
+\section{Simulation results}
+\TODO
 
-Fig.~\ref{fig:NN_scheme} shows the proposed network training scheme. The data recorded during the experiments are the torques, actual joints position, velocity, acceleration, and the kinematics of each link, $\bm{k}$ in eq. (\ref{eq:kin_vector}).
-%
-%There are two error signals used for training: the kinematics estimation error: $\bm{e}_{kin}(\hat{\bm{\lambda}}) = \bm{k}-\hat{\bm{k}}(\hat{\bm{\lambda}})$; and torque estimation error: $\bm{e}_{dyn}(\hat{\bm{\theta}},\hat{\bm{\lambda}}) = \bm{\tau}-\hat{\bm{\tau}}(\hat{\bm{\theta}},\hat{\bm{\lambda}})$, where
-%\begin{equation*}
-%\hat{\bm{\theta}} = \begin{bmatrix}
-%\hat{\bm{\theta}}_1^\intercal & \hat{\bm{\theta}}_2^\intercal & \ldots & \hat{\bm{\theta}}_N^\intercal\end{bmatrix}^\intercal
-%\end{equation*}
-%\begin{equation*}
-%\hat{\bm{\lambda}} = \begin{bmatrix}
-%\hat{\bm{\lambda}}_1^\intercal & \hat{\bm{\lambda}}_2^\intercal & \ldots & \hat{\bm{\lambda}}_N^\intercal
-%\end{bmatrix}^\intercal.
-%\end{equation*}
-The training of both networks is based on the minimization of the \emph{mean squared error} (MSE) of $m$ samples between the measured signals and the corresponding estimates from the FOP network. 
+% =============================================================================
+%                                                                             |
+%                                                                             |
+% ------------------------------- SECTION ------------------------------------|
+%                                                                             |
+%                                                                             |
+% =============================================================================
+\section{Robot application}
+\TODO
 
-\subsection{Generation of trajectories to train the network}\label{sec:trajectory}
-The amount and quality of the data used for training is important to achieve generalization. Therefore, providing as input a sufficiently exciting trajectory that results in meaningful motions and thus, torques, is required. Two training alternatives are considered:
-\begin{itemize}
-\item Generate random feasible trajectories and train the kinematics. Once the kinematics parameters are estimated, conventional excitation trajectory design methods dependent on the regressor matrix $\bm{Y}$ (as in \cite{Park2006}) can be used.
-\item A more heuristic approach involves defining a set of feasible trajectories. General combinations of sinusoidal trajectories can be given as reference to every joint with relatively high accelerations so that the dynamics effects are observable. The data is collected and shuffled to perform the training. 
-\end{itemize}
-Both methods were considered to train and test the network, discussed section \ref{sec:results}.
-\begin{figure}[t!]
-\begin{center}
-    \includegraphics[width=0.6\linewidth]{fig/training_scheme}
-    \caption{Training scheme with FOP network.}
-    \label{fig:NN_scheme}
-\end{center}
-\end{figure}
-\subsection{Kinematics training}
-%These measurements are required to train the kinematics NN and find the estimated DH parameters $\hat{\bm{\lambda}}$. Recent works have discussed how to estimate such measurements from a sensor information fusion. Data from accelerometers, Inertial Measurements Units (IMU), and gyroscopes is used to estimate the kinematic variables \cite{Munoz-Barron2015}. 
-The network training is performed sequentially, i.e., the kinematics network is trained first followed by the dynamics network. This is due to the fact that the estimated parameters $\hat{\bm{\lambda}}$ are not influenced by dynamic-related terms, such as torque. The inputs to the kinematics network are the measured joint positions, velocities, and accelerations. The output of this network (i.e. the vector $\hat{\bm{k}}$) serves as input to the dynamics network. 
+% =============================================================================
+%                                                                             |
+%                                                                             |
+% ------------------------------- SECTION ------------------------------------|
+%                                                                             |
+%                                                                             |
+% =============================================================================
+\section{Beyond robotics}
+\TODO
 
-To find the optimal parameters $\hat{\bm{\lambda}}^*$ of the estimated kinematics network $\hat{\bm{k}}=f(\cdot;\hat{\bm{\lambda}})$, the measured vector $\bm{k}$ is used as supervisory signals. Then, $\hat{\bm{\lambda}}^*$ is found by minimizing the kinematics MSE, i.e.: 
-\begin{equation}
-\hat{\bm{\lambda}}^* = \begin{aligned}
-& \underset{\hat{\bm{\lambda}}}{\text{argmin}}
-& & J_{kin}=\frac{1}{2m}\sum_{k=1}^{m} (\bm{k}_k-\hat{\bm{k}}_k)^\intercal(\bm{k}_k-\hat{\bm{k}}_k) \\
-& \text{subject to}
-& & \hat{\bm{\lambda}} \in \Lambda
-\end{aligned}.
-\label{eq:kin_cost_func}
-\end{equation}
-The parameters are constrained using the set $\Lambda$. These constraints are motivated by geometric identities. In this case, it is known that
-\begin{equation}
-\sin(\alpha_j)^2+\cos(\alpha_j)^2 =1.
-\end{equation}
-\subsection{Dynamics training}
-Once the vector $\hat{\bm{\lambda}}^*$  is available, the dynamics network $\hat{\bm{\tau}}=f(\cdot;\hat{\bm{\lambda}}^*,\hat{\bm{\theta}})$ is trained with inputs $\bm{q}$ and $\hat{\bm{k}}(\cdot;\hat{\bm{\lambda}}^*)$ and supervisory signal $\bm{\tau}$. The optimal inertial parameters are defined as
-\begin{equation}
-\hat{\bm{\theta}}^*=\begin{aligned}
-& \underset{\hat{\bm{\theta}}}{\text{argmin}}
-& & J_{dyn}=\frac{1}{2m}\sum_{k=1}^{m} (\bm{\tau}_k-\hat{\bm{\tau}}_k)^\intercal(\bm{\tau}_k-\hat{\bm{\tau}}_k) \\
-& \text{subject to}
-& & \hat{\bm{\theta}} \in \Theta
-\end{aligned}.
-\label{eq:dyn_cost_func}
-\end{equation}
-The set $\Theta$ can condition the dynamic estimates $\hat{\bm{\theta}}$ to lie in a set of physically meaningful parameters. For instance, the links' masses $m_i$ must be strictly positive. Similarly, the weights representing the inertia tensor must form a symmetric positive definite matrix. Finally, the coordinates of the centers of mass are assumed to be within the links' volumes. From these assumptions, a simple approximation of the links' geometry was taken: the links were assumed to be within a cylindrical volume. In this manner, the link lengths $l_i$ and radii $R_i$ can be upper bounded. The corresponding constraints are given in eqs. (\ref{eq:IC_constraints}).
-\begin{subequations}
-\begin{equation}
-\hat{m}_{i,min} \leq  \hat{m}_{i} \leq \hat{m}_{i,max}
-\end{equation}
-%\begin{equation}
-%0 <  r_{cx,i} \leq l_i
-%\end{equation}
-%\begin{equation}
-%-R_i \leq  r_{cy,i} \leq R_i
-%\end{equation}
-%\begin{equation}
-%-R_i \leq  r_{cz,i} \leq R_i
-%\end{equation}
-\begin{equation}
--\hat{m}_{i}\frac{l_i}{2} \leq  \hat{mX}_{i} \leq \frac{l_i}{2}
-\end{equation}
-\begin{equation}
--\hat{m}_{i}R_i \leq  \hat{mY}_{i} \leq \hat{m}_{i}R_i
-\end{equation}
-\begin{equation}
--\hat{m}_{i}R_i \leq  \hat{mZ}_{i} \leq \hat{m}_{i}R_i
-\end{equation}
-\begin{equation}
-0 < {^{(i)}\hat{\bm{I}}_{xx,i}} \leq \frac{\hat{m}_iR^2_i}{2}
-\end{equation}
-\begin{equation}
-0 < {^{(i)}\hat{\bm{I}}_{yy,i}}={^{(i)}\hat{\bm{I}}_{zz,i}} \leq \frac{\hat{m}_i}{12}(3R^2_i+l^2_i)
-\end{equation}
-\label{eq:IC_constraints}
-\end{subequations}
-
-Note that the constraints aid the interpretation of the parameters and do not affect the network's performance. The training of the networks can be performed using any optimization algorithm. Here we use an \emph{interior point method} \cite{BonnansGilLemSag2006} to enforce the weight constraints. 
-%
-% SECTION==========================================================
-%\begin{figure*}[ht]
-%  \centering
-%	\hspace*{\fill}
-%    \subfloat[Effect of number of layers and neurons]{\includegraphics[width= 5 cm]{fig/rmseVSsamples_1HLXNXS_new} \label{fig:MLP_RMSEvsSamples}}
-%    \hfill
-%    \subfloat[Validation curve: number of layers]{\includegraphics[width= 5 cm]{fig/rmseVSlayers_new} \label{fig:MLP_nlayers}}
-%    \hfill
-%    \subfloat[Validation curve: number of neurons]{\includegraphics[width= 5 cm]{fig/rmseVSneurons_fit} \label{fig:MLP_nneurons}}
-%    \hspace*{\fill}
-%    \\
-%	\hspace*{\fill}
-%    \subfloat[Learning curve]{\includegraphics[width= 5 cm]{fig/learning_curve_2L600N_new} \label{fig:MLP_learning_curve}}
-%    \hfill
-%    \subfloat[Generalization test]{\includegraphics[width= 5 cm]{fig/MLP_abs_err} \label{fig:MLP_abserr}}
-%    \hspace*{\fill}
-%\caption[] {\label{fig:MLP_results} Multi-Layer Perceptron training and estimation performance.}
-%\end{figure*}
-
-\begin{figure*}[ht]
-  \centering
-  \hspace*{\fill}
-    \subfloat[Effect of number of layers and neurons]{\includegraphics[width= 5 cm]{fig/rmseVSsamples_1HLXNXS_new} \label{fig:MLP_RMSEvsSamples}}
-    \hfill
-    \subfloat[Validation curve: number of layers]{\includegraphics[width= 5 cm]{fig/rmseVSlayers_new} \label{fig:MLP_nlayers}}
-    \hfill
-    \subfloat[Validation curve: number of neurons]{\includegraphics[width= 5 cm]{fig/rmseVSneurons_fit} \label{fig:MLP_nneurons}}
-%    \hfill
-%    \subfloat[Learning curve]{\includegraphics[width= 5 cm]{fig/learning_curve_2L600N_new} \label{fig:MLP_learning_curve}}
-\hspace*{\fill}    
-%	\\
-%    \subfloat[Generalization test]{\includegraphics[width= 5 cm]{fig/MLP_abs_err} \label{fig:MLP_abserr}}
-\caption[] {\label{fig:MLP_results} Design analysis of a FFNN for inverse dynamics estimation.}
-\end{figure*}
-\begin{figure*}[ht]
-  \centering
-	\hspace*{\fill}
-    \subfloat[DH parameter $a$ for all links]{\includegraphics[width= 5 cm]{fig/Kin_param/lwr_training_kin_param_1} \label{fig:kin_par1}}
-    \hfill
-    \subfloat[DH parameter $\alpha$ for all links]{\includegraphics[width= 5 cm]{fig/Kin_param/lwr_training_kin_param_2} \label{fig:kin_par2}}
-    \hfill    
-    \subfloat[DH parameter $d$ for all links]{\includegraphics[width= 5 cm]{fig/Kin_param/lwr_training_kin_param_3} \label{fig:kin_par3}}
-	\hspace*{\fill}
-%    \\
-%	\hspace*{\fill}    
-%    \subfloat[Inertial parameters 1st link]{\includegraphics[width= 5 cm]{fig/Dyn_param/lwr_training_dyn_param_lnk1} \label{fig:dyn_par1}}
-%    \hfill
-%    \subfloat[Inertial parameters 2nd link]{\includegraphics[width= 5 cm]{fig/Dyn_param/lwr_training_dyn_param_lnk2} \label{fig:dyn_par2}}
-%    \hfill
-%    \subfloat[Inertial parameters 3rd link]{\includegraphics[width= 5 cm]{fig/Dyn_param/lwr_training_dyn_param_lnk3} \label{fig:dyn_par3}}
-%	\hspace*{\fill}
-%	\\
-%	\hspace*{\fill}
-%    \subfloat[Inertial parameters 4th link]{\includegraphics[width= 5 cm]{fig/Dyn_param/lwr_training_dyn_param_lnk4} \label{fig:dyn_par4}}
-%    \hfill
-%    \subfloat[Inertial parameters 5th link]{\includegraphics[width= 5 cm]{fig/Dyn_param/lwr_training_dyn_param_lnk5} \label{fig:dyn_par5}}
-%    \hfill
-%    \subfloat[Inertial parameters 6th link]{\includegraphics[width= 5 cm]{fig/Dyn_param/lwr_training_dyn_param_lnk6} \label{fig:dyn_par6}}
-%    \hspace*{\fill}
-%    \\
-%	\hspace*{\fill}
-%    \subfloat[Inertial parameters 7th link]{\includegraphics[width= 5 cm]{fig/Dyn_param/lwr_training_dyn_param_lnk7} \label{fig:dyn_par7}}
-%%    \hfill
-%%    \subfloat[Generalization error]{\includegraphics[width= 5 cm]{fig/constructive_abs_err} \label{fig:constructive_abserr}}
-%    \hfill
-%    \subfloat[Gravity compensation test]{\includegraphics[width= 5 cm]{fig/grav_comp} \label{fig:grav_comp}}
-%    \hspace*{\fill} 
-\caption[] {\label{fig:lwr_sim_kin_param} Kinematic parameters estimation using the constructive FOP network.}
-\end{figure*}
-%\caption[] {\label{fig:end_effectors} Some examples of end-effectors\cite{endeffectors}. \protect\subref{fig:bag_effector} Bag handling end-effector  \protect\subref{fig:pallet_effector} Pallet handling end-effector \protect\subref{fig:material_effector} Material handling end-effector \protect\subref{fig:roll_effector} Roll handling end-effector}
-%\end{figure}
-\section{Results and discussion}\label{sec:results}
-A simulated 7-DoF manipulator, with end-effector and added noise to the torque and joint measurements, was used to generate 6 random trajectories as training data. Each trajectory lasted 20 seconds and was sampled at 1 kHz, giving a total training set of 120,006 samples. Subsequently, 80\% of this data was used for training set and the remaining as test set.
-\subsection{Standard feedforward neural network}
-A conventional FFNN, was used to represent eq.~(\ref{eq:inverse_dynamics}). Fig.~\ref{fig:MLP_results} summarizes its design analysis
-%In a FFNN, the number of layers and/or the neurons per layer, as well as the training samples, can be tuned to improve performance.
-using the machine learning package Scikit-learn. Fig.~\ref{fig:MLP_RMSEvsSamples} shows that a single-layer network would require several neurons to generate a small root mean square error (RMSE). A validation curve for a possible FFNN design trained with 100,000 samples,
-%an MLP with 500 hidden units per hidden layer with \emph{rectified linear unit} (ReLU) activation functions
-Fig. \ref{fig:MLP_nlayers}, shows  that the RMSE does not improve for more than 3 hidden layers. 
-The validation curve in Fig. \ref{fig:MLP_nneurons} suggested that in a two-hidden-layers network, trained with 100,000 samples, the number of neurons per layer increases almost exponentially as function of the representation accuracy.
-%The exponential fit on the validation curve in Fig. \ref{fig:MLP_nneurons} suggested that in a two-hidden-layers network, trained with 100,000 samples, the number of neurons per layer rapidly increases as function of the representation accuracy; e.g., if an RMSE in the order of $10^{-1}$ Nm was desired, around 3,000 neurons per layer would be needed, i.e. more than $9\times10^6$ training parameters!
-A grid search for the number of layers and neurons per layer was conducted suggesting a two-hidden-layer network with 600 neurons/layer. The corresponding generalization test, using 500,000 samples and 5-fold cross-validation, indicated that even with large amounts of data and representation power, the RMSE was not considerably improved.
-%, see Figure \ref{fig:MLP_learning_curve}. To test the generalization capabilities of the trained network, a precomputed excitation trajectory was given as input to the MLP and the reconstructed and actual torques were compared, Fig. \ref{fig:MLP_abserr}. Even when the cross-validation results suggested smaller errors, the absolute error for the test trajectory confirms the opposite. 
-\subsection{Echo State Network}
-In addition to the FFNN a Echo State Network (ESN), a state-of-the-art recurrent neural network, was used to model the robot inverse dynamics. The network architecture consists of an input layer, a recurrent neural network dynamic reservoir, with $\tanh(\cdot)$ activations, and a linear output layer. As stated in \cite{PolydorosNalKru2015}, recurrent NNs are considered deep as they can be unrolled in time to give an FFNN with an indefinite number of layers. To compare the network with the FFNN and the FOP network we used an offline training scheme applying \emph{teacher-forcing} \cite{Lukosevicius2012}. The network used a reservoir size of $2000$. This network requires sequential data to capture data dynamics. Therefore, unlike the FFNN, the input data should not be shuffled. Obviously, this imposes a limitation on the information-richness of the data that is used to train the network.
-\subsection{FOP network}
-For the FOP network the initial conditions for the weights $\hat{\bm{\theta}}_0$ and $\hat{\bm{\lambda}}_0$ were set randomly. An interior point method using the MATLAB$^{\tiny{\textregistered}}$ function \emph{fmincon} was used for training. A mini-batch of 100 samples was used and 5 training cycles were executed. As mentioned before, the kinematics network was trained first. The estimated $\hat{\bm{\lambda}}$ parameters showed quick convergence, as depicted in Fig.~\ref{fig:lwr_sim_kin_param}. Once the DH parameters were found, the dynamics NN was trained. It is worth mentioning that the $\hat{\bm{\theta}}$ parameters exhibited repetitive decay patterns caused by the mini-batch training. Nevertheless, every mini-batch training cycle converged, in average, to similar steady values. The mean of the parameters values at the end of each cycle is shown in Table~\ref{tab:inertial_param}. 
-\begin{table*}[t]
-\begin{center}
-\begin{tabular}{ |l|l|l|l||l||l||l||l| } 
- \hline
-&  \textbf{Link 1} &  \textbf{Link 2} & \textbf{Link 3} & \textbf{Link 4} & \textbf{Link 5} & \textbf{Link 6} & \textbf{Link 7}\\
-\hline
-$m_i$  &   3.9418 &  3.9452 &  3.2079 &  3.2092 &  3.1658 &  3.1549 &  3.1498\\
-\hline
-$mX_i$ &  -0.0000 & -0.0008 & -0.0003 & -0.0001 & -0.0001 &  0.0004 & -0.0002\\
-\hline
-$mY_i$ &  -0.0007 &  0.0968 & -0.0011 & -0.3533 &  0.0118 &  0.4983 & -0.0001\\
-\hline
-$mZ_i$ &   0.0032 & -0.0005 & -0.7259 & -0.0024 & -0.4602 & -0.0120 &  0.5043\\
-\hline
-$XX_i$ &   0.1167 &  0.1156 &  0.1148 &  0.1170 &  0.1162 &  0.1121 &  0.0602\\
-\hline
-$XY_i$ &   0.0003 & -0.0007 &  0.0001 &  0.0003 &  0.0004 & -0.0001 & -0.0001\\
-\hline
-$XZ_i$ &   0.0001 & -0.0003 &  0.0002 &  0.0001 & -0.0000 &  0.0001 & -0.0000\\
-\hline
-$YY_i$ &   0.1166 &  0.0084 &  0.1165 &  0.0066 &  0.1148 &  0.0041 &  0.1457\\
-\hline
-$YZ_i$ &  -0.0001 &  0.0003 & -0.0019 & -0.0001 &  0.0002 &  0.0001 &  0.0002\\
-\hline
-$ZZ_i$ &   0.0084 &  0.1159 &  0.0066 &  0.1144 &  0.0041 &  0.1121 &  0.0892\\
- \hline
-\end{tabular}
-\end{center}
-  \caption{Average value of the estimated inertial parameters after training.}
-  \label{tab:inertial_param}
-\end{table*}
-\subsection{Comparison}
-An additional trajectory was used to test the generalization capabilities of the networks. The performance of the three networks in the different sets is summarized in Fig.~\ref{fig:net_comparison}. The FFNN performed satisfactorily in the test and training sets; however, it is important to realize that the network will only reproduce torques that lie close to the training samples, failing to estimate for dissimilar inputs. Given the large input space for a 7-DoF manipulator, it is not realistic to explore and collect sufficient data to train the network. This situation is clearly shown in the FFNN error for the generalization test. On the other hand, the ESN produced large errors in all the sets. It is worth mentioning that such errors could be tackled by tuning the networks parameters at the expense, however, of potential overfitting. Moreover, it was experienced from the training that the network is sensitive to discontinuities in the training set and thus; concatenation of trajectories evidenced problems in the test set, and very limited performance in the generalization test, as the discontinuities caused instabilities. We conclude that the offline implementation requires long trajectories that sample the robot input-output space. Online approaches like the one in \cite{PolydorosNalKru2015} will be further explored for better comparison. The FOP network does not suffer from this issues as the topology is based on the physical laws that dictate the behavior of the system. Therefore, once the network has been trained with a small but information-rich training set its generalization capabilities exceed those of regular NN.
-\subsection{Gravity compensation experiment}
-An additional experiment was conducted with the FOP network, the learned network was used for gravity compensation in the actual robot. Although the parameters do not match the real values, gravity compensation was successfully achieved. The gravity torque generated by the estimated and actual parameters is shown in Fig.~\ref{fig:grav_comp}.
-\begin{figure}[h]
-\begin{center}
-    \includegraphics[width= 5 cm]{fig/net_comparison} 
-    \caption{Network performance comparison in training, test and generalization sets.}
-    \label{fig:net_comparison}
-\end{center}
-\end{figure}
-\begin{figure}[h]
-\begin{center}
-    \includegraphics[width= 5 cm]{fig/grav_comp}
-    \caption{Gravity compensation test.}
-    \label{fig:grav_comp}
-\end{center}
-\end{figure}
 % =============================================================================
 %                                                                             |
 %                                                                             |
@@ -698,59 +195,8 @@ An additional experiment was conducted with the FOP network, the learned network
 %                                                                             |
 % =============================================================================
 \section{Conclusions}\label{sec:conclusion}
-Classical FFNN have a limited performance in terms of accurately encoding the dynamics of complex systems; they hardly generalize when the training data is limited. This paper discussed the critical importance of the topology in connectionist approaches and introduced a conceptual method to determine the topology of parameterized operator networks that is driven by first-order principles. This approach is different from the conventional networks as the topology is not subjective but dictated by the physics of the system that is intended to be modeled. In the case of robot manipulators, we demonstrated how a FOP network emerged from the Newton-Euler formulation to represent the inverse dynamics. We illustrated the compositionality of the network by defining modular networks that compute the robot's kinematics and dynamics and whose weights correspond to inertial and Denavit-Hartenberg parameters, i.e. the dynamics and kinematics parameters. A training scheme to identify these weights was defined using an off-the-shelf optimization algorithm. The experiment suggested that FOP networks can accurately represent inverse dynamics and outperform conventional FFNN as well as state-of-the-art Deep Recurrent Neural Networks in terms of learning speed, accuracy, and generalization using significantly less parameters and training data. Future work will cover the formalization of the conceptual method for building FOP networks presented in section~\ref{sec:FOPnets}. 
-% =============================================================================
-%                                                                             |
-%                                                                             |
-% ------------------------------- SECTION ------------------------------------|
-%                                                                             |
-%                                                                             |
-% =============================================================================
-\section*{APPENDIX}
-Let $\bm{\omega} = \begin{bmatrix}\omega_x & \omega_y & \omega_z \end{bmatrix}^\intercal$ represent any real vector in $\mathbb{R}^3$ and let $vec(\cdot)$ indicate the vectorization of a matrix; then, the terms in equations (\ref{eq:self_wrench}) and (\ref{eq:ext_wrench}) are defined as follows:
-%\begin{multicols}{2}
-\begin{equation*}
-\pmb{I}_{i,vec} = [XX_i, XY_i , XZ_i , YY_I , YZ_i , ZZ_i ]
-\end{equation*}
-\begin{equation*}
-\bar{\pmb{I}_i}= \begin{bmatrix}
-\pmb{I}_{i,vec}               & \bm{0}_{1\times6} & \bm{0}_{1\times6}\\
-\bm{0}_{1\times6} & \pmb{I}_{i,vec}               & \bm{0}_{1\times6}\\
-\bm{0}_{1\times6} & \bm{0}_{1\times6} & \pmb{I}_{i,vec}
-\end{bmatrix}
-\end{equation*}
-\begin{equation*}
-\pmb{mC}_i = \begin{bmatrix}
-mX_i & mY_i & mZ_i
-\end{bmatrix}^\intercal
-\end{equation*}
-\begin{equation*}
-\tilde{\pmb{mC}_i}= \begin{bmatrix}
-\pmb{mC}_i^\intercal              & \bm{0}_{1\times3} & \bm{0}_{1\times3}\\
-\bm{0}_{1\times3} & \pmb{mC}_i^\intercal              & \bm{0}_{1\times3}\\
-\bm{0}_{1\times3} & \bm{0}_{1\times3} & \pmb{mC}_i^\intercal
-\end{bmatrix}
-\end{equation*}
-\begin{equation*}
-[\bm{\omega} \times] = \begin{bmatrix}
-0                     & -\omega_z             & \omega_y \\
-\omega_z              & 0                     & -\omega_x \\
--\omega_y             & \omega_x              & 0
-\end{bmatrix}
-\end{equation*}
-\begin{equation*}
-[\bullet \bm{\omega}] = \begin{bmatrix}
-\omega_x & \omega_y & \omega_x & 0        & 0        & 0       \\
-0        & \omega_x & 0        & \omega_y & \omega_z & 0       \\
-0        & 0        & \omega_x & 0        & \omega_y & \omega_z
-\end{bmatrix}
-\end{equation*}
-\begin{equation*}
-\tilde{\bm{\omega}}=vec([\bm{\omega} \times]^\intercal[\bm{\omega} \times]^\intercal)
-\end{equation*}
-\begin{equation*}
-\bar{\bm{\omega}}=vec([\bullet \bm{\omega}]^\intercal[\bm{\omega} \times]^\intercal)
-\end{equation*}
+
+
 
 \printbibliography 
 \end{document}
