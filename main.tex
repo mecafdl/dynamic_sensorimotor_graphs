@@ -161,6 +161,7 @@ In this work we present an analysis based on the information theory of the dnyam
 	\caption{The planar dual arm robot.}
 	\label{fig:extended_dual_arm_robot}
 \end{figure}
+
 % =============================================================================
 %                                                                             |
 %                                                                             |
@@ -168,7 +169,16 @@ In this work we present an analysis based on the information theory of the dnyam
 %                                                                             |
 %                                                                             |
 % =============================================================================
-\section{Graph decomposition}
+\section{Dynamic functional connectivity}
+
+Many metrics based on information theory have been proposed to evaluate sensorimotor relationships \cite{Bonsignorio2020EntropyBasedMetrics}
+
+DFC has has mainly being used to study functional networks in the brain. For instance, in \cite{Christiaen2020Dynamicfunctionalconnectivity}, it was used to show states of lower functional connectivity during onsets of epilepsy.
+
+
+The work in \cite{Zhou2020Earlychildhooddevelopmental} used NNMF to \textit{In this study, a parts-based network-decomposition technique, known as non-negative matrix factorization (NMF), was applied to identify a set of possible abnormal connectivity patterns in brains affected by ASD, using resting-state electroencephalographic (EEG) data.}
+ 
+The most common approach to express the functional connectivity is via a sliding time window \cite{Preti2017dynamicfunctionalconnectome}
 \TODO
 
 \begin{figure}[!th]
@@ -178,6 +188,20 @@ In this work we present an analysis based on the information theory of the dnyam
 	\label{fig:nnmf}
 \end{figure}
 
+\textbf{Rephrase:} \textit{To extract information from these connectivity graphs, the NMF \cite{Fu2019Nonnegativematrixfactorization} technique was used. NMF is an unsupervised machine learning algorithm that can be used to decompose an input matrix A into two components: a matrix W of bases, or subgraphs, and a matrix H of their corresponding contributions to the input matrix A (39). Connectivity graphs were combined to serve as the input matrix (A) for NMF that yielded subgraphs (W), taken to be functional resting-state alpha networks, and associated time series of contributions (H), taken to be the relative temporal activation of each of these networks.}
+
+NNMF has also being used to detect communities in networks \cite{Wang2011Communitydiscoveryusing,Luo2021Symmetricnonnegativematrix}
+
+
+Other methods to detect repeating patterns in DFC include the cosine similarity \cite{Menon2019comparisonstaticdynamic}
+
+There are various methods to select an adequate number of factors \cite{Muzzarelli2019RankSelectionNon}. To choose the number of factors we followed as in \cite{Phalen2020Nonnegativematrix} and "which was chosen by performing NMF iteratively for increasing values of k and selecting the inflection point, or elbow, in the reconstruction residual sum of squares
+error curve"
+
+In \cite{Stiso2020Learningbraincomputer} it is shown how the basis graph change their expressing during learning of a ask
+
+
+To show graphically how the different factors cluster naturally depending on the touched regions we used the PaCMAP dimensionality reduction method \cite{Wang2021Understandinghowdimension} given its properties to preserve aspects of the global and local structure when reducing into the latent space \cite{Huang2022Towardscomprehensiveevaluation}.
 % =============================================================================
 %                                                                             |
 %                                                                             |
