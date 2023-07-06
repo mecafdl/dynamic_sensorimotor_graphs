@@ -74,7 +74,9 @@
 \usepackage{bm}
 \usepackage{caption}
 \usepackage[T1]{fontenc}
-\usepackage{graphicx}
+\usepackage[]{graphicx}
+\graphicspath{ {./fig/} }
+
 \usepackage[utf8]{inputenc}
 \usepackage{multicol}
 \usepackage[T1]{xcolor}
@@ -100,6 +102,8 @@
 \newcommand\mybox[2][]{\tikz[overlay]\node[fill=blue!100,inner sep=4pt, anchor=text, rectangle, rounded corners=1mm,#1] {#2};\phantom{#2}}
 
 \newcommand{\TODO}{\mybox[fill=yellow]{\textcolor{blue}{\Large \textbf{TODO}}}}
+\newcommand\myhl[1]{\textcolor{red}{#1}}
+
 
 \newtheorem{prop}{Proposition}
 
@@ -108,7 +112,7 @@ Dynamic sensorimotor graphs
 }
 
 
-\author{Some Guy, Nice Dude}
+\author{Some Guy, Random Stranger and Anonymous Dude}
 
 \begin{document}
 
@@ -127,13 +131,17 @@ Regularities present in the sensorimotor signals of a robotic agent can reflect 
 % =============================================================================
 \section{Introduction}\label{sec:intro}
 \TODO
-\begin{figure}[!th]
+\begin{figure}[!ht]
 	\centering
-	\includegraphics[width=0.9\columnwidth]{fig/general_overview.png}
+	\includegraphics[width=0.9\columnwidth]{general_overview.png}
 	\caption{General overview.}
 	\label{fig:general_overview}
 \end{figure}
 
+\subsection{Background}
+Dynamical functional connectivity (DFC) has has mainly being used to study functional networks in the brain. For instance, in \cite{Christiaen2020Dynamicfunctionalconnectivity}, it was used to show states of lower functional connectivity during onsets of epilepsy.
+
+The work in \cite{Zhou2020Earlychildhooddevelopmental} used NNMF on EEG signals to to identify potentially abnormal connectivity patterns in brains affected by illness.
 
 % SUBSECTION ==================================================================
 \subsection{Related works}
@@ -142,8 +150,7 @@ Refer to Mannella, Gama, Marcel, Kanazawa, Husbands, Hoffmann (puppy).
 
 % SUBSECTION ==================================================================
 \subsection{Contributions}
-\TODO
-In this work we present an analysis based on the information theory of the dnyamic relationships exsiting among the sensorimotor signals of a robot. In the analysis we show how the amount of information sharing in the system is related to the motion of the robot and the tactile events that occur duting motion. Furthermore, using nonnegative matrix factoriztion we identify operation modes of the robot based only of the mutual information measurments. In a case study we demonstrate how by only foucsing on the mutual information and without having knowledge about the morphology of the robot, an excitation trajectory can be devised that avoids self contact. A comparison of this trajectory against conventional trajevetory design methods is presented.
+In this work we present an analysis based on the dynamic relationships existing among the sensorimotor signals of a embodied agent. In the analysis we show how the state of information sharing in the system is related to the motion of the robot and the tactile events that stem from its movement. Using non-negative matrix factorization we identify different information sharing states and classify them according to their information content. In a case study we demonstrate how after a motor babbling phase, by only focusing on the mutual information and without having knowledge about the morphology of the robot, an excitation trajectory for both the robot arms can be devised that avoids self contact. A comparison of this trajectory against conventional trajectory design methods is presented.
 
 % =============================================================================
 %                                                                             |
@@ -152,16 +159,34 @@ In this work we present an analysis based on the information theory of the dnyam
 %                                                                             |
 %                                                                             |
 % =============================================================================
-\section{The robot model}
-\TODO
-
-\begin{figure}[!th]
-	\centering
-	\includegraphics[width=0.9\columnwidth]{fig/extended_dual_arm_robot.pdf}
-	\caption{The planar dual arm robot.}
-	\label{fig:extended_dual_arm_robot}
+\section{The embodied agent}
+The robot model in this work is based on the planar dual arm system with six degrees of freedom (DoF) used previously in \cite{Mannella2018Knowyourbody, Marcel2022Learningreachown}. The robot is equipped with a set of tactile sensors modeled as Gaussian receptive fields distributed along the robot's body. Motion of the robot was originally based on reference joint angle commands. We, however, have extended the model to instantiate its dynamics by assigning inertial properties to the robot's composing bodies. Furthermore, we changed the actuation mechanism inspired by simple muscle-inspired antagonistic joint model \textbf{REF} where the muscle activation controls spring stiffness. The extended model is depicted on Fig.~\ref{fig:extended_dual_arm_robot}.
+% ---
+\begin{figure}[!t]
+	\begin{center}
+		\hspace*{\fill}
+		\includegraphics[width=0.99\columnwidth]{extended_dual_arm_robot.pdf}
+		\hspace*{\fill}
+	\end{center}
+	\caption{\label{fig:extended_dual_arm_robot} The planar dual arm robot.}
 \end{figure}
+% ---
 
+The tactile sensors were modified too to account for the strength of touch. Essentially, the previously distance-based activation of the Gaussian receptive fields in now scaled by the contact force.
+
+\subsection{Population coding}
+\TODO
+The proprioceptive signals were encoded using proprioceptive coding (five receptive fields per signal), see Fig.~\ref{fig:population_coding}
+% ---
+\begin{figure}[!t]
+	\begin{center}
+		\hspace*{\fill}
+		\includegraphics[width=0.99\columnwidth]{population_coding.png}
+		\hspace*{\fill}
+	\end{center}
+	\caption{\label{fig:population_coding} The receptive fields used in population coding.}
+\end{figure}
+% ---
 % =============================================================================
 %                                                                             |
 %                                                                             |
@@ -169,17 +194,68 @@ In this work we present an analysis based on the information theory of the dnyam
 %                                                                             |
 %                                                                             |
 % =============================================================================
-\section{Dynamic functional connectivity}
+\section{The sensorimotor dynamic functional connectivity}
 
-Many metrics based on information theory have been proposed to evaluate sensorimotor relationships \cite{Bonsignorio2020EntropyBasedMetrics}
+% Subsection ==================================================================
+\subsection{Functional connectivity}
+%Finding and graphically representing the relationships among the constituent elements of a system is known as \emph{network topology inference} (NTI) \cite{Dong2019Learninggraphsdata}. By learning the topology of a network (also known as a graph), it is possible to reveal a structure that aids in the analysis of the interaction among the entities. When relying only on measurement signals to estimate the network topology, approaches based on physically-motivated and statistical models are typically used\cite{Dong2019Learninggraphsdata}. In particular, the latter entails methods based on correlation, probabilistic graphical models, entropy, mutual information, and transfer entropy. Recently, other methods for NTI have been provided within the framework of Graph Signal Processing (GSP) \cite{Stankovic2019Introductiongraphsignal,Dong2019Learninggraphsdata,Mateos2019ConnectingdotsIdentifying}. Exemplary works showing the representation and analysis possibilities brought about by NTI include \cite{Zhang2017Networkbasedmachine,Karwowski2019Applicationgraphtheory,Sporns2018Graphtheorymethods}. 
 
-DFC has has mainly being used to study functional networks in the brain. For instance, in \cite{Christiaen2020Dynamicfunctionalconnectivity}, it was used to show states of lower functional connectivity during onsets of epilepsy.
+\emph{Functional connectivity} (FC) is a method for network topology inference that characterizes the dependencies of the observed signals from a system based on their probability distributions\cite{Friston2011Functionaleffectiveconnectivity}. It can be subdivided into undirected and directed; the latter being related to the analysis of statistical causation from the data \cite{Bastos2016tutorialreviewfunctional}. By studying the FC  it is possible to reveal a structure that aids in the analysis of the interaction among the entities.
 
+Based on the connection between embodiment and information structure \cite{Pfeifer2007Selforganizationembodiment}, our hypothesis is that properties of the sensorimotor interactions can be made apparent by studying the FC among the somatosensory signals $ \bm{x}(t) $. From the various metrics that have been proposed to evaluate such relationships, we in particular leverage those based on information theory \cite{Bonsignorio2020EntropyBasedMetrics,Bonsignorio2013Quantifyingevolutionaryself}, as their \emph{model-free} nature can capture linear and nonlinear relationships between signals. Particularly, we use the \emph{mutual information} (MI), a quantity that has been applied in different contexts to quantify the relationships between variables \cite{Steuer2002mutualinformationdetecting}. The MI between two signals $ I\left(X,Y\right) $ can be interpreted as the amount by which a random signal $ Y $ reduces the uncertainty about a random signal $ X $ \cite{Cover1999Elementsinformationtheory}. It is a symmetric measure of the information sharing by both signals and is computed as:
+% ---
+\begin{equation}\label{eq:mutual_information}
+	I\left(X;Y\right) =I\left(Y;X\right) = H(X) + H(Y) - H(X,Y)
+\end{equation}
+% ---
+with the Shannon's entropy of a variable $X$ defined by 
+% ---
+\begin{equation}\label{eq:entropy}
+	H(X) = -\sum_{i=1}^{n}p(x_i)\text{log}_2\left(p\left(x_i\right)\right)
+\end{equation}
+% ---
+and the joint entropy between $ X $ and $ Y $ expressed as
+% ---
+\begin{equation}\label{eq:joint_entropy}
+	H(X,Y) = -\sum_{i=1}^{n}\sum_{j=1}^{n} p(x_i,y_j)\text{log}_2\big(p\left(x_i,y_j\right)\big).
+\end{equation}
+% ---
+By extension, the mutual information matrix $ \hat{\bm{W}}_{MI} \in \mathbb{R}^{m \times m}$\footnote{We use the \emph{hat} notation to emphasize that this matrix is an estimate and there is no actual ground truth.} can be constructed by computing the pairwise MI between the $\left\lbrace x_i\right\rbrace^m_{i=1}$ somatosensory signals. Its $(i,j)$ entries are given by
+% ---
+\begin{equation}\label{eq:adjacency_mi}
+	(\hat{\bm{W}}_{MI})_{i,j} = I(x_i,x_j).
+\end{equation}
+% ---
+In practice, computing \eqref{eq:adjacency_mi}  for a pair $\left({x}_i(t),{x}_j(t)\right)$ of time series from the data matrix $\bm{X}$, centering their samples (to zero mean and unit standard deviation) and using either binning, kernel, or nearest neighbor methods \cite{WaltersWilliams2009Estimationmutualinformation} to compute their mutual information. 
 
-The work in \cite{Zhou2020Earlychildhooddevelopmental} used NNMF to \textit{In this study, a parts-based network-decomposition technique, known as non-negative matrix factorization (NMF), was applied to identify a set of possible abnormal connectivity patterns in brains affected by ASD, using resting-state electroencephalographic (EEG) data.}
- 
-The most common approach to express the functional connectivity is via a sliding time window \cite{Preti2017dynamicfunctionalconnectome}
+%Yet, such a process can be memory- and computation-demanding when the length $n$ of each of the time series is large or when streaming signals are considered. \myhl{Therefore, to enable the online computation of the $m\left(m-1\right)/2$ pairwise MI values, every $N_{\mathbfcal{X}}$ points we extract a mini batch $\mathbfcal{X}$ from the replay buffer $\mathbfcal{B}$ and compute its corresponding MI matrix $\bm{W}^\mathbfcal{X}_{MI}$. Then, the overall MI matrix estimate $\hat{\bm{W}}_{MI}$ for the time series is the cumulative average over the previously computed matrices $\bm{W}^\mathbfcal{X}_{MI}$. To monitor its convergence we observe the total information content in the matrix, defined as
+%	% ---
+%	\begin{equation}\label{eq:total_information}
+%		T_{MI} =  \frac{1}{2}\text{tr}\left(\hat{\bm{D}}_{MI}\right),
+%	\end{equation}
+%	% ---	
+%	where $\hat{\bm{D}}_{MI}$ is the associated degree matrix. After the change in $T_{MI}$ falls below a threshold value $\epsilon$, i.e. 
+%	$\Delta T_{MI}<\epsilon$, $\hat{\bm{W}}_{MI}$ exhibits minimal changes in its structure. In Sec.~\ref{sec:topology_convergence} we provide examples of the convergence of this term for the robot manipulator, hexapod, and humanoid cases.}
+
+In this work, for the computation of $\hat{\bm{W}}_{MI}  $ we use the the open-source MATLAB package \emph{Mutual information computation}\cite{PengMutualInformationcomputation}.
+
+% Subsection ==================================================================
+\subsection{Dynamic functional connectivity}
+When analizing FC it might be interesting to look not only at the aggregated effect of a complete dataset of recordings but also at the instantaneous changes that occur in the relationships. Indeed, the relationships between sensorimotor signals might change rapidly depending on the motion policy. To capture these time-varying functional connectivity with mutual information, the most common approach involves the usage of a sliding time window \cite{Preti2017dynamicfunctionalconnectome}. In particular, tactile events might have a short time scale, the nutual information was computed for a time window of length $T$, that is to say $x_i(t, t-1,\ldots, t-T)$, we called this term the \emph{instantaneous mutual information}.
+
 \TODO
+
+
+% ---
+\begin{figure}[!th]
+	\begin{center}
+		\hspace*{\fill}
+		\includegraphics[width=0.99\columnwidth]{mi_sliding_window.png}
+		\hspace*{\fill}
+	\end{center}
+	\caption{\label{fig:mi_sliding_window} Sliding window strategy to compute the instantaneous mutual information.}
+\end{figure}
+% ---
 
 \begin{figure}[!th]
 	\centering
@@ -188,12 +264,17 @@ The most common approach to express the functional connectivity is via a sliding
 	\label{fig:nnmf}
 \end{figure}
 
-\textbf{Rephrase:} \textit{To extract information from these connectivity graphs, the NMF \cite{Fu2019Nonnegativematrixfactorization} technique was used. NMF is an unsupervised machine learning algorithm that can be used to decompose an input matrix A into two components: a matrix W of bases, or subgraphs, and a matrix H of their corresponding contributions to the input matrix A (39). Connectivity graphs were combined to serve as the input matrix (A) for NMF that yielded subgraphs (W), taken to be functional resting-state alpha networks, and associated time series of contributions (H), taken to be the relative temporal activation of each of these networks.}
+%\textbf{Rephrase:} \textit{To extract information from these connectivity graphs, the NMF \cite{Fu2019Nonnegativematrixfactorization} technique was used. NMF is an unsupervised machine learning algorithm that can be used to decompose an input matrix A into two components: a matrix W of bases, or subgraphs, and a matrix H of their corresponding contributions to the input matrix A (39). Connectivity graphs were combined to serve as the input matrix (A) for NMF that yielded subgraphs (W), taken to be functional resting-state alpha networks, and associated time series of contributions (H), taken to be the relative temporal activation of each of these networks.}
 
-NNMF has also being used to detect communities in networks \cite{Wang2011Communitydiscoveryusing,Luo2021Symmetricnonnegativematrix}
+\subsection{Analyzing patterns}
 
 
 Other methods to detect repeating patterns in DFC include the cosine similarity \cite{Menon2019comparisonstaticdynamic}
+
+Non-negative matrix factorization (NNMF) \cite{Fu2019Nonnegativematrixfactorization} was employed to extract data from the connectivity graphs defines by the instantaneous mutual information. NNMF is an unsupervised machine learning algorithm that can be used to split an input matrix $\bm{V}$ into two parts: a matrix $\bm{W}$ of bases, or subgraphs, and a matrix $\bm{H}$ of their corresponding contributions to the input matrix $\bm{V}$. The input matrix (A) for the NMF, which produced the subgraphs (W) and associated time series of contributions (H), which were assumed to represent the relative temporal activation of each of these networks, was created by combining connectivity graphs.
+
+NNMF has also being used to detect communities in networks \cite{Wang2011Communitydiscoveryusing,Luo2021Symmetricnonnegativematrix}
+
 
 There are various methods to select an adequate number of factors \cite{Muzzarelli2019RankSelectionNon}. To choose the number of factors we followed as in \cite{Phalen2020Nonnegativematrix} and "which was chosen by performing NMF iteratively for increasing values of k and selecting the inflection point, or elbow, in the reconstruction residual sum of squares
 error curve"
@@ -211,6 +292,7 @@ To show graphically how the different factors cluster naturally depending on the
 % =============================================================================
 \section{Simulation results}
 \TODO
+For the computation of the instantaneous mutual information we used sensors signals sampled at 100 Hz and a sliding window of $T = 0.1$ seconds; i.e., the previously seen 10 samples. With this short memory which is stored in a buffer, we can capture (fast) touch events.
 
 % =============================================================================
 %                                                                             |

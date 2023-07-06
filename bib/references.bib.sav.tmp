@@ -45,17 +45,6 @@
   timestamp = {2017.07.07},
 }
 
-@InProceedings{JahandidehNam2012,
-  author       = {Jahandideh, Hossein and Namvar, Mehrzad},
-  title        = {Use of PSO in parameter estimation of robot dynamics; Part two: Robustness},
-  booktitle    = {System Theory, Control and Computing ({ICSTCC}), 2012 16th International Conference on},
-  year         = {2012},
-  pages        = {1--6},
-  organization = {IEEE},
-  owner        = {fernandodiaz},
-  timestamp    = {2017.07.07},
-}
-
 @Article{WuWanYou2010,
   author    = {Wu, Jun and Wang, Jinsong and You, Zheng},
   title     = {An overview of dynamic parameter identification of robots},
@@ -363,15 +352,6 @@
   timestamp = {2017.07.07},
 }
 
-@Book{BonnansGilLemSag2006,
-  title     = {Numerical optimization: theoretical and practical aspects},
-  publisher = {Springer Science \& Business Media},
-  year      = {2006},
-  author    = {Bonnans, Joseph-Fr{\'e}d{\'e}ric and Gilbert, Jean Charles and Lemar{\'e}chal, Claude and Sagastiz{\'a}bal, Claudia A},
-  owner     = {fernandodiaz},
-  timestamp = {2017.07.07},
-}
-
 @Article{PedregosaVarGraMic2011,
   author    = {Pedregosa, Fabian and Varoquaux, Ga{\"e}l and Gramfort, Alexandre and Michel, Vincent and Thirion, Bertrand and Grisel, Olivier and Blondel, Mathieu and Prettenhofer, Peter and Weiss, Ron and Dubourg, Vincent and others},
   title     = {Scikit-learn: Machine learning in Python},
@@ -395,14 +375,6 @@
   owner     = {fernandodiaz},
   publisher = {CRC Press Boca Raton, FL},
   timestamp = {2017.07.07},
-}
-
-@Misc{Standford2016,
-  title        = {Neural networks - {UFLDL}},
-  howpublished = {\url{http://deeplearning.stanford.edu/wiki/index.php/Neural_Networks}},
-  note         = {Accessed: 2016-09-30},
-  owner        = {fernandodiaz},
-  timestamp    = {2017.07.07},
 }
 
 @Article{UrolaginPreRed2012,
@@ -446,14 +418,6 @@
   owner     = {fernandodiaz},
   publisher = {Cambridge University Press},
   timestamp = {2017.07.17},
-}
-
-@Misc{NIST2017,
-  title        = {Dictionary of Algorithms and Data Structures},
-  howpublished = {\url{https://xlinux.nist.gov/dads/}},
-  note         = {Accessed: 2017-07-19},
-  owner        = {fernandodiaz},
-  timestamp    = {2017.07.19},
 }
 
 @Article{EhrhardtMonMitVed2017,
@@ -504,14 +468,6 @@
   timestamp   = {2017.07.20},
 }
 
-@TechReport{KwokYeu1995,
-  author    = {Kwok, Tin-Yau and Yeung, Dit Yan},
-  title     = {Constructive feedforward neural networks for regression problems: A survey},
-  year      = {1995},
-  owner     = {fernandodiaz},
-  timestamp = {2017.07.20},
-}
-
 @InProceedings{TirumalaAliRam2016,
   author       = {Tirumala, Sreenivas Sremath and Ali, Shahid and Ramesh, C Phani},
   title        = {Evolving deep neural networks: A new prospect},
@@ -519,15 +475,6 @@
   year         = {2016},
   pages        = {69--74},
   organization = {IEEE},
-}
-
-@InProceedings{BakerGupNaiRas2017,
-  author    = {Baker, Bowen and Gupta, Otkrist and Naik, Nikhil and Raskar, Ramesh},
-  title     = {Designing neural network architectures using reinforcement learning},
-  booktitle = {5th International Conference on Learning Representations},
-  year      = {2017},
-  owner     = {fernandodiaz},
-  timestamp = {2017.07.20},
 }
 
 @InProceedings{SrinivasBab2016,
@@ -559,15 +506,6 @@
   timestamp = {2017.07.20},
 }
 
-@InProceedings{AbtahiFas2011,
-  author    = {Abtahi, Farnaz and Fasel, Ian R},
-  title     = {Deep Belief Nets as Function Approximators for Reinforcement Learning.},
-  booktitle = {Lifelong Learning},
-  year      = {2011},
-  owner     = {fernandodiaz},
-  timestamp = {2017.07.20},
-}
-
 @InProceedings{MhaskarLiaPog2017,
   author    = {Mhaskar, Hrushikesh and Liao, Qianli and Poggio, Tomaso A},
   title     = {When and Why Are Deep Networks Better Than Shallow Ones?},
@@ -580,14 +518,6 @@
   author    = {Liang, Shiyu and Srikant, R},
   title     = {Why Deep Neural Networks for Function Approximation?},
   year      = {2016},
-  owner     = {fernandodiaz},
-  timestamp = {2017.07.20},
-}
-
-@TechReport{LawrenceGilTso1998,
-  author    = {Lawrence, Steve and Giles, C Lee and Tsoi, Ah Chung},
-  title     = {What size neural network gives optimal generalization? Convergence properties of backpropagation},
-  year      = {1998},
   owner     = {fernandodiaz},
   timestamp = {2017.07.20},
 }
@@ -697,4 +627,70 @@
 @Article{Stiso2020Learningbraincomputer,
   author    = {Stiso, Jennifer and Corsi, Marie-Constance and Vettel, Jean M and Garcia, Javier and Pasqualetti, Fabio and Fallani, Fabrizio De Vico and Lucas, Timothy H and Bassett, Danielle S},
   journal   = {Journal of neural engineering},
-  title     = {Learning in brain-computer interface control evidenced by joint decomposition of brain 
+  title     = {Learning in brain-computer interface control evidenced by joint decomposition of brain and behavior},
+  year      = {2020},
+  number    = {4},
+  pages     = {046018},
+  volume    = {17},
+  publisher = {IOP Publishing},
+}
+
+@Article{Preti2017dynamicfunctionalconnectome,
+  author    = {Preti, Maria Giulia and Bolton, Thomas AW and Van De Ville, Dimitri},
+  journal   = {Neuroimage},
+  title     = {The dynamic functional connectome: State-of-the-art and perspectives},
+  year      = {2017},
+  pages     = {41--54},
+  volume    = {160},
+  publisher = {Elsevier},
+}
+
+@Article{Wang2021Understandinghowdimension,
+  author    = {Wang, Yingfan and Huang, Haiyang and Rudin, Cynthia and Shaposhnik, Yaron},
+  journal   = {The Journal of Machine Learning Research},
+  title     = {Understanding how dimension reduction tools work: an empirical approach to deciphering t-SNE, UMAP, TriMAP, and PaCMAP for data visualization},
+  year      = {2021},
+  number    = {1},
+  pages     = {9129--9201},
+  volume    = {22},
+  publisher = {JMLRORG},
+}
+
+@Article{Huang2022Towardscomprehensiveevaluation,
+  author    = {Huang, Haiyang and Wang, Yingfan and Rudin, Cynthia and Browne, Edward P},
+  journal   = {Communications biology},
+  title     = {Towards a comprehensive evaluation of dimension reduction methods for transcriptomic data visualization},
+  year      = {2022},
+  number    = {1},
+  pages     = {719},
+  volume    = {5},
+  publisher = {Nature Publishing Group UK London},
+}
+
+@InProceedings{Muzzarelli2019RankSelectionNon,
+  author       = {Muzzarelli, Laura and Weis, Susanne and Eickhoff, Simon B and Patil, Kaustubh R},
+  booktitle    = {2019 International Joint Conference on Neural Networks (IJCNN)},
+  title        = {Rank Selection in Non-negative Matrix Factorization: systematic comparison and a new MAD metric},
+  year         = {2019},
+  organization = {IEEE},
+  pages        = {1--8},
+}
+
+@Article{Fu2019Nonnegativematrixfactorization,
+  author  = {Fu, Xiao and Huang, Kejun and Sidiropoulos, Nicholas D and Ma, Wing-Kin},
+  journal = {IEEE Signal Process. Mag.},
+  title   = {Nonnegative matrix factorization for signal and data analytics: Identifiability, algorithms, and applications.},
+  year    = {2019},
+  number  = {2},
+  pages   = {59--80},
+  volume  = {36},
+}
+
+@Article{Wang2011Communitydiscoveryusing,
+  author    = {Wang, Fei and Li, Tao and Wang, Xin and Zhu, Shenghuo and Ding, Chris},
+  journal   = {Data Mining and Knowledge Discovery},
+  title     = {Community discovery using nonnegative matrix factorization},
+  year      = {2011},
+  pages     = {493--521},
+  volume    = {22},
+  p
