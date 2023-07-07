@@ -693,4 +693,208 @@
   year      = {2011},
   pages     = {493--521},
   volume    = {22},
-  p
+  publisher = {Springer},
+}
+
+@Article{Luo2021Symmetricnonnegativematrix,
+  author    = {Luo, Xin and Liu, Zhigang and Jin, Long and Zhou, Yue and Zhou, MengChu},
+  journal   = {IEEE Transactions on Neural Networks and Learning Systems},
+  title     = {Symmetric nonnegative matrix factorization-based community detection models and their convergence analysis},
+  year      = {2021},
+  number    = {3},
+  pages     = {1203--1215},
+  volume    = {33},
+  publisher = {IEEE},
+}
+
+@Article{Christiaen2020Dynamicfunctionalconnectivity,
+  author    = {Christiaen, Emma and Goossens, Marie-Gabrielle and Descamps, Benedicte and Larsen, Lars E and Boon, Paul and Raedt, Robrecht and Vanhove, Christian},
+  journal   = {Neurobiology of disease},
+  title     = {Dynamic functional connectivity and graph theory metrics in a rat model of temporal lobe epilepsy reveal a preference for brain states with a lower functional connectivity, segregation and integration},
+  year      = {2020},
+  pages     = {104808},
+  volume    = {139},
+  publisher = {Elsevier},
+}
+
+@Article{Zhou2020Earlychildhooddevelopmental,
+  author    = {Zhou, Tianyi and Kang, Jiannan and Cong, Fengyu and Li, Xiaoli},
+  journal   = {NeuroImage: Clinical},
+  title     = {Early childhood developmental functional connectivity of autistic brains with non-negative matrix factorization},
+  year      = {2020},
+  pages     = {102251},
+  volume    = {26},
+  comment   = {This article is a good example of how to use non-negative matrix factorization for the anlysis of dynamic graphs. In particular it shows how to study the factors and coefficients based on ther energy and entropy.},
+  publisher = {Elsevier},
+  url       = {https://www.sciencedirect.com/science/article/pii/S2213158220300887?via=ihub},
+}
+
+@Article{Menon2019comparisonstaticdynamic,
+  author    = {Menon, Sreevalsan S and Krishnamurthy, K},
+  journal   = {Scientific reports},
+  title     = {A comparison of static and dynamic functional connectivities for identifying subjects and biological sex using intrinsic individual brain connectivity},
+  year      = {2019},
+  number    = {1},
+  pages     = {5729},
+  volume    = {9},
+  publisher = {Nature Publishing Group UK London},
+}
+
+@Article{Bonsignorio2020EntropyBasedMetrics,
+  author    = {Bonsignorio, Fabio},
+  journal   = {Metrics of Sensory Motor Coordination and Integration in Robots and Animals: How to Measure the Success of Bioinspired Solutions with Respect to their Natural Models, and Against More ‘Artificial’Solutions?},
+  title     = {Entropy Based Metrics of Sensory Motor Coordination: A Short Survey},
+  year      = {2020},
+  pages     = {89--110},
+  publisher = {Springer},
+}
+
+@Article{Steuer2002mutualinformationdetecting,
+  author    = {Steuer, Ralf and Kurths, J{\"u}rgen and Daub, Carsten O and Weise, Janko and Selbig, Joachim},
+  journal   = {Bioinformatics},
+  title     = {The mutual information: detecting and evaluating dependencies between variables},
+  year      = {2002},
+  number    = {suppl\_2},
+  pages     = {S231--S240},
+  volume    = {18},
+  publisher = {Citeseer},
+}
+
+@Book{Cover1999Elementsinformationtheory,
+  author    = {Cover, Thomas M},
+  publisher = {John Wiley \& Sons},
+  title     = {Elements of information theory},
+  year      = {1999},
+}
+
+@InProceedings{WaltersWilliams2009Estimationmutualinformation,
+  author       = {Walters-Williams, Janett and Li, Yan},
+  booktitle    = {International Conference on Rough Sets and Knowledge Technology},
+  title        = {Estimation of mutual information: A survey},
+  year         = {2009},
+  organization = {Springer},
+  pages        = {389--396},
+}
+
+@Misc{PengMutualInformationcomputation,
+  author       = {Peng,Hanchuan},
+  howpublished = {\url{https://www.mathworks.com/matlabcentral/fileexchange/14888-mutual-information-computation}},
+  note         = {Accessed: 2023-04-20},
+  title        = {Mutual Information computation},
+  journal      = {MATLAB Central File Exchange},
+}
+
+@Article{Mannella2018Knowyourbody,
+  author    = {Mannella, Francesco and Santucci, Vieri G and Somogyi, Eszter and Jacquey, Lisa and O'Regan, Kevin J and Baldassarre, Gianluca},
+  journal   = {Frontiers in neurorobotics},
+  title     = {Know your body through intrinsic goals},
+  year      = {2018},
+  pages     = {30},
+  publisher = {Frontiers},
+}
+
+@InProceedings{Marcel2022Learningreachown,
+  author       = {Marcel, Valentin and O’Regan, J Kevin and Hoffmann, Matej},
+  booktitle    = {2022 IEEE International Conference on Development and Learning (ICDL)},
+  title        = {Learning to reach to own body from spontaneous self-touch using a generative model},
+  year         = {2022},
+  organization = {IEEE},
+  pages        = {328--335},
+}
+
+@Article{Friston2011Functionaleffectiveconnectivity,
+  author    = {Friston, Karl J},
+  journal   = {Brain connectivity},
+  title     = {Functional and effective connectivity: a review},
+  year      = {2011},
+  number    = {1},
+  pages     = {13--36},
+  volume    = {1},
+  publisher = {Mary Ann Liebert, Inc. 140 Huguenot Street, 3rd Floor New Rochelle, NY 10801 USA},
+}
+
+@Article{Bastos2016tutorialreviewfunctional,
+  author    = {Bastos, Andr{\'e} M and Schoffelen, Jan-Mathijs},
+  journal   = {Frontiers in systems neuroscience},
+  title     = {A tutorial review of functional connectivity analysis methods and their interpretational pitfalls},
+  year      = {2016},
+  pages     = {175},
+  volume    = {9},
+  publisher = {Frontiers},
+}
+
+@Article{Bonsignorio2013Quantifyingevolutionaryself,
+  author    = {Bonsignorio, Fabio},
+  journal   = {Artificial life},
+  title     = {Quantifying the evolutionary self-structuring of embodied cognitive networks},
+  year      = {2013},
+  number    = {2},
+  pages     = {267--289},
+  volume    = {19},
+  publisher = {MIT Press One Rogers Street, Cambridge, MA 02142-1209, USA journals-info~…},
+}
+
+@Article{Pfeifer2007Selforganizationembodiment,
+  author    = {Pfeifer, Rolf and Lungarella, Max and Iida, Fumiya},
+  journal   = {science},
+  title     = {Self-organization, embodiment, and biologically inspired robotics},
+  year      = {2007},
+  number    = {5853},
+  pages     = {1088--1093},
+  volume    = {318},
+  publisher = {American Association for the Advancement of Science},
+}
+
+@Article{Jacquey2019Sensorimotorcontingenciesas,
+  author    = {Jacquey, Lisa and Baldassarre, Gianluca and Santucci, Vieri Giuliano and O’Regan, J Kevin},
+  journal   = {Frontiers in neurorobotics},
+  title     = {Sensorimotor contingencies as a key drive of development: from babies to robots},
+  year      = {2019},
+  pages     = {98},
+  volume    = {13},
+  publisher = {Frontiers},
+}
+
+@Article{Schmidt2013Bootstrappingperceptionusing,
+  author    = {Schmidt, Nico M and Hoffmann, Matej and Nakajima, Kohei and Pfeifer, Rolf},
+  journal   = {Advances in Complex Systems},
+  title     = {Bootstrapping perception using information theory: Case studies in a quadruped robot running on different grounds},
+  year      = {2013},
+  number    = {02n03},
+  pages     = {1250078},
+  volume    = {16},
+  publisher = {World Scientific},
+}
+
+@Article{Lungarella2006Mappinginformationflow,
+  author    = {Lungarella, Max and Sporns, Olaf},
+  journal   = {PLoS Comput Biol},
+  title     = {Mapping information flow in sensorimotor networks},
+  year      = {2006},
+  number    = {10},
+  pages     = {e144},
+  volume    = {2},
+  publisher = {Public Library of Science},
+}
+
+@InCollection{Polani2009Modelsinformationprocessing,
+  author    = {Polani, Daniel and M{\"o}ller, Marco},
+  booktitle = {Information Theory and Statistical Learning},
+  publisher = {Springer},
+  title     = {Models of information processing in the sensorimotor loop},
+  year      = {2009},
+  pages     = {289--308},
+}
+
+@Article{Bossomaier2016introductiontransferentropy,
+  author    = {Bossomaier, Terry and Barnett, Lionel and Harr{\'e}, Michael and Lizier, Joseph T},
+  journal   = {Cham: Springer International Publishing},
+  title     = {An introduction to transfer entropy},
+  year      = {2016},
+  volume    = {65},
+  publisher = {Springer},
+}
+
+@Article{Olsson2006unknownsensorsactuators,
+  author    = {Olsson, Lars A and Nehaniv, Chrystopher L and Polani, Daniel},
+  journal   = {Connection S
