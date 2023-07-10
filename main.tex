@@ -145,7 +145,7 @@ Regularities present in the sensorimotor signals of a robotic agent can reflect 
 \end{figure*}
 % ---
 The study of the structural and functional connectivity in the brain has furthered the understanding of its organizations and information processing. An analogy with the sensorimotor signals of an embodied agent is yet to be realized. The distributed nature of the sensorimotor signals excludes the exploration of its structural connectivity, yet it readily lends itself to inquire about its functional connectivity and the information about body structure and the emergence of behaviors that can be extracted or even caused by it. 
-A natural question to ask is how can information and graph theory be leveraged to devise a graphical representation of the sensorimotor contingencies in the somatosensory signals of agent. This work explores the sensorimotor structure of an embodied agent. The underlying premise is that regularities among the robot's sensorimotor signals are a product of the robot’s embodiment. These regularities, known as \emph{sensorimotor contingencies} (SMC) \cite{Jacquey2019Sensorimotorcontingenciesas}, can be identified by studying the relationships between the signals from its sensory apparatus (for both perception and actuation). Information-theoretic metrics are considered to study the relationships in the sensorimotor system. Some examples of previous works that have used information theory in this context include  \cite{Schmidt2013Bootstrappingperceptionusing,Lungarella2006Mappinginformationflow,Polani2009Modelsinformationprocessing,Bossomaier2016introductiontransferentropy,Olsson2006unknownsensorsactuators}. Although the literature about sensorimotor representations is extensive \cite{Nguyen2021Sensorimotorrepresentationlearning}, this proposal considers that the representation of SMCs as \emph{dynamic} graphs and their corresponding analysis aided by concepts from graph theory could provide further understanding about their formation and evolution. To achieve such a representation, methods from \emph{network topology inference} (NTI)\cite{Dong2019Learninggraphsdata} are regarded to study the relationships among the different constituent elements of the graph.
+A natural question to ask is how can information and graph theory be leveraged to devise a graphical representation of the sensorimotor contingencies in the somatosensory signals of agent. This work explores the sensorimotor structure of an embodied agent. The underlying premise is that regularities among the robot's sensorimotor signals are a product of the robot’s embodiment. These regularities, known as \emph{sensorimotor contingencies} (SMC) \cite{Jacquey2019Sensorimotorcontingenciesas}, can be identified by studying the relationships between the signals from its sensory apparatus (for both perception and actuation). Information-theoretic metrics are considered to study the relationships in the sensorimotor system. Some examples of previous works that have used information theory in this context include  \cite{Schmidt2013Bootstrappingperceptionusing,Lungarella2006Mappinginformationflow,Polani2009Modelsinformationprocessing,Bossomaier2016introductiontransferentropy,Olsson2006unknownsensorsactuators}. Although the literature about sensorimotor representations is extensive \cite{Nguyen2021Sensorimotorrepresentationlearning}, this work considers that the representation of SMCs as \emph{dynamic} graphs and their corresponding analysis aided by concepts from graph theory could provide further understanding about their formation and evolution. To achieve such a representation, methods from \emph{network topology inference} (NTI)\cite{Dong2019Learninggraphsdata} are regarded to study the relationships among the different constituent elements of the graph.
 
 As mentioned in \cite{Jacquey2019Sensorimotorcontingenciesas}, the connections between sensorimotor regularities and body knowledge are not well understood. To contribute to this understanding, this proposal parts from the knowledge of the number and modality of the robot's somatosensory signals (touch and proprioception) to use mutual information to explore the functional connectivity among sensorimotor signals and leverage \myhl{graph theoretical concepts to identify and study the most important sensorimotor connections.}
 
@@ -235,7 +235,7 @@ In summary, the somatosensory signals vector $\bm{s}$ is composed as
 \begin{equation}
 	\bm{s} = \begin{bmatrix}
 		\bm{p}^T & \bm{v}^T & \bm{e}^T & \bm{r}^T
-	\end{bmatrix}^T
+	\end{bmatrix}^T \in \mathbb{R}^n_{\geq}
 \end{equation}
 %---
 %\begin{figure*}[htp!]
@@ -285,7 +285,7 @@ In summary, the somatosensory signals vector $\bm{s}$ is composed as
 
 \emph{Functional connectivity} (FC) is a method for network topology inference that characterizes the dependencies of the observed signals from a system based on their probability distributions\cite{Friston2011Functionaleffectiveconnectivity}. It can be subdivided into undirected and directed; the latter being related to the analysis of statistical causation from the data \cite{Bastos2016tutorialreviewfunctional}. By studying the FC  it is possible to reveal a structure that aids in the analysis of the interaction among the entities.
 
-Based on the connection between embodiment and information structure \cite{Pfeifer2007Selforganizationembodiment}, our hypothesis is that properties of the sensorimotor interactions can be made apparent by studying the FC among the somatosensory signals $ \bm{x}(t) $. From the various metrics that have been proposed to evaluate such relationships, we in particular leverage those based on information theory \cite{Bonsignorio2020EntropyBasedMetrics,Bonsignorio2013Quantifyingevolutionaryself}, as their \emph{model-free} nature can capture linear and nonlinear relationships between signals. Particularly, we use the \emph{mutual information} (MI), a quantity that has been applied in different contexts to quantify the relationships between variables \cite{Steuer2002mutualinformationdetecting}. The MI between two signals $ I\left(X,Y\right) $ can be interpreted as the amount by which a random signal $ Y $ reduces the uncertainty about a random signal $ X $ \cite{Cover1999Elementsinformationtheory}. It is a symmetric measure of the information sharing by both signals and is computed as:
+Based on the connection between embodiment and information structure \cite{Pfeifer2007Selforganizationembodiment}, our hypothesis is that properties of the sensorimotor interactions can be made apparent by studying the FC among the somatosensory signals $ \bm{s}(t) $. From the various metrics that have been proposed to evaluate such relationships, we in particular leverage those based on information theory \cite{Bonsignorio2020EntropyBasedMetrics,Bonsignorio2013Quantifyingevolutionaryself}, as their \emph{model-free} nature can capture linear and nonlinear relationships between signals. Particularly, we use the \emph{mutual information} (MI), a quantity that has been applied in different contexts to quantify the relationships between variables \cite{Steuer2002mutualinformationdetecting}. The MI between two signals $ I\left(X,Y\right) $ can be interpreted as the amount by which a random signal $ Y $ reduces the uncertainty about a random signal $ X $ \cite{Cover1999Elementsinformationtheory}. It is a symmetric measure of the information sharing by both signals and is computed as:
 % ---
 \begin{equation}\label{eq:mutual_information}
 	I\left(X;Y\right) =I\left(Y;X\right) = H(X) + H(Y) - H(X,Y)
@@ -303,31 +303,21 @@ and the joint entropy between $ X $ and $ Y $ expressed as
 	H(X,Y) = -\sum_{i=1}^{n}\sum_{j=1}^{n} p(x_i,y_j)\text{log}_2\big(p\left(x_i,y_j\right)\big).
 \end{equation}
 % ---
-By extension, the mutual information matrix $\bm{\mathcal{I}} \in \mathbb{R}^{m \times m}$ can be constructed by computing the pairwise MI between the $\left\lbrace x_i\right\rbrace^m_{i=1}$ somatosensory signals. Its $(i,j)$ entries are given by
+By extension, the mutual information matrix $\bm{\mathcal{I}} \in \mathbb{R}^{m \times m}$ can be constructed by computing the pairwise MI between the $\left\lbrace s_i\right\rbrace^n_{i=1}$ somatosensory signals. Its $(i,j)$ entries are given by
 % ---
 \begin{equation}\label{eq:adjacency_mi}
-	(\bm{\mathcal{I}})_{i,j} = I(x_i,x_j).
+	(\bm{\mathcal{I}})_{i,j} = I(s_i,s_j).
 \end{equation}
 % ---
-In practice, computing \eqref{eq:adjacency_mi}  for a pair $\left({x}_i(t),{x}_j(t)\right)$ of time series from the data matrix $\bm{X}$, centering their samples (to zero mean and unit standard deviation) and using either binning, kernel, or nearest neighbor methods \cite{WaltersWilliams2009Estimationmutualinformation} to compute their mutual information. 
-
-%Yet, such a process can be memory- and computation-demanding when the length $n$ of each of the time series is large or when streaming signals are considered. \myhl{Therefore, to enable the online computation of the $m\left(m-1\right)/2$ pairwise MI values, every $N_{\mathbfcal{X}}$ points we extract a mini batch $\mathbfcal{X}$ from the replay buffer $\mathbfcal{B}$ and compute its corresponding MI matrix $\bm{W}^\mathbfcal{X}_{MI}$. Then, the overall MI matrix estimate $\hat{\bm{W}}_{MI}$ for the time series is the cumulative average over the previously computed matrices $\bm{W}^\mathbfcal{X}_{MI}$. To monitor its convergence we observe the total information content in the matrix, defined as
-%	% ---
-%	\begin{equation}\label{eq:total_information}
-%		T_{MI} =  \frac{1}{2}\text{tr}\left(\hat{\bm{D}}_{MI}\right),
-%	\end{equation}
-%	% ---	
-%	where $\hat{\bm{D}}_{MI}$ is the associated degree matrix. After the change in $T_{MI}$ falls below a threshold value $\epsilon$, i.e. 
-%	$\Delta T_{MI}<\epsilon$, $\hat{\bm{W}}_{MI}$ exhibits minimal changes in its structure. In Sec.~\ref{sec:topology_convergence} we provide examples of the convergence of this term for the robot manipulator, hexapod, and humanoid cases.}
-
-In this work, for the computation of $\bm{\mathcal{I}}$ we use the the open-source MATLAB package \emph{Mutual information computation}\cite{PengMutualInformationcomputation}.
+In practice, computing \eqref{eq:adjacency_mi}  for a pair $\left({s}_i(t),{s}_j(t)\right)$ involves centering their samples (to zero mean and unit standard deviation) and using either binning, kernel, or nearest neighbor methods \cite{WaltersWilliams2009Estimationmutualinformation} to compute their mutual information. In this work, for the computation of $\bm{\mathcal{I}}$ we use the the open-source MATLAB package \emph{Mutual information computation}\cite{PengMutualInformationcomputation}.
 
 % Subsection ==================================================================
 \subsection{Dynamic functional connectivity}
-When analizing FC it might be interesting to look not only at the aggregated effect of a complete dataset of recordings but also at the instantaneous changes that occur in the relationships. Indeed, the relationships between sensorimotor signals might change rapidly depending on the motion policy. To capture these time-varying functional connectivity with mutual information, the most common approach involves the usage of a sliding time window \cite{Preti2017dynamicfunctionalconnectome}.
+When analyzing FC it might be interesting to look not only at the aggregated effect of a complete dataset of recordings but also at the instantaneous changes that occur in the relationships. Indeed, the functional relationships between sensorimotor signals can change rapidly depending on the motion policy and the interaction of the agent with the environment. To capture this time-varying, i.e. \emph{dynamic}, functional connectivity with mutual information, it is common to use a sliding time window \cite{Preti2017dynamicfunctionalconnectome} with forward step $\Delta t$ from which the MI is computed only for a small number of samples.
 
-In particular, as tactile events can occur in short time scale, the mutual information was computed for a time window of length $T$. For any two distinct pair of signals $s_x(t)$ and $s_y(t)$, the mutual information $I_t(s_x(t);s_y(t))$ at time $t$  is computed in the interval $\left[t-T,t\right]$, see Fig.~\ref{fig:mi_sliding_window_mi}. We called this term the \emph{instantaneous mutual information} (IMI). The forward step for the sliding window is $\Delta t$. The mutual information matrix $\bm{\mathcal{I}}(t)$ at time $t$ is constructed by computing the IMI for all the pairwise signals. Given a data matrix of somatosensory signals a time series the time-varying mutual information matrix $\bm{\mathcal{I}}(t)$ defines a expresses the dynamical functional connectivity between the signals.
-%that is to say $x_i(t, t-1,\ldots, t-T)$, 
+In particular, for a time window of length $T$. The mutual information $I_t(s_x(t);s_y(t))$ for a distinct pair of signals $s_x(t)$ and $s_y(t)$ at time $t$ is computed for the set of signal samples spanning the interval $\left[t-T,t\right]$, see Fig.~\ref{fig:mi_sliding_window_mi}. We called this term the \emph{instantaneous mutual information} (IMI). It follows that the mutual information matrix $\bm{\mathcal{I}}(t)$ at time $t$ is constructed by computing the IMI for all the pairwise signals in the same time interval. The time series the time-varying mutual information matrix $\bm{\mathcal{I}}(t)$ shows the dynamical functional connectivity between the somatosensory signals.
+%In particular, as tactile events can occur in a short time scale, the mutual information was computed for a time window of length $T$. For any two distinct pair of signals $s_x(t)$ and $s_y(t)$, the mutual information $I_t(s_x(t);s_y(t))$ at time $t$  is computed in the interval $\left[t-T,t\right]$, see Fig.~\ref{fig:mi_sliding_window_mi}. We called this term the \emph{instantaneous mutual information} (IMI). The forward step for the sliding window is $\Delta t$. The mutual information matrix $\bm{\mathcal{I}}(t)$ at time $t$ is constructed by computing the IMI for all the pairwise signals. Given a data matrix of somatosensory signals a time series the time-varying mutual information matrix $\bm{\mathcal{I}}(t)$ defines a expresses the dynamical functional connectivity between the signals.
+
 
 % ---
 \begin{figure}[!th]
@@ -349,8 +339,26 @@ In particular, as tactile events can occur in short time scale, the mutual infor
 
 % Subsection ==================================================================
 \subsection{Analyzing patterns}
-Once the data set $\bm{D}_{MI}$ is available, it can be used to extract repeating patterns that encode certain modes of operation captured during motor babbling. It is also important to determine the expression of these patters during the recorded motion. Typical methods to detect repeating patterns in dynamic FC include the cosine similarity \cite{Menon2019comparisonstaticdynamic} and  non-negative matrix factorization (NNMF) \cite{Fu2019Nonnegativematrixfactorization}. We chose the latter, as it proven useful in several studies analyzing brain dynamic functional networks and has also being used for community  detection\cite{Wang2011Communitydiscoveryusing,Luo2021Symmetricnonnegativematrix}
-.
+Given a set of $m$ samples from the somatosensory signals, generated, for example, via motor babbling, a dataset $\bm{S} \in \mathbb{R}^{n \times m}_{\geq}$ can be used to search for repeating patterns of FC that encode certain modes of operation. It is also important to determine the strength and frequency of expression of these patterns to determine their relevance. Typical methods to detect repeating patterns in dynamic FC include the cosine similarity \cite{Menon2019comparisonstaticdynamic} and  non-negative matrix factorization (NNMF) \cite{Fu2019Nonnegativematrixfactorization}. We chose the latter, as it proven useful in several studies analyzing brain dynamic functional networks and has also being used for community  detection\cite{Wang2011Communitydiscoveryusing,Luo2021Symmetricnonnegativematrix}.
+
+NNMF is an unsupervised machine learning algorithm that can be used to split an input matrix $\bm{D}_{\bm{\mathcal{I}}} \in \mathbb{R}^{n\times m}_{\geq}$ into two parts: a matrix $\bm{W} \in \mathbb{R}^{n\times k}_{\geq}$ of bases and a matrix $\bm{H} \in \mathbb{R}^{k\times m}_{\geq}$ of their corresponding contributions to the input matrix $\bm{D}_{\bm{\mathcal{I}}}$; i.e.,
+% ---
+\begin{equation}
+	\bm{D}_{\bm{\mathcal{I}}} 	\approx \bm{W} \bm{H}.
+\end{equation}
+% ---
+
+In our case, the matrix $\bm{D}_{\bm{\mathcal{I}}}$ is constructed by vectorizing  and concatenating each of the matrices $\bm{\mathcal{I}}_v(t) = \text{vec}\left(\bm{\mathcal{I}}(t)\right)$; that is: 
+\begin{equation}
+	\bm{D}_{\bm{\mathcal{I}}} = [\bm{\mathcal{I}}_v(1),\cdots,\bm{\mathcal{I}}_v(m)]
+\end{equation}
+Note that $n = \frac{j(j-1)}{2}$ is the total number of mutual information pairs. Since the matrix $D_{\bm{\mathcal{I}}}$ is strictly non-negative, it is straight away suitable for its decomposition and analysis using NNMF. One crucial question is the number of factors $k$ used to approximate the original dataset. From the various methods to select an adequate number \cite{Muzzarelli2019RankSelectionNon}, we chose $k$ following the elbow method as in \cite{Phalen2020Nonnegativematrix} by performing NNMF for ascending values of $k$ and selecting the value where the residual error is not reduced any further.
+
+Each of the factors $\left\lbrace\bm{w}_i\right\rbrace^k_i=1$ can be interpreted as a base FC graph capturing
+a state of information sharing of multiple sensorimotor states. When the factors are aggregated using via the columns of $\bm{H}$ the particular mutual information matrix at time $t$ is closely approximated.
+
+%It is worth mentioning that NNMF is an stochastic method and thus, two different runs will produce two distinct set of factors. 
+To facilitate the analysis of the relevance of each of the factor, after factorization the factors are normalized to according to the $L_2$-norm. 
 
 % XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 %Intuitively, NMF decomposes functional brain networks into the following: (1) a set of subnetworks (patterns) overlapping in space and
@@ -367,17 +375,10 @@ Once the data set $\bm{D}_{MI}$ is available, it can be used to extract repeatin
 %network
 % XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
- NNMF is an unsupervised machine learning algorithm that can be used to split an input matrix $\bm{V} \in \mathbb{R}^{n\times m}_{\geq}$ into two parts: a matrix $\bm{W} \in \mathbb{R}^{n\times k}_{\geq}$ of bases, or subgraphs, and a matrix $\bm{H} \in \mathbb{R}^{k\times m}_{\geq}$ of their corresponding contributions to the input matrix $\bm{V}$. As the matrix $\bm{\mathcal{I}}(t)$ is strictly non-negative, it is suitable for the analysis using NNMF. To achieve this, the matrix $\bm{V}$ is constructed by vectorizing  and concatenating each of the matrices $\bm{\mathcal{I}}_v(t) = \text{vec}\left(\bm{\mathcal{I}}(t)\right)$. 
- 
-  
-
-There are various methods to select an adequate number of factors \cite{Muzzarelli2019RankSelectionNon}. To choose the number of factors we followed as in \cite{Phalen2020Nonnegativematrix} and "which was chosen by performing NMF iteratively for increasing values of k and selecting the inflection point, or elbow, in the reconstruction residual sum of squares
-error curve"
-
-In \cite{Stiso2020Learningbraincomputer} it is shown how the basis graph change their expressing during learning of a ask
+%In \cite{Stiso2020Learningbraincomputer} it is shown how the basis graph change their expressing during learning of a task
 
 
-To show graphically how the different factors cluster naturally depending on the touched regions we used the PaCMAP dimensionality reduction method \cite{Wang2021Understandinghowdimension} given its properties to preserve aspects of the global and local structure when reducing into the latent space \cite{Huang2022Towardscomprehensiveevaluation}.
+
 % =============================================================================
 %                                                                             |
 %                                                                             |
@@ -386,8 +387,26 @@ To show graphically how the different factors cluster naturally depending on the
 %                                                                             |
 % =============================================================================
 \section{Simulation results}
-\TODO
+% ---
+\begin{figure*}[!ht]
+	\centering
+	\includegraphics[width=0.9\textwidth]{planar_dual_arm_modes.pdf}
+	\caption{Different events during exploration. (a) Pure proprioception (no touch), (b) contact with left arm, (c) contact with right arm, and (d) contact with both arms.}
+	\label{fig:planar_dual_arm_modes}
+\end{figure*}
+% ---
 For the computation of the instantaneous mutual information we used sensors signals sampled at 100 Hz and a sliding window of $T = 0.1$ seconds; i.e., the previously seen 10 samples. With this short memory which is stored in a buffer, we can capture (fast) touch events.
+
+% Subsection ==================================================================
+\subsection{Dimensionality reduction}
+To show graphically how the different factors cluster naturally depending on the touched regions we used the PaCMAP dimensionality reduction method \cite{Wang2021Understandinghowdimension} given its properties to preserve aspects of the global and local structure when reducing into the latent space \cite{Huang2022Towardscomprehensiveevaluation}.
+
+\begin{figure}[!th]
+	\centering
+	\includegraphics[width=0.99\columnwidth]{fig/pacmac_with_timi_and_modes.pdf}
+	\caption{A two dimensional projection using PaCMAP of the coefficients $\bm{H}$. The color of each point is scaled by its total mutual information value.}
+	\label{fig:pacmac_with_timi_and_modes}
+\end{figure}
 
 % =============================================================================
 %                                                                             |
@@ -409,6 +428,7 @@ In this section we use the instantaneous mutual information to generate trajecto
 % =============================================================================
 \section{Beyond robotics}
 \TODO
+\myhl{Valentin + Matej}
 
 % =============================================================================
 %                                                                             |
