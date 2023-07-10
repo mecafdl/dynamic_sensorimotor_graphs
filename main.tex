@@ -93,6 +93,8 @@
 \usepackage[backend=biber,style=ieee,sorting=none]{biblatex}
 \addbibresource{bib/references.bib}
 
+\newcommand{\trsp}{{^{\top}}}
+
 \newcommand\blankpage{%
     \null
     \thispagestyle{empty}%
@@ -145,7 +147,7 @@ Regularities present in the sensorimotor signals of a robotic agent can reflect 
 \end{figure*}
 % ---
 The study of the structural and functional connectivity in the brain has furthered the understanding of its organizations and information processing. An analogy with the sensorimotor signals of an embodied agent is yet to be realized. The distributed nature of the sensorimotor signals excludes the exploration of its structural connectivity, yet it readily lends itself to inquire about its functional connectivity and the information about body structure and the emergence of behaviors that can be extracted or even caused by it. 
-A natural question to ask is how can information and graph theory be leveraged to devise a graphical representation of the sensorimotor contingencies in the somatosensory signals of agent. This work explores the sensorimotor structure of an embodied agent. The underlying premise is that regularities among the robot's sensorimotor signals are a product of the robot’s embodiment. These regularities, known as \emph{sensorimotor contingencies} (SMC) \cite{Jacquey2019Sensorimotorcontingenciesas}, can be identified by studying the relationships between the signals from its sensory apparatus (for both perception and actuation). Information-theoretic metrics are considered to study the relationships in the sensorimotor system. Some examples of previous works that have used information theory in this context include  \cite{Schmidt2013Bootstrappingperceptionusing,Lungarella2006Mappinginformationflow,Polani2009Modelsinformationprocessing,Bossomaier2016introductiontransferentropy,Olsson2006unknownsensorsactuators}. Although the literature about sensorimotor representations is extensive \cite{Nguyen2021Sensorimotorrepresentationlearning}, this proposal considers that the representation of SMCs as \emph{dynamic} graphs and their corresponding analysis aided by concepts from graph theory could provide further understanding about their formation and evolution. To achieve such a representation, methods from \emph{network topology inference} (NTI)\cite{Dong2019Learninggraphsdata} are regarded to study the relationships among the different constituent elements of the graph.
+A natural question to ask is how can information and graph theory be leveraged to devise a graphical representation of the sensorimotor contingencies in the somatosensory signals of agents. This work explores the sensorimotor structure of an embodied agent. The underlying premise is that regularities among the robot's sensorimotor signals are a product of the robot’s embodiment. These regularities, known as \emph{sensorimotor contingencies} (SMC) \cite{Jacquey2019Sensorimotorcontingenciesas}, can be identified by studying the relationships between the signals from its sensory apparatus (for both perception and actuation). Information-theoretic metrics are considered to study the relationships in the sensorimotor system. Some examples of previous works that have used information theory in this context include  \cite{Schmidt2013Bootstrappingperceptionusing,Lungarella2006Mappinginformationflow,Polani2009Modelsinformationprocessing,Bossomaier2016introductiontransferentropy,Olsson2006unknownsensorsactuators}. Although the literature about sensorimotor representations is extensive \cite{Nguyen2021Sensorimotorrepresentationlearning}, this proposal considers that the representation of SMCs as \emph{dynamic} graphs and their corresponding analysis aided by concepts from graph theory could provide further understanding about their formation and evolution. To achieve such a representation, methods from \emph{network topology inference} (NTI)\cite{Dong2019Learninggraphsdata} are regarded to study the relationships among the different constituent elements of the graph.
 
 As mentioned in \cite{Jacquey2019Sensorimotorcontingenciesas}, the connections between sensorimotor regularities and body knowledge are not well understood. To contribute to this understanding, this proposal parts from the knowledge of the number and modality of the robot's somatosensory signals (touch and proprioception) to use mutual information to explore the functional connectivity among sensorimotor signals and leverage \myhl{graph theoretical concepts to identify and study the most important sensorimotor connections.}
 
@@ -156,7 +158,7 @@ As the statistical properties of the signals and their relationships may vary de
 \subsection{Background}
 This work explores the sensorimotor structure of an embodied agent. The underlying premise is that regularities among the robot's sensorimotor signals are a product of the robot’s embodiment. These regularities, known as \emph{sensorimotor contingencies} (SMC) \cite{Jacquey2019Sensorimotorcontingenciesas}, can be identified by studying the relationships between the signals from its sensory apparatus (for both perception and actuation). Information-theoretic metrics are considered to study the relationships in the sensorimotor system. Some examples of previous works that have used information theory in this context include  \cite{Schmidt2013Bootstrappingperceptionusing,Lungarella2006Mappinginformationflow,Polani2009Modelsinformationprocessing,Bossomaier2016introductiontransferentropy,Olsson2006unknownsensorsactuators}. Although the literature about sensorimotor representations is extensive \cite{Nguyen2021Sensorimotorrepresentationlearning}, this proposal considers that the representation of SMCs as \emph{dynamic} graphs and their corresponding analysis aided by concepts from graph theory could provide further understanding about their formation and evolution. To achieve such a representation, methods from \emph{network topology inference} (NTI)\cite{Dong2019Learninggraphsdata} are regarded to study the relationships among the different constituent elements of the graph.
 
-Dynamical functional connectivity (DFC) has has mainly being used to study functional networks in the brain. For instance, in \cite{Christiaen2020Dynamicfunctionalconnectivity}, it was used to show states of lower functional connectivity during onsets of epilepsy.
+Dynamical functional connectivity (DFC) has mainly been used to study functional networks in the brain. For instance, in \cite{Christiaen2020Dynamicfunctionalconnectivity}, it was used to show states of lower functional connectivity during onsets of epilepsy.
 
 The work in \cite{Zhou2020Earlychildhooddevelopmental} used NNMF on EEG signals to to identify potentially abnormal connectivity patterns in brains affected by illness.
 
@@ -165,7 +167,7 @@ The work in \cite{Zhou2020Earlychildhooddevelopmental} used NNMF on EEG signals 
 \begin{itemize}
 	\item The work by \cite{Gama2021Goaldirectedtactile} discussed the usage of intrinsic motivation and goal-babbling for learning self-touch on a simulated humanoid robot with artificial sensitive skin.
 	\item Self-touch for calibration was used in \cite{Roncone2014Automatickinematicchain} letting the robot close the kinematic chain by touching its own body.
-	\item \cite{Marcel2022Learningreachown} uses a multimodal variational autoencoder in a denoising framework to learn latent representation of self-touch that allows the agent to internally reconstruct self-reaching configurations. \myhl{The paper contributes to the sensorimotor contingency theory by providing a computational model that supports the hypothesis that the representation of self-touch can be learned simply through self-exploration.}
+	\item \cite{Marcel2022Learningreachown} uses a multimodal variational autoencoder in a denoising framework to learn the latent representation of self-touch that allows the agent to internally reconstruct self-reaching configurations. \myhl{The paper contributes to the sensorimotor contingency theory by providing a computational model that supports the hypothesis that the representation of self-touch can be learned simply through self-exploration.}
 \end{itemize}
 
 
@@ -192,7 +194,7 @@ Refer to Mannella, Gama, Marcel, Kanazawa, Husbands, Hoffmann (puppy).
 
 % SUBSECTION ==================================================================
 \subsection{Contributions}
-With the goal of finding as much information as possible about body properties, we present an analysis based on the dynamic relationships existing among the sensorimotor signals of a embodied agent. In the analysis we show how the state of information sharing in the system is related to the motion of the robot and the tactile events that stem from its movement. By using non-negative matrix factorization we identified different information sharing states and classify them according to their information content. In a case study we demonstrate how after a motor babbling phase, by only focusing on the mutual information and without having knowledge about the morphology of the robot, an excitation trajectory for both the robot arms can be devised that avoids self contact. A comparison of this trajectory against conventional trajectory design methods is presented.
+With the goal of finding as much information as possible about body properties, we present an analysis based on the dynamic relationships existing among the sensorimotor signals of an embodied agent. In the analysis, we show how the state of information sharing in the system is related to the motion of the robot and the tactile events that stem from its movement. By using non-negative matrix factorization we identify different information-sharing states and classify them according to their information content. In a case study, we demonstrate how after a motor babbling phase, by only focusing on the mutual information and without having knowledge about the morphology of the robot, an excitation trajectory for both the robot arms can be devised that avoids self-contact. A comparison of this trajectory against conventional trajectory design methods is presented.
 
 % =============================================================================
 %                                                                             |
@@ -214,7 +216,7 @@ With the goal of finding as much information as possible about body properties, 
 %	}
 %\end{figure}
 % ---
-This work takes as reference the robot model used in \cite{Mannella2018Knowyourbody,Marcel2022Learningreachown}, consisting of a simple six degrees-of-freedom planar dual arm system with three links per arm and a fixed torso, see Fig.~\ref{fig:extended_dual_arm_robot}. The robot is equipped with a set of tactile sensors distributed along the robot's body. They are modeled based on population coding \cite{Panzeri2010PopulationCoding} represented as Gaussian receptive fields (see Fig.~\ref{fig:population_coding}), with the means of the receptive fields randomly located along the robot's one-dimensional body. We modified the tactile sensors were modified to account for the strength of touch. Essentially, the previously distance-based activation of the Gaussian receptive fields in now scaled by the contact force. Furthermore, the dynamics of the model were instantiated by assigning inertial properties to the robot's composing bodies. Finally, we implemented the biology-inspired actuation model presented in \cite{Ekeberg1993combinedneuronalmechanical,Wadden1998neuromechanicalmodel, Shim2012Chaoticexplorationlearning}, where each joint is driven by antagonistic muscles (modeled as springs) whose pulling force is linearly controlled by the signal of a corresponding motor neuron $\sigma$. The generated joint torque, expressed as
+This work takes as reference the robot model used in \cite{Mannella2018Knowyourbody,Marcel2022Learningreachown}, consisting of a simple six degrees-of-freedom planar dual arm system with three links per arm and a fixed torso, see Fig.~\ref{fig:extended_dual_arm_robot}. The robot is equipped with a set of tactile sensors distributed along the robot's body. They are modeled based on population coding \cite{Panzeri2010PopulationCoding} represented as Gaussian receptive fields (see Fig.~\ref{fig:population_coding}), with the means of the receptive fields randomly located along the robot's one-dimensional body. We modified the tactile sensors were modified to account for the strength of touch. Essentially, the previously distance-based activation of the Gaussian receptive fields is now scaled by the contact force. Furthermore, the dynamics of the model were instantiated by assigning inertial properties to the robot's composing bodies. Finally, we implemented the biology-inspired actuation model presented in \cite{Ekeberg1993combinedneuronalmechanical,Wadden1998neuromechanicalmodel, Shim2012Chaoticexplorationlearning}, where each joint is driven by antagonistic muscles (modeled as springs) whose pulling force is linearly controlled by the signal of a corresponding motor neuron $\sigma$. The generated joint torque, expressed as
 % ---
 \begin{equation}\label{eq:antagonistic_torque}
 	\tau = \alpha \left(\sigma_{fx} - \sigma_{ex}\right)  + \beta \left(\sigma_{fx} + \sigma_{ex} + \gamma \right) q + \delta \dot{q},
@@ -229,13 +231,13 @@ results from the difference between the flexion $ \sigma_{fx} $ and  extension $
 \end{itemize}
 %The model \eqref{eq:antagonistic_torque} also determines the joint stiffness via the term $\sigma_{fx} + \sigma_{ex}$. It is worth mentioning that the measurements corresponding to the pulling forces are also represented via population coding.
 
-Similar to the tactile sensors, the robot's proprioceptive measurements are encoded using receptive fields. Therefore, the somatosensory measurements in the extended model consist of touch signals $\bm{r}$ (scaled by the touch force) and proprioception that that encompasses joint position $\bm{p}$, velocity $\bm{v}$, and effort $\bm{e}$.
+Similar to the tactile sensors, the robot's proprioceptive measurements are encoded using receptive fields. Therefore, the somatosensory measurements in the extended model consist of touch signals $\bm{r}$ (scaled by the touch force) and proprioception that encompasses joint position $\bm{p}$, velocity $\bm{v}$, and effort $\bm{e}$.
 
 In summary, the somatosensory signals vector $\bm{s}$ is composed as 
 \begin{equation}
 	\bm{s} = \begin{bmatrix}
-		\bm{p}^T & \bm{v}^T & \bm{e}^T & \bm{r}^T
-	\end{bmatrix}^T
+		\bm{p}\trsp & \bm{v}\trsp & \bm{e}\trsp & \bm{r}\trsp
+	\end{bmatrix}\trsp
 \end{equation}
 %---
 %\begin{figure*}[htp!]
@@ -264,7 +266,7 @@ In summary, the somatosensory signals vector $\bm{s}$ is composed as
 \begin{figure}[!t]
 	\begin{center}
 		\hspace*{\fill}
-		\includegraphics[width=0.99\columnwidth]{pop_coding_sketch.pdf}
+		\includegraphics[width=0.8\columnwidth]{pop_coding_sketch.pdf}
 		\hspace*{\fill}
 	\end{center}
 	\caption{\label{fig:population_coding} The receptive fields used in population coding.}
