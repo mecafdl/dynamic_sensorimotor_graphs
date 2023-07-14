@@ -138,16 +138,16 @@ Regularities present in the somatosensory signals of a robotic agent can reflect
 % =============================================================================
 
 \section{Introduction}\label{sec:intro}
+
+The study of the structural and functional connectivity in the brain has furthered the understanding of its organizations and information processing. An analogy with the sensorimotor signals of an embodied agent is yet to be realized. While looking at the structural connectivity of the sensorimotor signals is difficult, studying their functional connectivity to extract information about the body structure and the emergence of behaviors based on information acquisition is undoubtedly realizable. The underlying premise is that regularities among the robot's sensorimotor signals connect tightly to the robot's embodiment. These regularities, known as \emph{sensorimotor contingencies} (SMC) \cite{Jacquey2019Sensorimotorcontingenciesas}, can be identified and studied using information-theoretic methods. This work explores an embodied agent's time-varying sensorimotor functional structure, leveraging information and graph theory concepts. 
 % ---
-\begin{figure*}[!ht]
+\begin{figure}[!ht]
 	\centering
-	\includegraphics[width=0.9\textwidth]{dfc_concept_art.pdf}
+	\includegraphics[width=0.9\columnwidth]{somatosensry_dynamic_functional_connectivity.pdf}
 	\caption{General overview. While moving, the sensorimotor functional connectivity changes in time}
 	\label{fig:general_overview}
-\end{figure*}
+\end{figure}
 % ---
-The study of the structural and functional connectivity in the brain has furthered the understanding of its organizations and information processing. An analogy with the sensorimotor signals of an embodied agent is yet to be realized. While looking at the structural connectivity of the sensorimotor signals is difficult, studying their functional connectivity to extract information about the body structure and the emergence of behaviors based on information acquisition is undoubtedly realizable. The underlying premise is that regularities among the robot's sensorimotor signals connect tightly to the robot's embodiment. These regularities, known as \emph{sensorimotor contingencies} (SMC) \cite{Jacquey2019Sensorimotorcontingenciesas}, can be identified and studied using information-theoretic methods. This work explores an embodied agent's time-varying sensorimotor functional structure, leveraging information and graph theory concepts. 
-
 % SUBSECTION ==================================================================
 \subsection{Related works}
 %Some examples of previous works that have used information theory in this context include  \cite{Schmidt2013Bootstrappingperceptionusing,Lungarella2006Mappinginformationflow,Polani2009Modelsinformationprocessing,Bossomaier2016introductiontransferentropy,Olsson2006unknownsensorsactuators}. Although the literature about sensorimotor representations is extensive \cite{Nguyen2021Sensorimotorrepresentationlearning}, this work considers that the representation of SMCs as \emph{dynamic} graphs and their corresponding analysis aided by concepts from graph theory could provide further understanding about their formation and evolution. To achieve such a representation, methods from \emph{network topology inference} (NTI)\cite{Dong2019Learninggraphsdata} are regarded to study the relationships among the different constituent elements of the graph.
@@ -193,8 +193,8 @@ The tactile sensors on the robot's body are modeled based on population coding \
 % ---
 \begin{equation}
 	\bm{s} = \begin{bmatrix}
-		\bm{p}^T & \bm{v}^T & \bm{e}^T & \bm{r}^T
-	\end{bmatrix}^T \in \mathbb{R}^{N_s}_{\geq}
+		\bm{p}\trsp & \bm{v}\trsp & \bm{e}\trsp & \bm{r}\trsp
+	\end{bmatrix}\trsp \in \mathbb{R}^{N_s}_{\geq}
 \end{equation}
 %---
 %\begin{figure*}[htp!]
@@ -262,7 +262,7 @@ and the joint entropy between $ X $ and $ Y $ expressed as
 By extension, the mutual information matrix $\bm{\mathcal{I}} \in \mathbb{R}^{m \times m}$ can be constructed by computing the pairwise MI between the $\left\lbrace s_i\right\rbrace^{N_s}_{i=1}$ somatosensory signals. Its $(i,j)$ entries are given by
 % ---
 \begin{equation}\label{eq:adjacency_mi}
-	(\bm{\mathcal{I}})_{i,j} = I(s_i,s_j).
+	(\bm{\mathcal{I}})_{i,j} = I(s_i;s_j).
 \end{equation}
 % ---
 In practice, computing \eqref{eq:adjacency_mi}  for a pair $\left({s}_i(t),{s}_j(t)\right)$ involves centering their samples (to zero mean and unit standard deviation) and using either binning, kernel, or nearest neighbor methods \cite{WaltersWilliams2009Estimationmutualinformation} to compute their mutual information. In this work, for the computation of $\bm{\mathcal{I}}$, we use the open-source MATLAB package \emph{Mutual information computation}\cite{PengMutualInformationcomputation}.
@@ -295,7 +295,7 @@ In particular, for a time window of length $T$. The mutual information $I_t(s_x(
 
 % Subsection ==================================================================
 \subsection{Analyzing patterns}
-Given a set of $m$ samples from the somatosensory signals generated, for example, via motor babbling, a dataset $\bm{S} \in \mathbb{R}^{n \times m}_{\geq}$ can be used to search for repeating patterns of FC that encode certain modes of operation. It is also important to determine these patterns' strength and frequency of expression to determine their relevance. Typical methods to detect repeating patterns in dynamic FC include the cosine similarity \cite{Menon2019comparisonstaticdynamic} and  non-negative matrix factorization (NNMF) \cite{Fu2019Nonnegativematrixfactorization}. We chose the latter, as it has proven useful in several studies analyzing brain dynamic functional networks and has also been used for community  detection\cite{Wang2011Communitydiscoveryusing,Luo2021Symmetricnonnegativematrix}.
+Given a set of $m$ samples from the somatosensory signals generated, for example, via motor babbling, a dataset $\bm{S} \in \mathbb{R}^{n \times m}_{\geq}$ can be used to search for repeating patterns of FC that encode certain modes of operation. It is also important to determine these patterns' strength and frequency of expression to determine their relevance. Typical methods to detect repeating patterns in dynamic FC include the cosine similarity \cite{Menon2019comparisonstaticdynamic}, k-means clustering\cite{Li2017Hightransitionfrequencies}, and  non-negative matrix factorization (NNMF) \cite{Fu2019Nonnegativematrixfactorization}. We chose the latter, as it has proven useful in several studies analyzing brain dynamic functional networks and has also been used for community  detection\cite{Wang2011Communitydiscoveryusing,Luo2021Symmetricnonnegativematrix}.
 
 NNMF is an unsupervised machine learning algorithm that can be used to split an input matrix $\bm{D}_{\bm{\mathcal{I}}} \in \mathbb{R}^{n\times m}_{\geq}$ into two parts: a matrix $\bm{W} \in \mathbb{R}^{n\times k}_{\geq}$ of bases and a matrix $\bm{H} \in \mathbb{R}^{k\times m}_{\geq}$ of their corresponding contributions to the input matrix $\bm{D}_{\bm{\mathcal{I}}}$; i.e.,
 % ---
@@ -343,6 +343,16 @@ To facilitate the analysis of the relevance of each of the factors, after factor
 %                                                                             |
 % =============================================================================
 \section{Simulation results}
+
+% ---
+\begin{figure}[!th]
+	\begin{center}
+		\hspace*{\fill}
+		\includegraphics[width=0.99\columnwidth]{nnmf_elbow.pdf}
+		\hspace*{\fill}
+	\end{center}
+	\caption{\label{fig:nnmf_elbow} Elbow method to determine the number of factors for NNMF.}
+\end{figure}
 % ---
 
 \subsection{Exploratory phase}
