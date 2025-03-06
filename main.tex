@@ -72,7 +72,7 @@
 \usepackage{amssymb}
 \usepackage{amsmath}
 
-\DeclareMathAlphabet\mathbfcal{OMS}{cmsy}{b}{n}
+%\DeclareMathAlphabet\mathcal{OMS}{cmsy}{b}{n}
 %\usepackage[math-style=TeX, bold-style=TeX]{unicode-math}
 
 \usepackage{arydshln}
@@ -84,6 +84,7 @@
 \graphicspath{ {./fig/} }
 
 \usepackage[utf8]{inputenc}
+\usepackage{marginnote}
 \usepackage{multicol}
 \usepackage[T1]{xcolor}
 \usepackage{soul}
@@ -92,6 +93,7 @@
 \usepackage{url}
 \usepackage[backend=biber,style=ieee,sorting=none]{biblatex}
 \addbibresource{bib/references.bib}
+
 
 \newcommand{\trsp}{{^{\top}}}
 
@@ -134,22 +136,20 @@ An analytical framework for the discovery of body features and behaviors from se
 }
 
 
-\author{Valentin Marcel, Fernando D\'iaz Ledezma, and Matej Hoffmann}
+\author{Fernando D\'iaz Ledezma, Valentin Marcel, and Matej Hoffmann}
 
 \begin{document}
-
 \maketitle
 % ---
-\begin{figure*}[ht!]
+\begin{figure*}[h!]
 	\centering
 	\includegraphics[width=0.95\textwidth]{sensorimotor_dfc_framework.png}
 	\caption{\textbf{Analysis of the sensorimotor \acl{dfc}.} Motion excites the sensorimotor system of a robotic agent. While moving, the sensorimotor functional connectivity changes over time.}
 	\label{fig:general_overview}
 \end{figure*}
 % ---
-
 \begin{abstract}
-\myhl{Regularities present in the somatosensory signals of a robotic agent can reflect its embodiment and the associations resulting from an active control policy. In this work, we analyze the dynamic functional connectivity of the somatosensory signals based on the instantaneous pairwise mutual information. As the robot performs exploratory motions based on motor babbling, we capture and study the time-varying changes in the signal relationships. We analyze the instantaneous and average information sharing and associate them with different information states. A simulated planar system study shows that using instantaneous mutual information to extract and leverage the relationships between the agent's somatosensory signals exhibited during exploratory motions can yield information related to self-touch events.}
+\myhl{Regularities present in the somatosensory signals of a robotic agent can reflect its embodiment and the associations resulting from an active control policy. In this work, we analyze the dynamic functional connectivity of the somatosensory signals based on the instantaneous pairwise mutual information. As the robot performs exploratory motions based on motor babbling, we capture and study the time-varying changes in the signal relationships. We analyze the instantaneous and average information sharing and associate them with different information states. A simulated planar system study shows that using instantaneous mutual information to extract and leverage the relationships between the agent's somatosensory signals exhibited during exploratory motions can yield information related to self-touch events.}\pending{Needs to be re-worked}
 \end{abstract}
 % =============================================================================
 %                                                                             |
@@ -179,10 +179,10 @@ This work introduces an analytical framework, illustrated in Fig.~\ref{fig:gener
 \begin{figure}[!t]
 	\begin{center}
 		\hspace*{\fill}
-		\includegraphics[width=0.99\columnwidth]{extended_dual_arm_robot.pdf}
+		\includegraphics[width=0.99\columnwidth]{extended_planar_dual_arm_with_vision.png}
 		\hspace*{\fill}
 	\end{center}
-	\caption{\label{fig:extended_dual_arm_robot} \textbf{The embodied agent.} The planar dual arm robot with antagonistic actuation.}
+	\caption{\label{fig:extended_dual_arm_robot} \textbf{The embodied agent.} The planar dual arm robot with antagonistic actuation, tactile modules and vision.}
 \end{figure}
 % ---
 
@@ -193,7 +193,7 @@ This work introduces an analytical framework, illustrated in Fig.~\ref{fig:gener
 %                                                                             |
 %                                                                             |
 % =============================================================================
-\section{The embodied agent}
+\section{The embodied agent}\label{sec:the_embidied_agent}
 % SUBSECTION ==================================================================
 \subsection{The planar dual arm model}
 We employ the robot model described in \cite{Mannella2018Knowyourbody,Marcel2022Learningreachown} as our reference system. This model consists of a simple planar dual-arm system with six degrees of freedom, featuring three links per arm and a fixed torso, see Fig.~\ref{fig:extended_dual_arm_robot}. The robot is equipped with tactile sensors distributed across its body. To instantiate the dynamics of the model, inertial properties are assigned to the robot's composing bodies. Its actuation mechanism is based on a biologically-inspired model presented in \cite{Ekeberg1993combinedneuronalmechanical,Wadden1998neuromechanicalmodel, Shim2012Chaoticexplorationlearning}, where the position $q$ and velocity $\dot{q}$ of each joint is driven by antagonistic muscles (modeled as spring-damper systems). The pulling force these muscles exert is linearly controlled by the signal generated by a corresponding motor neuron $\sigma$. The joint torque,
@@ -206,37 +206,55 @@ results from the difference between activation signals for flexion $ \sigma_\mat
 
 % SUBSECTION ==================================================================
 \subsection{The sensory signals}
-Randomly located tactile sensors along the robot's one-dimensional body are modeled based on population coding \cite{Panzeri2010PopulationCoding}. They are represented as distance-dependent Gaussian receptive fields---see Fig.~\ref{fig:population_coding}---whose mean is dictated by the tactile sensor location. 
-To incorporate touch strength into the model, we adjust the distance-based activation of the Gaussian receptive fields based on the contact force. Similarly, the proprioceptive measurements of the robot are also encoded using receptive fields. Ultimately, our extended model results in a vector $\bm{s}$ containing a number $N_s$ of somatosensory signals encompassing proprioception (joint position $\bm{p}$, velocity $\bm{v}$, and effort $\bm{e}$) and touch-strength-modulated tactile signals $\bm{r}$; i.e.:
+%Randomly located tactile sensors along the robot's one-dimensional body are modeled based on population coding \cite{Panzeri2010PopulationCoding}. They are represented as distance-dependent Gaussian receptive fields---see Fig.~\ref{fig:population_coding}---whose mean is dictated by the tactile sensor location. 
+%To incorporate touch strength into the model, we adjust the distance-based activation of the Gaussian receptive fields based on the contact force. Similarly, the proprioceptive measurements of the robot are also encoded using receptive fields. Ultimately, our extended model results in a vector $\bm{s}$ containing a number $N_s$ of somatosensory signals encompassing proprioception (joint position $\bm{p}$, velocity $\bm{v}$, and effort $\bm{e}$) and touch-strength-modulated tactile signals $\bm{r}$; i.e.:
+%% ---
+%\begin{equation}
+%	\bm{s} = \begin{bmatrix}
+%		\bm{p}\trsp & \bm{v}\trsp & \bm{e}\trsp & \bm{r}\trsp
+%	\end{bmatrix}\trsp \in \mathbb{R}^{N_s}_{\geq}.
+%\end{equation}
+%%---
+%\myhl{In addition to somatosensation, we equip the robot with visual inputs. The visual sensors are composed of a fixed, rectangular, pixel grid of size $(s_\text{x},s_\text{y})$ with  $(n_\text{x},n_\text{y})$ pixels in each direction. Pixels are sensitive to the positions of the agent's limbs; e.g., when a limb segment intersects with the rectangular pixel receptive field in the 2D space, its value is updated to one. To simulate some visual sensors' spatial overlap~\cite{Marshall2015}, we perform a convolution of the pixel values image with a 3-by-3 kernel mapping to get the visual sensors' activations.}
+
+%Randomly located tactile sensors along the robot's one-dimensional body are modeled based on population coding \cite{Panzeri2010PopulationCoding}. They are represented as distance-dependent Gaussian receptive fields---see Fig.~\ref{fig:population_coding}---whose mean is dictated by the tactile sensor location. To incorporate touch strength into the model, we adjust the distance-based activation of the Gaussian receptive fields based on the contact force. Similarly, the proprioceptive measurements of the robot are also encoded using receptive fields. In addition to somatosensation, we equip the robot with visual inputs. The visual sensors are composed of a fixed pixel receptive field with $(n_\text{x},n_\text{y})$ pixels in each direction. When a limb segment intersects with a pixel in the visual field, its value is updated to one; i.e., the pixels are sensitive to the positions of the agent's limbs. Additionally, to simulate spatial overlap in some of the visual sensors~\cite{Marshall2015}, we perform a convolution of the pixel values image with a 3-by-3 kernel mapping to get the pixel receptive field's activations.
+%
+%Ultimately, in our extended model, $N_s$ signals encompassing position-based proprioception, touch-strength-modulated tactile sensation $\bm{r}$, and visual inputs $\bm{v}$ form a vector
+%% ---
+%\begin{equation}
+%	\bm{s} = \begin{bmatrix}
+%		\bm{p}\trsp & \bm{r}\trsp & \bm{v}\trsp
+%	\end{bmatrix}\trsp \in \mathbb{R}^{N_s}_{\geq}.
+%\end{equation}
+%%---
+%of somatosensory signals. In stage \circled{1} of our proposed analytical framework, perceptual system of the embodied agent is excited to collect the signals $\bm{s}$ following a motor babbling strategy. 
+
+
+Tactile sensors are randomly distributed along the robot's one-dimensional body and modeled using population coding \cite{Panzeri2010PopulationCoding}. Each sensor is represented by a Gaussian receptive field, whose mean is determined by the sensor's location. %n—see Fig.~\ref{fig:population_coding}. 
+To incorporate touch strength, we modulate the activation of each receptive field based on the contact force, adjusting the distance-dependent response accordingly.  
+
+Similarly, the robot's proprioceptive measurements are also encoded using Gaussian receptive fields. In addition to somatosensation, the robot is equipped with visual inputs. The visual sensors consist of a fixed pixel receptive field with dimensions $(n_\text{x}, n_\text{y})$. When a limb segment intersects with a pixel in the visual field, the pixel value is set to one---i.e., pixels are sensitive to the positions of the agent's limbs. To account for spatial overlap in some visual sensors~\cite{Marshall2015}, we apply a convolution operation using a 3-by-3 kernel, to obtain the final pixel receptive field activations.  
+
+Ultimately, in our extended model, the visuo-somatosensory signal vector consists of $N_\text{s}$ signals, including position-based proprioception ($\bm{p}$), touch-strength-modulated tactile sensation ($\bm{r}$), and visual inputs ($\bm{v}$):  
 % ---
 \begin{equation}
 	\bm{s} = \begin{bmatrix}
-		\bm{p}\trsp & \bm{v}\trsp & \bm{e}\trsp & \bm{r}\trsp
-	\end{bmatrix}\trsp \in \mathbb{R}^{N_s}_{\geq}.
+		\bm{p}\trsp & \bm{r}\trsp & \bm{v}\trsp
+	\end{bmatrix}\trsp \in \mathbb{R}^{N_\text{s}}_{\geq}.
 \end{equation}
 %---
-\myhl{In addition to somatosensation, we equip the robot with visual inputs. The visual sensors are composed of a fixed, rectangular, pixel grid of size $(s_\text{x},s_\text{y})$ with  $(n_\text{x},n_\text{y})$ pixels in each direction. Pixels are sensitive to the positions of the agent's limbs; e.g., when a limb segment intersects with the rectangular pixel receptive field in the 2D space, its value is updated to one. To simulate some visual sensors' spatial overlap~\cite{Marshall2015}, we perform a convolution of the pixel values image with a 3-by-3 kernel mapping to get the visual sensors' activations.}
+In stage \circled{1} of our proposed analytical framework, the perceptual system of the embodied agent is stimulated to collect the signals $\bm{s}$ through a motor babbling strategy.
 
-%\begin{figure*}[htp!]
-%	\centering	
-%	\hspace*{\fill}
-%	\includegraphics[width= 0.6\textwidth]{fig/receptive_fields.pdf}
-%	\hspace*{\fill}
-%	\caption[] {\label{fig:receptive_fields} The Gaussian receptive fields used in population coding.}
-%\end{figure*}
-
-
-
-% ---
-\begin{figure}[!t]
-	\begin{center}
-		\hspace*{\fill}
-		\includegraphics[width=0.75\columnwidth]{touch_receptive_fields.pdf}
-		\hspace*{\fill}
-	\end{center}
-	\caption{\label{fig:population_coding} \textbf{Population coding.} The receptive fields encode a signal into several distance-based activation functions.}
-\end{figure}
-% ---
+%% ---
+%\begin{figure}[!t]
+%	\begin{center}
+%		\hspace*{\fill}
+%		\includegraphics[width=0.75\columnwidth]{touch_receptive_fields.png}
+%		\hspace*{\fill}
+%	\end{center}
+%	\caption{\label{fig:population_coding} \textbf{Population coding.} The receptive fields encode a signal into several distance-based activation functions.}
+%\end{figure}
+%% ---
 % =============================================================================
 %                                                                             |
 %                                                                             |
@@ -275,13 +293,13 @@ the \ac{mi} between two signals
 % ---
 can be interpreted as the amount by which a random signal $ Y $ reduces the uncertainty about a random signal $ X $ \cite{Cover1999Elementsinformationtheory}. It is a symmetric measure of the information sharing by both signals that depends on their marginal $p(\cdot)$ and joint $p(\cdot,\cdot)$ probability distributions.
 
-By extension, the \ac{mi} matrix $\bm{\mathcal{I}} \in \mathbb{R}^{{N_s} \times {N_s}}$ can be constructed by computing the pairwise \ac{mi} between the $\left\lbrace s_i\right\rbrace^{N_s}_{i=1}$ sensorimotor signals. In practice, computing an entry
+By extension, the \ac{mi} matrix $\bm{\mathcal{I}} \in \mathbb{R}^{{N_\text{s}} \times {N_\text{s}}}$ can be constructed by computing the pairwise \ac{mi} between the $\left\lbrace s_i\right\rbrace^{N_\text{s}}_{i=1}$ sensorimotor signals. In practice, computing an entry
 % ---
 \begin{equation}\label{eq:adjacency_mi}
 	\left(\bm{\mathcal{I}}\right)_{i,j} = I(s_i;s_j)
 \end{equation}
 % ---
-for a pair $\left({s}_i(t),{s}_j(t)\right)$ involves centering their samples---to zero mean and unit standard deviation---and using either binning, kernel, or nearest neighbor methods to compute their \ac{mi} \cite{WaltersWilliams2009Estimationmutualinformation}. In this work, we used a binning strategy to compute $\bm{\mathcal{I}}$ \footnote{We use the open-source MATLAB package \emph{Mutual information computation} \cite{PengMutualInformationcomputation}.}. 
+for a pair $\left({s}_i(t),{s}_j(t)\right)$ involves centering their samples---to zero mean and unit standard deviation---and using either binning, kernel, or nearest neighbor methods to compute their \ac{mi} \cite{WaltersWilliams2009Estimationmutualinformation}. In this work, we used a binning strategy to compute $\bm{\mathcal{I}}$. 
 
 % ---
 \begin{figure}[!t]
@@ -290,63 +308,51 @@ for a pair $\left({s}_i(t),{s}_j(t)\right)$ involves centering their samples---t
 		\includegraphics[width=0.7\columnwidth]{sliding_window_mi.pdf}
 		\hspace*{\fill}
 	\end{center}
-	\caption{\label{fig:mi_sliding_window_mi} \textbf{Instantaneous mutual information.} A sliding window strategy is used to compute the \ac{imi} in an interval  $\left[t-T,t\right]$.}
+	\caption{\label{fig:mi_sliding_window_mi} \textbf{\Acl{imi}.} A sliding window strategy is used to compute the \ac{mi} in an interval $\left[t-T,t\right]$.}
 \end{figure}
 % ---
 % Subsection ==================================================================
 \subsection{\Acl{dfc}}
-When analyzing \ac{fc}, it might be interesting to look not only at the aggregated effect of a complete dataset of recordings but also at the instantaneous changes that occur in the relationships. Indeed, the functional relationships between sensorimotor signals can change rapidly depending on the motion policy and the agent's interaction with the environment. To capture this time-varying, i.e., dynamic, \acl{fc} with \acl{mi}, it is common to use a sliding time window \cite{Preti2017dynamicfunctionalconnectome} with forward step $\Delta t$ from which the \ac{mi} is computed only for a small number of samples.
+When analyzing \ac{fc}, it might be interesting to look not only at the aggregated effect of a complete dataset of recordings but also at the instantaneous changes that occur in the relationships. Indeed, the functional relationships between sensorimotor signals can change rapidly depending on the motion policy and the agent's interaction with the environment. To capture this time-varying, i.e., dynamic, \acl{fc}, it is common to use a sliding time window \cite{Preti2017dynamicfunctionalconnectome} with forward step $\Delta t$ from which the \ac{mi} is computed only for a small number of samples.
 
-For a time window of length $T$, the \ac{mi} $I_t(s_x(t);s_y(t))$ between a distinct pair of signals $s_x(t)$ and $s_y(t)$ at time $t$ is computed using the set of signal samples spanning the $\left[t-T,t\right]$ interval\footnote{In our particular case, the selection of a relatively short time window is motivated by the fact that tactile events often occur within a short timescale.}, as illustrated in Fig.~\ref{fig:mi_sliding_window_mi}. We refer to this quantity as the \ac{imi}. 
+For a time window of length $T$, the \ac{mi} $I_t(s_x(t);s_y(t))$ between a distinct pair of signals $s_x(t)$ and $s_y(t)$ at time $t$ is computed using the set of signal samples spanning the $\left[t-T,t\right]$ interval, as illustrated in Fig.~\ref{fig:mi_sliding_window_mi}. We refer to this quantity as the \acf{imi}. 
 
 By extension, in stage $\circled{2}$ in Fig.~\ref{fig:general_overview}, the \ac{mi} matrix $\bm{\mathcal{I}}(t)$ at time $t$ is constructed by calculating the \ac{imi} for all pairwise signals within the same time interval. The temporal evolution of this time-varying \ac{mi} matrix $\bm{\mathcal{I}}(t)$ captures the \ac{dfc} between the sensorimotor signals.
 
 % Subsection ==================================================================
-\subsection{Finding structure in the functional relationships}
-% The \ac{mi} matrix $\bm{\mathcal{I}}(t)$ shows the functional connectivity among all the signals. Extracting the meaning of these time-varying relationships at the local (node) level might not be as informative as analyzing a global structure defined by the interactions of groups of signals. To this end, the first step involves detecting clusters of closed related signals based on their \ac{mi} values. However, typical clustering techniques require a priori determination of the number of clusters. To relief this need we use a Bayesian approach to uncover hidden structures within the \ac{mi}-based connectivity, the \ac{irm}. This probabilistic framework identifyies hidden structures in relational data; that is, data that captures relationships between entities. It is based on clustering entities (e.g., nodes in a graph) into groups while simultaneously learning relationships between them. Its primary objective is to group entities into clusters based on their relationships and predict new relationships based on these assignments. Unlike traditional models that require a fixed number of clusters, the IRM employs a Bayesian nonparametric approach (typically a Chinese Restaurant Process or a Dirichlet Process), allowing the number of clusters to grow dynamically as needed. This flexibility makes it particularly useful for analyzing complex datasets with unknown group structures. By leveraging probabilistic methods, the IRM estimates the likelihood of entities belonging to the same cluster and models inter-cluster relationships using probability distributions. Since exact inference is intractable, \ac{irm} uses Gibbs sampling, a Markov Chain Monte Carlo method, to iteratively refine cluster assignments and relationship probabilities. Entities are re-assigned to clusters based on how well they fit the observed relationships.
+\subsection{Finding structure in the functional relationships}\label{sec:the_irm}
+Analyzing the time-varying relationships in $\bm{\mathcal{I}}(t)$ at a local level may not be as informative as examining the global structure defined by interactions between groups of signals. To address this, we first identify clusters of closely related signals based on their \ac{mi} values. However, conventional clustering techniques typically require a predetermined number of clusters. To overcome this limitation, in stage \circled{3} of our framework, we employ a Bayesian approach---the \ac{irm}~\cite{Moerup2012}---to uncover hidden structures within the \ac{mi}-based connectivity.
 
-The \ac{mi} matrix $\bm{\mathcal{I}}(t)$ shows the functional connectivity among all the signals. Extracting the meaning of these time-varying relationships at the local (node) level might not be as informative as analyzing a global structure defined by the interactions of groups of signals. To this end, the first step involves detecting clusters of closed related signals based on their \ac{mi} values. However, typical clustering techniques require a priori determination of the number of clusters. To relieve this need, in stage $\circled{3}$ of Fig.~\ref{fig:general_overview} we use a Bayesian approach to uncover hidden structures within the \ac{mi}-based connectivity, the \ac{irm} \myhl{MISSING REFERENCE}. 
+This probabilistic framework groups entities (e.g., signals) into $N_\text{c}$ clusters, while simultaneously learning the relationships between them. Its primary objective is to group entities into clusters based on their relationships and predict new relationships based on these assignments. The \ac{irm} utilizes a Chinese Restaurant Process or a Dirichlet Process, allowing the number of clusters to dynamically expand as needed. By leveraging probabilistic methods, the \ac{irm} estimates the likelihood of entities belonging to the same cluster and models inter-cluster relationships using probability distributions.
 
-This probabilistic framework is based on clustering entities (e.g., the signals) into clusters while learning the relationships between them in parallel. Its primary objective is to group entities into clusters based on their relationships and predict new relationships based on these assignments. The IRM employs a Chinese Restaurant Process or a Dirichlet Process to allow the number of clusters to grow dynamically as the data requires. By leveraging probabilistic methods, the IRM estimates the likelihood of entities belonging to the same cluster and models inter-cluster relationships using probability distributions.
-
-To our purposes, the \ac{irm} receives as an input the time series of $\bm{\mathcal{I}}$ matrices and assigns to each of the $N_s$ nodes $i$---i.e., each sensorimotor signal---a cluster $z_i$. To find these latent cluster relationships, \ac{irm} assumes that the probability of a relation between two entities depends only on their cluster memberships. If two entities belong to clusters $z_i$ and $z_j$, the probability of a connection is given by a parameter $\theta_{z_i,z_j}$.
-These inter-cluster probabilities form a relationship matrix, which the model infers from data.
-
-% The final result is:
-% \begin{itemize}
-%     \item A clustering of entities into groups.
-%     \item A learned block matrix showing the probability of relations between clusters.
-% \end{itemize}
-
+For our purposes, the \ac{irm} taskes as an input the time series of  \ac{imi}-matrices---representing $N$ samples $\left\lbrace \bm{\mathcal{I}}(k)\right\rbrace^{N}_{k=1}$---and assigns to the i-th signal in $\bm{s}$ a cluster $z_i$. To identify these latent cluster relationships, \ac{irm} assumes that the probability of a relation between two entities depends only on their cluster memberships. Specifically, if two entities belong to clusters $z_i$ and $z_j$, the probability of a connection is determined by a parameter $\theta_{z_i,z_j}$. These inter-cluster probabilities form a new bynary relational matrix $\bm{Z}\in \mathbb{R}^{N_\text{c}\times N_\text{s}}$, which the model infers from data. Additionally, the \ac{irm} produces a matrix $\bm{H}\in \mathbb{R}^{N_\text{c}\times N_\text{c} \times N}_{\geq}$, which captures the probability of relations between clusters.
 
 % Subsection ==================================================================
 \subsection{Analyzing recurring patterns}
-The task in stage $\circled{4}$ in Fig.~\ref{fig:general_overview} is use the relationships $m$ samples from the somatosensory signals generated, for example, via motor babbling, a dataset $\bm{S} \in \mathbb{R}^{n \times m}_{\geq}$ can be used to search for repeating patterns of \ac{fc} that encode certain modes of operation. It is also important to determine these patterns' strength and frequency of expression to determine their relevance. Typical methods to detect repeating patterns in dynamic \ac{fc} include the cosine similarity \cite{Menon2019comparisonstaticdynamic}, k-means clustering\cite{Li2017Hightransitionfrequencies}, and  \ac{nnmf} \cite{Fu2019Nonnegativematrixfactorization}. We chose the latter, as it has proven useful in several studies analyzing brain dynamic functional networks and has also been used for community  detection\cite{Wang2011Communitydiscoveryusing,Luo2021Symmetricnonnegativematrix}.
+The matrices $(\bm{Z}, \bm{H})$ in Sec.~\ref{sec:the_irm} capture the global changing relationships between the sensorimotor signals. In stage $\circled{4}$, the goal is to utilze the $N$ relationships captured in $\bm{H}$ to identify recurrent patterns in the \ac{fc} that corresnpond to distinct motor behaviors of the agent. Additionally, assessing the strenght and frequency of these patterns is crucial to determine their significance. 
 
-\ac{nnmf} is an unsupervised machine learning algorithm that can be used to split an input matrix $\bm{D}_{\bm{\mathcal{I}}} \in \mathbb{R}^{n\times m}_{\geq}$ into two parts: a matrix $\bm{W} \in \mathbb{R}^{n\times k}_{\geq}$ of bases and a matrix $\bm{H} \in \mathbb{R}^{k\times m}_{\geq}$ of their corresponding contributions to the input matrix $\bm{D}_{\bm{\mathcal{I}}}$; i.e.,
+Common approaches to detect repeating patterns in \ac{dfc} include the cosine similarity~\cite{Menon2019comparisonstaticdynamic}, k-means clustering~\cite{Li2017Hightransitionfrequencies}, and  \ac{nnmf}~\cite{Fu2019Nonnegativematrixfactorization}. We selected the latter, due to its demonstrated  effectiveness in analyzing brain dynamic functional networks and its application in community  detection~\cite{Wang2011Communitydiscoveryusing,Luo2021Symmetricnonnegativematrix}.
+
+To use \ac{nnmf}, a matrix $\bar{\bm{H}}\in \mathbb{R}^{N_\text{r}\times N}$ is constructed by vectorizing  and concatenating each of the matrices in $\bar{\bm{H}}$; where $N_\text{r} = N_\text{c}(N_\text{c}-1)/2$ is the total number of pairwise relationships. Since this matrix is strictly non-negative, it is amenable to be decomposed and analyzed using \ac{nnmf}. Then, the \ac{nnmf} algorithm can be used to split the nonnegative matrix $\bar{\bm{H}}$ into two parts: a matrix $\bm{F} \in \mathbb{R}^{N_\text{f}\times N_\text{r}}_{\geq}$ of $N_\text{f}$ basis (or factors) and a matrix $\bm{W} \in \mathbb{R}^{N\times N_\text{f}}_{\geq}$ of their corresponding contributions such that
 % ---
 \begin{equation}
-	\bm{D}_{\bm{\mathcal{I}}} 	\approx \bm{W} \bm{H}.
+	\bar{\bm{H}}^\intercal \approx \bm{W} \bm{F}.
 \end{equation}
 % ---
-\begin{figure}[!t]
-	\centering
-	\includegraphics[width=0.99\columnwidth]{fig/nnmf_concept.pdf}
-	\caption{\textbf{Non-negative matrix factorization.} Decomposition of the \ac{imi} data matrix $\bm{S}$ using \ac{nnmf} helps identifying recurring patterns.}
-	\label{fig:nnmf}
-\end{figure}
+%\begin{figure}[!t]
+%	\centering
+%	\includegraphics[width=0.99\columnwidth]{fig/nnmf_concept.pdf}
+%	\caption{\textbf{Non-negative matrix factorization.} Decomposition of the \ac{imi} data matrix $\bm{S}$ using \ac{nnmf} helps identifying recurring patterns.\pending{Replace the matrices with actual data}}
+%	\label{fig:nnmf}
+%\end{figure}
 % ---
-In our case, the matrix $\bm{D}_{\bm{\mathcal{I}}}$ is constructed by vectorizing  and concatenating each of the matrices $\bm{\mathcal{I}}_v(t) = \text{vec}\left(\bm{\mathcal{I}}(t)\right)$; that is, 
-\begin{equation}
-	\bm{D}_{\bm{\mathcal{I}}} = [\bm{\mathcal{I}}_v(1),\cdots,\bm{\mathcal{I}}_v(m)].
-\end{equation}
-Note that $n = N_s(N_s-1)/2$ is the total number of mutual information pairs. Since the matrix $D_{\bm{\mathcal{I}}}$ is strictly non-negative, it is amenable to be decomposed and analyzed using \ac{nnmf}. One crucial question is the number of factors $k$ used to approximate the original dataset. From the various methods to select an adequate number \cite{Muzzarelli2019RankSelectionNon}, we chose $k$ following the elbow method as in \cite{Phalen2020Nonnegativematrix} by performing \ac{nnmf} for ascending values of $k$ and selecting the value where the residual error is not reduced any further.
+To reiterate, \ac{nnmf} decomposes the sensorimotor \ac{dfc} captured in $\bm{H}$ into two key components: (1) a set of overlapping patterns $\bm{F}$---i.e., subnetworks---that evolve across space and time and (2) corresponding coefficient time series $\bm{W}$ that indicate the contribution of each subnetwork at a given time.
 
-Each of the factors $\left\lbrace\bm{w}_i\right\rbrace^k_i=1$ can be interpreted as a base \ac{fc} graph capturing
-a state of information sharing of multiple sensorimotor states. When the factors are aggregated using via the columns of $\bm{H}$, the particular mutual information matrix at time $t$ is closely approximated.
+\myhl{One crucial question is the number of factors $k$ used to approximate the original dataset. From the various methods to select an adequate number \cite{Muzzarelli2019RankSelectionNon}, we chose $k$ following the elbow method as in \cite{Phalen2020Nonnegativematrix} by performing \ac{nnmf} for ascending values of $k$ and selecting the value where the residual error is not reduced any further.}
 
-%It is worth mentioning that \ac{nnmf} is an stochastic method and thus, two different runs will produce two distinct set of factors. 
-To facilitate the analysis of the relevance of each of the factors, after factorization, the factors are normalized according to the $L_2$-norm. 
+% Subsection ==================================================================
+\subsection{Factors and \acp{smc}}
+Each of the $N_\text{f}$ factors in $\bm{F}$ can be interpreted as a basis \ac{fc} graph capturing a state of information sharing between the $N_\text{c}$ sensorimotor clusters. They also encode patterns of motor interaction of the agent with its body. Cricually, the patterns in $\bm{F}$ can also be understood as proxis that represent \acp{smc} that were idifentified during the motor babbling phase. Other observed interaction patterns of the agent at a given time instant can be thought as an aggregation of the \acp{smc} using the entries of the coefficient matrix $\bm{W}$.
 
 % XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 %Intuitively, NMF decomposes functional brain networks into the following: (1) a set of subnetworks (patterns) overlapping in space and
@@ -374,53 +380,69 @@ To facilitate the analysis of the relevance of each of the factors, after factor
 %                                                                             |
 %                                                                             |
 % =============================================================================
-\section{Simulation results}
+
+\section{Results}
 % ---
-\begin{figure}[!ht]
+%\begin{figure}[!ht]
+%	\begin{center}
+%		\hspace*{\fill}
+%		\includegraphics[width=0.99\columnwidth]{nnmf_elbow.pdf}
+%		\hspace*{\fill}
+%	\end{center}
+%	\caption{\label{fig:nnmf_elbow} Elbow method to determine the number of factors for \ac{nnmf}.}
+%\end{figure}
+% ---
+
+% Subsection ==================================================================
+\subsection{Data collection}
+% ---
+\begin{figure}[t!]
 	\begin{center}
 		\hspace*{\fill}
-		\includegraphics[width=0.99\columnwidth]{nnmf_elbow.pdf}
+		\includegraphics[width=0.9\columnwidth]{fig/irm_cluster_matrix.png}
 		\hspace*{\fill}
 	\end{center}
-	\caption{\label{fig:nnmf_elbow} Elbow method to determine the number of factors for \ac{nnmf}.}
+	\caption{\label{fig:Zmodules}. \textbf{Extracted modules from \ac{irm}.} Yellow-colored entries represent the sensors that corresponds to each extracted module (rows). From left to right, the sensory inputs are proprioceptive, tactile and visual.}
 \end{figure}
 % ---
-
-\subsection{Exploratory phase}
-\begin{figure*}[!ht]
-	\centering
-	\includegraphics[width=0.9\textwidth]{planar_dual_arm_modes.pdf}
-	\caption{Different events during exploration. (a) Pure proprioception (no touch), (b) contact with left arm, (c) contact with right arm, and (d) contact with both arms.}
-	\label{fig:planar_dual_arm_modes}
-\end{figure*}
+The agent described in Sec.~\ref{sec:the_embidied_agent} was simulated in MATLAB for a totoal time of 30 seconds with a sampling time of 1 ms. In our experiment, we used a simple motor babbling strategy to stimulate the perceptual system and detect sensorimotpor relationships via \ac{mi}. Each antagonistic pair received a periodic muscle activation command
+% --- 
+\begin{equation}\label{eq:motor_babbling_torques}
+	\sigma(t) =  \text{tanh} \left( A_1 \text{sin}\left(\omega_0 t\right) + A_2 \text{sin}\left(2\omega_0 t\right) + A_3 \text{sin}\left(4\omega_0 t\right) \right);
+\end{equation}	
 % ---
-To compute the instantaneous mutual information, we used sensor signals sampled at 100 Hz and a sliding window of $T = 0.1$ seconds, i.e., the previously seen 10 samples. This short memory stored in a buffer can capture (fast) touch events.
-Excitatory signals: talk about them.
+with $A_i \sim \mathcal{U}(-1,1)$, the base frequency $\omega_0 = 2\pi/T_0$, and $T_0=2$ seconds.
 
-% ----
+To compute the \ac{imi}, we used sensor signals sampled at 100 Hz and a sliding window of $T = 0.1$ seconds, i.e., the previously seen 10 samples. This short memory was stored in buffer. The selection of a relatively short time window is motivated by the fact that tactile events often occur within a short timescale. For the practical computation of the \ac{mi}
+we use the open-source MATLAB package \emph{Mutual information computation} \cite{PengMutualInformationcomputation}.
+
+
+% Subsection ==================================================================
 \subsection{Sensorimotor modules}
 The output of the IRM are modules, corresponding to a group of sensors that  have been regrouped by the IRM.
+
+
 % ---
-\begin{figure}[!h]
+\begin{figure*}[t!]
 	\begin{center}
 		\hspace*{\fill}
-		\includegraphics[width=0.99\columnwidth]{fig/Zmodules.png}
+		\includegraphics[width=0.9\textwidth]{fig/example_dfc.png}
 		\hspace*{\fill}
 	\end{center}
-	\caption{\label{fig:Zmodules}. Extracted modules from IRM. Un yellow are represented the sensors that corresponds to each extracted module (rows). From left to right, the sensory inputs are proprioceptive, tactile and visual.}
-\end{figure}
+	\caption{\textbf{\Acl{dfc} from the \ac{irm}.} Exercpt from the time evolutoin of the connectivity between the modules found by the \acl{irm}.}
+\end{figure*}
 % ---
+
 \subsection{Factors NMMF}
 % ---
-\begin{figure}[!h]
+\begin{figure*}[!h]
 	\begin{center}
 		\hspace*{\fill}
-		\includegraphics[width=0.99\columnwidth]{fig/movement_mainfactors.png}
+		\includegraphics[width=0.99\textwidth]{fig/movement_main_factors.png}
 		\hspace*{\fill}
 	\end{center}
-	\caption{\label{fig:factors} .}
-\end{figure}
-
+	\caption{\textbf{The factors and associated behaviors.} Different events during exploration link to a given factor; for example, pure proprioception (no touch), contact with left arm, right arm, and both arms.}
+\end{figure*}
 %---
 \subsection{Tactile representation of Scores}
 % ---
@@ -445,7 +467,7 @@ The output of the IRM are modules, corresponding to a group of sensors that  hav
 % =============================================================================
 \section{Beyond robotics}
 \TODO
-\myhl{Valentin + Matej}
+\pending{Valentin + Matej}
 
 % =============================================================================
 %                                                                             |
