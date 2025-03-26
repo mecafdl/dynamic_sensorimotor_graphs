@@ -69,7 +69,7 @@
 \usepackage[]{algpseudocode}
 
 \usepackage{stix}
-\usepackage{amssymb}
+%\usepackage{amssymb} %redundant with stix
 \usepackage{amsmath}
 
 %\DeclareMathAlphabet\mathcal{OMS}{cmsy}{b}{n}
@@ -86,7 +86,8 @@
 \usepackage[utf8]{inputenc}
 \usepackage{marginnote}
 \usepackage{multicol}
-\usepackage[T1]{xcolor}
+\usepackage{xcolor}
+%\usepackage[T1]{xcolor} %T1 is not used with xcolor
 \usepackage{soul}
 \usepackage{subfig}
 \usepackage{tikz}
@@ -348,7 +349,7 @@ To use \ac{nnmf}, a matrix $\bar{\bm{H}}\in \mathbb{R}^{N_\text{r}\times N}$ is 
 % ---
 To reiterate, \ac{nnmf} decomposes the sensorimotor \ac{dfc} captured in $\bm{H}$ into two key components: (1) a set of overlapping patterns $\bm{F}$---i.e., subnetworks---that evolve across space and time and (2) corresponding coefficient time series $\bm{W}$ that indicate the contribution of each subnetwork at a given time.
 
-\myhl{One crucial question is the number of factors $k$ used to approximate the original dataset. From the various methods to select an adequate number \cite{Muzzarelli2019RankSelectionNon}, we chose $k$ following the elbow method as in \cite{Phalen2020Nonnegativematrix} by performing \ac{nnmf} for ascending values of $k$ and selecting the value where the residual error is not reduced any further.}
+\textbf{}\myhl{One crucial question is the number of factors $k$ used to approximate the original dataset. From the various methods to select an adequate number \cite{Muzzarelli2019RankSelectionNon}, we chose $k$ following the elbow method as in \cite{Phalen2020Nonnegativematrix} by performing \ac{nnmf} for ascending values of $k$ and selecting the value where the residual error is not reduced any further.}
 
 % Subsection ==================================================================
 \subsection{Factors and \acp{smc}}
@@ -396,16 +397,14 @@ Each of the $N_\text{f}$ factors in $\bm{F}$ can be interpreted as a basis \ac{f
 % Subsection ==================================================================
 \subsection{Data collection}
 % ---
-\begin{figure}[t!]
-	\begin{center}
-		\hspace*{\fill}
-		\includegraphics[width=0.9\columnwidth]{fig/irm_sensorimotor_modules.png}
-		\hspace*{\fill}
-	\end{center}
-	\caption{\label{fig:Zmodules}. \textbf{Extracted modules from \ac{irm}.} Yellow-colored entries represent the sensors that corresponds to each extracted module (rows). From left to right, the sensory inputs are proprioceptive, tactile and visual.}
-\end{figure}
-% ---
-The agent described in Sec.~\ref{sec:the_embidied_agent} was simulated in MATLAB for a totoal time of 30 seconds with a sampling time of 1 ms. In our experiment, we used a simple motor babbling strategy to stimulate the perceptual system and detect sensorimotpor relationships via \ac{mi}. Each antagonistic pair received a periodic muscle activation command
+\begin{figure*}[t!]
+    \centering
+    \includegraphics[height=.35\textwidth]{fig/modules_total.png}
+    \caption{Extracted modules. \textsc{Right}: a total of 23 clusters have been found by the IRM representing functional modules, each assignated to a different color. We see a great separation of modules by modalities, e.g proprioceptive modules, tactile modules and visual modeles. Modules 8 and 15 actually represent both proprioceptive and visual modules. \textsc{Left}: the IRM separates the visual field in functionally different portions, towards the middle of the torso for self-touch, left and right areas for waving the arms, a central area for touchings hands and a top external area which is not reachable.}
+    \label{fig:modules}
+\end{figure*}
+
+The agent described in Sec.~\ref{sec:the_embidied_agent} was simulated in MATLAB for a total time of 30 seconds with a sampling time of 1 ms. In our experiment, we used a simple motor babbling strategy to stimulate the perceptual system and detect sensorimotpor relationships via \ac{mi}. Each antagonistic pair received a periodic muscle activation command
 % --- 
 \begin{equation}\label{eq:motor_babbling_torques}
 	\sigma(t) =  \text{tanh} \left( A_1 \text{sin}\left(\omega_0 t\right) + A_2 \text{sin}\left(2\omega_0 t\right) + A_3 \text{sin}\left(4\omega_0 t\right) \right);
@@ -419,9 +418,33 @@ we use the open-source MATLAB package \emph{Mutual information computation} \cit
 
 % Subsection ==================================================================
 \subsection{Sensorimotor modules}
-The output of the IRM are modules, corresponding to a group of sensors that  have been regrouped by the IRM.
+%------
+\begin{figure*}[h!]
+    \centering
+    \begin{minipage}{0.32\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{fig/modules_repr_v.png}
+        \textbf{(A) Visual module (vbody)}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.32\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{modules_repr_p.png}
+        \textbf{(B) Proprioceptive module}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.32\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{modules_repr_t.png}
+        \textbf{(C) Tactile module}
+    \end{minipage}
+    
+%     \caption{Example of sensory clusters or modules obtained from the IRM. In white or pink are the sensors groups}
+%     \label{fig:three_images}
+\end{figure*}
+The output of the IRM are funtionnal modules corresponding to similar sensory inputs.
 
-
+modulesWe observe a clear separation of sensory modalities and a few modules including both visual and proprioceptive information, mostly when the visual position of the hands is mostly obtained with specific proprioceptive positions. Proprioceptive clusters are smaller than visual or tactile modalities. This indicates that proprioceptive values carry more weight respectively to the number of sensors in each modality.
 % ---
 \begin{figure*}[t!]
 	\begin{center}
@@ -435,15 +458,18 @@ The output of the IRM are modules, corresponding to a group of sensors that  hav
 
 \subsection{Factors NMMF}
 % ---
-\begin{figure*}[!h]
+\begin{figure*}[!t]
 	\begin{center}
 		\hspace*{\fill}
-		\includegraphics[width=0.99\textwidth]{fig/movement_main_factors.png}
+		\includegraphics[height=0.3\linewidth]{fig/movement_mainfactors_horizontal.png}
 		\hspace*{\fill}
 	\end{center}
 	\caption{\textbf{The factors and associated behaviors.} Different events during exploration link to a given factor; for example, pure proprioception (no touch), contact with left arm, right arm, and both arms.}
+    \label{fig:main_factors}
 \end{figure*}
-%---
+%-----
+From the link densities matrix between all modules we apply NNMF to obtain a set of non negative factors $\mathbf{F}$ and corresponding scores $\mathbf{W}$ that decompose the link densities.
+For each window of 10 samples where the mutual information between all sensors is computed, we get one score for each factor. The sum of all factors weighted by their score approximates the current link density. The main factor, is the factor with highest score, e.g. the highest contribution in the link density.  In the illustrative Figure~\ref{fig:main_factors}, we show 10 examples movements that led each  factors to be the main factor.%---
 \subsection{Tactile representation of Scores}
 % ---
 \begin{figure}[!h]
@@ -465,9 +491,8 @@ The output of the IRM are modules, corresponding to a group of sensors that  hav
 %                                                                             |
 %                                                                             |
 % =============================================================================
-\section{Beyond robotics}
-\TODO
-\pending{Valentin + Matej}
+\section{Automatic behavior characterisation}
+
 
 % =============================================================================
 %                                                                             |
@@ -482,11 +507,11 @@ The output of the IRM are modules, corresponding to a group of sensors that  hav
 \section{Discussion and Future Work}
 
 \subsection{Limitations}
-One aspect not addressed is improving the motion policy used to collect the sensorimotor signals. The current study used motor babbling. However, better, perhaps goal-directed, or active exploration alternatives might lead to better results that are able to capture and reproduce particular sensorimotor behaviors.
+An aspect not addressed is improving the motion policy used to collect sensorimotor signals. The current study used motor babbling. However, better, perhaps goal-directed, or active exploration alternatives might lead to better results that are able to capture and reproduce particular sensorimotor behaviors.
 
 The current implementation of our framework requires collecting and processing information offline. A method capable of doing online learning with the potential to adapt, for example, the clusters or the factors, is still an open question.
 
-It is possible to add factors.
+It is possible to add factors, because the factors are additive, they can take over and replace the older ones.
 
 \printbibliography 
 \end{document}
