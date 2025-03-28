@@ -91,6 +91,7 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage{marginnote}
+\usepackage{multirow}
 \usepackage{multicol}
 \usepackage{xcolor}
 %\usepackage[T1]{xcolor} %T1 is not used with xcolor
@@ -122,6 +123,8 @@
 \newcommand{\TODO}{\mybox[fill=yellow]{\textcolor{blue}{\Large \textbf{TODO}}}}
 \newcommand\myhl[1]{\textcolor{red}{#1}}
 
+\setlength{\abovecaptionskip}{0pt} % Adjusts space above the caption
+\setlength{\belowcaptionskip}{0pt} % Adjusts space below the caption
 
 \newtheorem{prop}{Proposition}
 
@@ -202,9 +205,9 @@ This work introduces an analytical framework, illustrated in Fig.~\ref{fig:frame
 		\hspace*{\fill}
 	\end{center}
 	\caption{\label{fig:extended_dual_arm_robot} \textbf{The embodied agent.} The planar dual arm robot is driven by antagonistic actuation in each joint. Sensory information comes from tactile and proprioceptive receptive fields along the body and at the joints. The visual field (gray area) detects parts of the body when inside it.}
+    \vspace{-20pt}
 \end{figure}
 % ---
-
 % =============================================================================
 %                                                                             |
 %                                                                             |
@@ -371,6 +374,14 @@ To use \ac{nnmf}, a matrix $\bar{\bm{H}} = [\bar{\bm{h}}(1) \cdots \bar{\bm{h}}(
 %	\label{fig:nnmf}
 %\end{figure}
 % ---
+The NNMF algorithm attempt to minimize the root mean squared residual 
+\begin{equation}    
+D=\dfrac{1}{\sqrt{N_\text{r} N}}\|\bm{H}^\intercal-\bm{W} \bm{F}\|_F.
+\label{eq:residual}
+\end{equation}
+%   approximation W*H.  This is equivalent to
+%
+%          D = norm(A-W*H,'fro')/sqrt(N*M)
 To reiterate, \ac{nnmf} decomposes the sensorimotor \ac{dfc} captured in $\bm{H}$ into two key components: (1) a set of overlapping patterns $\bm{F}$---i.e., subnetworks---that evolve across space and time and (2) corresponding coefficient time series $\bm{W}$ that indicate the contribution of each subnetwork at a given time.
 
 % Subsection ==================================================================
@@ -422,6 +433,7 @@ To reiterate, \ac{nnmf} decomposes the sensorimotor \ac{dfc} captured in $\bm{H}
 \begin{figure*}[t!]
     \centering
     \includegraphics[width=0.95\textwidth]{fig/irm_results_figure.png}
+    \vspace{5pt}
     \caption{\textbf{Extracted sensorimotor modules and their \ac{dfc}.} \textsc{Right}: A total of $N_\text{c}=23$ clusters---representing functional modules---were found by the \ac{irm}, each assigned to a different color. We see a great separation of modules by modalities, e.g., proprioceptive, tactile, and visual modules. Sometimes, a specific part of the visual field can only be stimulated with specific hand or elbow angles. Hence, some visual modules can include proprioceptive sensors. \textsc{Left}: The \ac{irm} separates the visual field in functionally different portions, towards the middle of the torso for self-touch, left and right areas for waving the arms, a central area for touchings hands, and a top external area which is not reachable. \textsc{Bottom}: The matrix $\bm{H}$ from the \ac{irm} captures the \ac{dfc} between the $N_\text{c}$ modules.}
     \label{fig:irm_modules}
 \end{figure*}
@@ -463,6 +475,51 @@ with $A_i \sim \mathcal{U}(-1,1)$, the base frequency $\omega_0 = 2\pi/T_0$, and
 To compute the \ac{imi}, we used sensor signals sampled at 100 Hz and a sliding window of $T = 0.1$ seconds, i.e., the previously seen 10 samples. This short memory was stored in a buffer. The selection of a relatively short time window is motivated by tactile events often occurring within a short timescale. In this work, we used a binning strategy to compute the matrix $\bm{\mathcal{I}}$ at each time. For the actual computation of the \ac{mi}, we used the open-source MATLAB package \emph{Mutual information computation} \cite{PengMutualInformationcomputation}. Consequently, to compute $\bm{Z}$ and $\bm{H}$, we use the MATLAB-written package for Bayesian community detection available in \cite{Morup2025IRM}. 
 
 Fig.~\ref{fig:irm_modules} depicts the output $\bm{Z}$ of the \ac{irm}. It found $N_\text{c} = 23$ functional modules corresponding to clusters of sensory signals with high information sharing (i.e., high \ac{imi}). We generally observe a clear separation of the sensory modalities into proprioception, touch, and vision. A few modules clustered visual and proprioceptive information together. Such modules originate from situations when the visual location of the hands is solely related to proprioceptive sensory inputs. It is worth noting the uneven number of elements across the modules. For example, the number of elements in the proprioceptive clusters in Fig.~\ref{fig:irm_modules} is smaller than in visual or tactile modules. This indicates that the signals in the proprioceptive modules carry a higher information-sharing level than modules that group a larger number of signals from other sensory modalities.
+
+% ---
+\begin{table}
+    \caption{Sensorimotor modules from \ac{irm}}
+    \centering\small
+    \begin{tabular}{ |p{3cm}||p{3cm}|  }
+        % \hline
+        % \multicolumn{2}{|c|}{Sensorimotor modules from \ac{irm}} \\
+        \hline
+        \textbf{Label} & \textbf{Description}\\
+        \hline
+    v$\_$Extr& Text \\
+    t$\_$Torso& Text \\
+    v$\_$Body& Text \\
+    t$\_$ArmR& Text \\
+    t$\_$ArmL& Text \\
+    v$\_$TopL& Text \\
+    v+p$\_$MidLow$\_$Hands& Text \\
+    p$\_$Mix& Text \\
+    v$\_$BodyR& Text \\
+    v$\_$TopR& Text \\
+    v$\_$BodyL& Text \\
+    v$\_$MidHigh& Text \\
+    v$\_$MidLeft& Text \\
+    t$\_$ForearmL& Text \\
+    p+v$\_$Elbows$\_$LowR& Text \\
+    v$\_$LowL& Text \\
+    p$\_$ShouldL& Text \\
+    p$\_$ShouldL& Text \\
+    p$\_$ShouldR& Text \\
+    p$\_$ElbowL& Text \\
+    p$\_$HandR& Text \\
+    p$\_$HandL& Text \\
+    p$\_$ElbowR& Text \\
+        \hline
+    \end{tabular}
+    \label{tab:sensorimotor_modules_from_irm}
+\end{table}
+% % ---
+
+
+
+
+
+
 % ---
 % \begin{figure*}[t!]
 % 	\begin{center}
@@ -484,60 +541,47 @@ Fig.~\ref{fig:irm_modules} depicts the output $\bm{Z}$ of the \ac{irm}. It found
         \includegraphics[width=1\textwidth]{fig/mainfactors_represente.png}
 		\hspace*{\fill}
 	\end{center}
+    \vspace{-15pt}
 	\caption{\textbf{The factors and associated behaviors.} Different events during exploration link to a given factor; for example, pure proprioception (no touch), contact with left arm, right arm, and both arms.}
     \label{fig:main_factors}
 \end{figure*}
 % ---
 % One crucial question is the number of factors $k$ used to approximate the $\bar{\bm{H}}$. We chose $k$ following the elbow method as in \cite{Phalen2020Nonnegativematrix} by performing \ac{nnmf} for ascending values of $k$ and selecting the value where the residual error is not reduced any further.
-From the link densities matrix $\bar{\bm{H}}$ between all modules, we apply \ac{nnmf}. One crucial question is the number of factors $k$ used to approximate the $\bar{\bm{H}}$. We chose $k$ following the elbow method as in \cite{Phalen2020Nonnegativematrix} and obtain a set of $N_\text{f} = 25$ nonnegative factors\\ $\bm{F} = [ \bm{f}_1 \cdots \bm{f}_i \cdots \bm{f}_{N_\text{f}}]$ and their corresponding scores $\left\lbrace w_i(k)\right\rbrace^{N_\text{f}}_{i=1}$
-that decompose the link densities:
+From the link densities matrix $\bar{\bm{H}}$ between all modules, we apply \ac{nnmf}. One crucial question is the number of factors $k$ used to approximate the $\bar{\bm{H}}$. We chose $k$ following the elbow method as in \cite{Phalen2020Nonnegativematrix} and obtain a set of $N_\text{f} = 25$ nonnegative factors with a mean squared residual of $D=0.1658$ (equation~\ref{eq:residual}). The factors 
+ $\small \bm{F} = [ \bm{f}_1 \cdots \bm{f}_i \cdots \bm{f}_{N_\text{f}}]$ and their corresponding scores $\small\left\lbrace w_i(k)\right\rbrace^{N_\text{f}}_{i=1}$ decompose the link densities in this form:
 % ---
 \begin{equation}
     \bar{\bm{h}}(k)\approx \sum_{i=1}^{N_\text{f}} w_i(k)\cdot\bm{f}_i.
+    \label{eq:decomposition}
 \end{equation}
 % ---
-\myhl{HAve a talk here about how the factors are computed. choice of nb of factors, are they orthogonal etc..}
 The factors in $\mathbf{F}$ are ordered by their contribution to the reconstruction of the link densities matrix in Eq.~\ref{eq:nnmf}, which is computed for each factor $i$, as the total score energy
 % ---
 \begin{equation}
     E_i =  \sum_{k=1}^N w_i(k)^2.
 x\end{equation}
 % ---
-For each window of 10 samples where the \ac{imi} between all sensors is computed, we get one score for each factor $\bm{f}_i$. The sum of all factors weighted by their score approximates the current link density. The main factor corresponds to that with the highest score, e.g., the highest contribution in the link density. In the illustrative Fig.~\ref{fig:main_factors}, we show some example motor behaviors that led each of the factors to be the main factor.
+For each window of 10 samples where the \ac{imi} between all sensors is computed, we get one score for each factor $\bm{f}_i$. Such decomposition is shown in Figure~\ref{fig:decomposition} where the link density connection is shown as graph with thickness representative of the connection strength between the modules.
+%----- 
+\begin{figure*}[h!]
+    \centering
+    \includegraphics[width=1\linewidth]{fig/factors_decomposition.png}
+    \caption{Example of factor decomposition of the link density matrix based on equation~\ref{eq:decomposition}. Sample 2460 corresponds to hands touching as seen is figure~\ref{fig:main_factors}. The decomposition has factor $\bm{f}_{20}$ contributing the most, second factor is the other tactile factor $\bm{f}_{16}$. Only the first 3 most contributing factors are shown.}
+    \label{fig:decomposition}
+\end{figure*}
+%-----
+The main factor corresponds to that with the highest score, e.g., the highest contribution in the link density. In the illustrative Fig.~\ref{fig:main_factors}, we show some example motor behaviors that led each of the factors to be the main factor.
 
 %---
 \subsection{Transition between main factors}
 % ---
-\begin{figure*}
+\begin{figure*}[t!]
     \centering
     \includegraphics[width=.99\textwidth]{fig/factors_example_time.png}
-    \caption{Example of possible interpration of the main factors. \textsc{Top}: agent's behavior at 8 different moments, the movement is 10 samples long, it corresponds to the time window on which the IMI is computed, and shown in shades of pink from darker/older to lighter/newer. The agent goes from waving the arms to hands touching, two hands touching the torso, right hand touching the torso and finally back to no-touch. \textsc{Middle}: stacked plot of each factors scores. In shades of blue are represented the factors with high sensitiviy to connection with visual modules, resp. red for tactile modules and green for proprioceptive. \textsc{Bottom}: evolution of the main factor, e.g. factor with the highest contribution to the estimation of the link density matrix $\bm{H}$. The main factor can be linked to the current behavior (top row).}
+    \caption{Example of possible interpretation of the main factors. \textsc{Top}: agent's behavior at 8 different moments, the movement is 10 samples long, it corresponds to the time window on which the IMI is computed, and shown in shades of pink from darker/older to lighter/newer. The agent goes from waving the arms to hands touching, two hands touching the torso, right hand touching the torso and finally back to no-touch. \textsc{Middle}: stacked plot of each factors scores. In shades of blue are represented the factors with high sensitiviy to connection with visual modules, resp. red for tactile modules and green for proprioceptive. \textsc{Bottom}: evolution of the main factor, e.g. factor with the highest contribution to the estimation of the link density matrix $\bm{H}$. The main factor can be linked to the current behavior (top row).}
     \label{fig:factors_time}
 \end{figure*}
-% =============================================================================
-%                                                                             |
-%                                                                             |
-
-% =============================================================================
-%                                                                             |
-%                                                                             |
-% ------------------------------- SECTION ------------------------------------|
-%                                                                             |
-%                                                                             |
-% =============================================================================
-\section{On automatic behavior characterization}
-\begin{itemize}
-    \item How can we use the behaviors 
-\end{itemize}
-% ---
-
-% =============================================================================
-%                                                                             |
-%                                                                             |
-% ------------------------------- SECTION ------------------------------------|
-%                                                                             |
-%                                                                             |
-% =============================================================================
+%=============================================================================
 \section{Conclusion}
 This work introduced a framework for analyzing the \acl{dfc} among an embodied agent's multimodal sensory signals to uncover underlying structures in its sensorimotor interactions. By leveraging \acl{imi}, we captured the time-varying functional connections between proprioceptive, tactile, and visual signals, revealing fundamental sensorimotor relationships. By applying an \acl{irm}, we identified 23 sensorimotor modules and their evolving connectivity, represented by the link density matrix $\bm{H}$. To further interpret these dynamic interactions, we employed \acl{nnmf}, which decomposed the connectivity patterns into 25 additive factors (subgraphs, $\bm{f}_i$) and their corresponding temporal coefficients ($w_i(k)$).
 
