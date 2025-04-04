@@ -1,33 +1,3 @@
-%\documentclass[letterpaper, 10 pt, conference]{ieeeconf}`
-%\usepackage{filecontents,lipsum}
-%\usepackage[noadjust]{cite}
-%%\begin{filecontents*}{references.bib}
-%%@article{Khoe:1994:CML:2288694.2294265,
-%%    author = {Khoe, G. -D.},
-%%    title = {Coherent multicarrier lightwave technology for flexible capacity networks},
-%%    journal = {Comm. Mag.},
-%%    issue_date = {March 1994},
-%%    volume = {32},
-%%    number = {3},
-%%    month = mar,
-%%    year = {1994},
-%%    issn = {0163-6804},
-%%    pages = {22--33},
-%%    numpages = {12},
-%%    url = {http://dx.doi.org/10.1109/35.267438},
-%%    doi = {10.1109/35.267438},
-%%    acmid = {2294265},
-%%    publisher = {IEEE Press},
-%%    address = {Piscataway, NJ, USA},
-%%}
-%%\end{filecontents*}
-%\title{This document}
-%\author{This author}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%2345678901234567890123456789012345678901234567890123456789012345678901234567890
-%        1         2         3         4         5         6         7         8
-
 \documentclass[letterpaper, 10 pt, conference]{ieeeconf}  % Comment this line out if you need a4paper
 
 %\documentclass[a4paper, 10pt, conference]{ieeeconf}      % Use this line for a4 paper
@@ -36,34 +6,6 @@
                                                           % you want to use the \thanks command
 
 \overrideIEEEmargins                                      % Needed to meet printer requirements.
-
-% See the \addtolength command later in the file to balance the column lengths
-% on the last page of the document
-
-% The following packages can be found on http:\\www.ctan.org
-%\usepackage{graphics} % for pdf, bitmapped graphics files
-%\usepackage{epsfig} % for postscript graphics files
-%\usepackage{mathptmx} % assumes new font selection scheme installed
-%\usepackage{times} % assumes new font selection scheme installed
-%\usepackage{amsmath} % assumes amsmath package installed
-%\usepackage{amssymb}  % assumes amsmath package installed
-%\usepackage{filecontents,lipsum}
-%\usepackage[noadjust]{cite}
-%\usepackage{bm}
-%\usepackage{tikz}
-%\usepackage{graphicx}
-%\usepackage{caption}
-%\usepackage{subcaption}
-%\usepackage{multicol}
-%\usepackage{url}
-%\usepackage{geometry}
-%\usepackage{mathtools}
-%\usepackage[utf8]{inputenc}
-%\usepackage[english]{babel}
-%\usepackage{algorithm}
-%\usepackage[]{algpseudocode}
-
-
 \usepackage{afterpage}
 \usepackage{algorithm}
 \usepackage[]{algpseudocode}
@@ -71,11 +13,6 @@
 \usepackage{stix}
 %\usepackage{amssymb} %redundant with stix
 \usepackage{amsmath}
-
-% \DeclareMathAlphabet\mathcal{OMS}{cmsy}{b}{n}
-%\usepackage[math-style=TeX, bold-style=TeX]{unicode-math}
-% \DeclareMathAlphabet{\pazocal}{OMS}{zplm}{m}{n}
-% \newcommand{\unif}{\pazocal{U}}
 
 \DeclareSymbolFont{cmsymbols}{OMS}{cmsy}{m}{n}
 \SetSymbolFont{cmsymbols}{bold}{OMS}{cmsy}{b}{n}
@@ -339,7 +276,7 @@ Reiterating, \ac{nnmf} decomposes the sensorimotor \ac{dfc} in $\bm{H}$ into: (1
     \vspace{-15pt}
 \end{figure*}
 
-The agent described in Sect.~\ref{sec:the_embodied_agent} was simulated in MATLAB for a total time of 30 seconds with a sampling time of 1 ms (which corresponds to $N = 30,000$ data samples). Our experiment used a simple motor babbling strategy to stimulate the perceptual system and detect sensorimotor relationships by \ac{ mi}. Each joint antagonistic pair received a periodic muscle activation command:
+The agent described in Sect.~\ref{sec:the_embodied_agent} was simulated in MATLAB for a total time of 30 seconds with a sampling time of 1 ms (which corresponds to $N = 30,000$ data samples). Our experiment used a simple motor babbling strategy to stimulate the perceptual system and detect sensorimotor relationships by \ac{imi}. Each joint antagonistic pair received a periodic muscle activation command:
 % --- 
 \begin{equation}\label{eq:motor_babbling_torques}
 	\sigma(t) =  \text{tanh} \left( A_1 \text{sin}\left(\omega_0 t\right) + A_2 \text{sin}\left(2\omega_0 t\right) + A_3 \text{sin}\left(4\omega_0 t\right) \right);
@@ -363,7 +300,7 @@ Once the functional modules have been extracted, we can compute the link densiti
 \begin{figure*}[h!]
     \centering
     \includegraphics[width=1\linewidth]{fig/factors_decomposition.png}
-    \caption{\textbf{Example of factor decomposition of the link density matrix based on \ac{nnmf}.} At sample 2,460, the agent's hands touch each other, as seen in Fig.~\ref{fig:main_factors}. The decomposition shows that factors $\bm{f}_{20}$, $\bm{f}_{16}$, and $\bm{f}_{14}$ contribute the most to this beavior.}
+    \caption{\textbf{Example of factor decomposition of the link density matrix based on \ac{nnmf}.} At sample 2,460, the agent's hands touch each other, as seen in Fig.~\ref{fig:factors_time}. The decomposition shows that factors $\bm{f}_{20}$, $\bm{f}_{16}$, and $\bm{f}_{14}$ contribute the most to this beavior.}
     \label{fig:decomposition}
 \end{figure*}
 % ---
@@ -398,11 +335,11 @@ Each factor represents a specific type of connection between modules. They conne
 \begin{figure*}[h!]
     \centering
     \includegraphics[width=.99\textwidth]{fig/factors_example_time.png}
-    \caption{\textbf{Factors' scores, main factors, and agent's behavior.} \textsc{Top}: agent's behavior at 8 moments, the movements are 10 samples long, they correspond to the time window on which the \acl{imi} is computed, and shown in shades of pink from darker/older to lighter/newer. The agent goes from waving the arms to hands touching, two hands touching the torso, right hand touching the torso, and finally back to no-touch. \textsc{Middle}: stacked plot of each factor scores. In shades of blue are represented the factors with high sensitivity to connection with visual modules, resp. red for tactile modules and green for proprioceptive. \textsc{Bottom}: evolution of the main factor, e.g., factor with the highest contribution..}
+    \caption{\textbf{Factors' scores, main factors, and agent's behavior.} \textsc{Top}: agent's behavior at 8 moments, the movements are 10 samples long, they correspond to the time window on which the \acl{imi} is computed, and shown in shades of pink from darker/older to lighter/newer. The agent goes from waving the arms to hands touching, two hands touching the torso, right hand touching the torso, and finally back to no-touch. \textsc{Middle}: stacked plot of each factor scores. In shades of blue are represented the factors with high sensitivity to connection with visual modules, resp. red for tactile modules and green for proprioceptive. \textsc{Bottom}: evolution of the main factor, e.g., factor with the highest contribution.}
     \label{fig:factors_time}
 \end{figure*}
 %-----
-The \acl{nnmf} has the property to extract characteristics in the data such that each factor found represents a unique body synergy. In Fig.~\ref{fig:factors_time}, we observe the evolution of the scores and main factors during the agent's movement. To show another property of the combination of \ac{irm} and \ac{nnmf} for the analysis, consider that while visual sensors are the most represented in raw neural signals with 225 neurons (compared to 48 proprioceptive neurons), the contribution of vision is quite reduced, as reflected in scores $\bm{W}$. Our proposed process normalizes the density of neural activation by their functional and informative content to describe the current behavior; as an example, such a property would provide a way to weigh sensory prediction errors in sensorimotor learning methods.
+The \acl{nnmf} has the property of extracting characteristics from the data such that each factor found represents a unique body synergy. In Fig.~\ref{fig:factors_time}, we observe the evolution of the scores and main factors during the agent's movement. To show another property of the combination of \ac{irm} and \ac{nnmf} for the analysis, consider that while visual sensors are the most represented in raw neural signals with 225 neurons (compared to 48 proprioceptive neurons), the contribution of vision is quite reduced, as reflected in scores $\bm{W}$. Our proposed process normalizes the density of neural activation by their functional and informative content to describe the current behavior; as an example, such a property would provide a way to weigh sensory prediction errors in sensorimotor learning methods.
 
 % =============================================================================
 %                                                                             |
@@ -427,14 +364,14 @@ Factors can be interpreted as a basis \ac{fc} graph, capturing distinct states o
 %                                                                             |
 % =============================================================================
 \section{Discussion}
-How do our findings relate to \acp{smc}? In our work, we obtain an agent that is able to autonomously cluster functional modules to create a ``patchwork'' of sensory clusters that covers all sensory inputs. Then, by decomposing the information shared between modules in connection patterns, we obtain a set of descriptors of the impact of movement on the sensory experience like: ``I can't touch my torso without flexing my shoulder,'' or ``I can generate visual input on the right by waving my right elbow.'' By linking proprioception to vision or touch, we obtain patterns that are functionally different and, when added together, represent the current sensorimotor interaction, just as we can touch our mouth with our left arm while waving the right hand in the air. 
+How do our findings relate to \acp{smc}? In our work, we obtain an agent that is capable of autonomously clustering functional modules to create a ``patchwork'' of sensory clusters that covers all sensory inputs. Then, from the connection patterns, we obtain a set of descriptors of the impact of movement on the sensory experience like: ``I cannot touch my torso without flexing my shoulder,'' or ``I can generate visual input on the right by waving my right elbow.'' By linking proprioception to vision or touch, we obtain patterns that are functionally different and, when added together, represent the current sensorimotor interaction, just as we can touch our mouth with our left arm while waving the right hand in the air. 
 
 
-The inputs to the information-theoretic analysis are a result of the agent's movements, but the method looks only at the structure of the multimodal sensory signals. Explicitly adding the motor or muscle commands would be a logical extension. Additionally, \ac{mi} is a symmetrical measure of the relationship between two variables (i.e., time series), and hence, it does not pick up the direction of information flow (potential causality). Alternative directional measures---transfer entropy or Granger causality---could be used.
+The inputs to the information-theoretic analysis are a result of the agent's movements, but the method looks only at the structure of the multimodal sensory signals. Explicitly adding motor or muscle commands would be a logical extension. Furthermore, \ac{mi} is a symmetric measure of the relationship between two variables (that is, time series), and hence it does not pick up the direction of the information flow (potential causality). Alternative directional measures---transfer entropy or Granger causality---could be used.
 
-We used random motor babbling as the motion policy for collecting sensorimotor signals. In the future, alternative strategies such as goal-directed or active exploration could improve the ability to capture and reproduce specific sensorimotor behaviors. Inspired by \cite{Kanazawa2023Openendedmovements}, one promising approach would be to record motion data from real infants, map it onto musculoskeletal models to extract proprioceptive and tactile signals, and then apply our framework to uncover underlying motor behaviors. 
+We used random motor babbling as the motion policy to collect sensorimotor signals. In the future, alternative strategies, such as goal-directed or active exploration could improve the ability to capture and reproduce specific sensorimotor behaviors. Inspired by \cite{Kanazawa2023Openendedmovements}, one promising approach would be to record motion data from real infants, map it onto musculoskeletal models to extract proprioceptive and tactile signals, and then apply our framework to uncover the underlying motor behaviors. 
 
-Additionally, our framework currently operates offline, requiring pre-collected data for analysis; other methods, such as incremental \ac{nnmf} \cite{Bucak2007}, can be implemented to adjust the number of factors as the experience increases. This adaptability becomes particularly important as the agent's motor policy evolves, potentially revealing new fundamental behaviors (i.e., factors from the \acl{nnmf}). Moreover, given the additive nature of these factors, newly discovered ones could gradually replace older ones, reflecting the agent’s ongoing adaptation to its environment. Addressing these limitations in future work could enhance the framework’s applicability, particularly for real-time learning and adaptive sensorimotor behavior discovery.
+Additionally, our framework currently operates offline, requiring precollected data for analysis; other methods, such as incremental \ac{nnmf} \cite{Bucak2007}, can be implemented to adjust the number of factors as the experience increases. This adaptability becomes particularly important as the agent's motor policy evolves, potentially revealing new fundamental behaviors (i.e., factors from the \acl{nnmf}). Furthermore, given the additive nature of these factors, newly discovered ones could gradually replace older ones, reflecting the ongoing adaptation of the agent to its environment. Addressing these limitations in future work could improve the applicability of the framework, particularly for real-time learning and the discovery of adaptive sensorimotor behaviors.
 
 \printbibliography 
 \end{document}
