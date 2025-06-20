@@ -127,7 +127,8 @@ In robotics, \ac{fc} is expected to change based on the robot’s motion policy 
 \begin{figure*}[h!]
 	\centering
 	\includegraphics[width=0.95\textwidth]{sensorimotor_dfc_framework.png}
-	\caption{\textbf{From the sensorimotor \acl{dfc} to behavior primitives.} Random motor (babbling) excites the sensorimotor system of the robotic agent. While moving, the \ac{imi} captures the changing sensorimotor \ac{fc} over time. The \ac{irm} captures clusters of signals from the \ac{imi} and their corresponding dynamic relationships. Finally, \ac{nnmf} decomposes these relationships into basis factors signifying underlying behavior patterns present in the original data.}
+	% \caption{\textbf{From sensorimotor \acl{dfc} to behavior primitives.}~Motor babbling excites the agent's sensorimotor system. While moving, the \ac{imi} captures the changing sensorimotor \ac{fc}. The \ac{irm} clusters the pairwise \ac{imi} and identifies their associated dynamic relations. Finally, \ac{nnmf} decomposes these relationships into basis factors signifying underlying behavior patterns present in the original data.}
+	\caption{\textbf{From sensorimotor \acl{dfc} to behavior primitives.}~Motor babbling activates the agent's sensorimotor system. As it moves, \ac{imi} tracks the changing sensorimotor \ac{fc}. The \ac{irm} clusters pairwise \ac{imi} to reveal dynamic relations, which \ac{nnmf} then breaks down into behavior patterns.}    
 	\label{fig:framework_overview}
 \end{figure*}
 % ---
@@ -142,7 +143,8 @@ This work introduces an analytical framework, illustrated in Fig.~\ref{fig:frame
 		\includegraphics[width=0.99\columnwidth]{extended_planar_dual_arm_with_vision_v2.png}
 		\hspace*{\fill}
 	\end{center}
-	\caption{\label{fig:extended_dual_arm_robot} \textbf{The embodied agent.} The planar dual-arm robot is driven by antagonistic actuation in each joint. Sensory information comes from tactile and proprioceptive receptive fields along the body and at the joints. The visual field (gray area) detects parts of the body when inside it.}
+	% \caption{\label{fig:extended_dual_arm_robot} \textbf{The embodied agent.}~The planar dual-arm robot is driven by antagonistic actuation in each joint. Sensory information comes from tactile and proprioceptive receptive fields along the body and at the joints. The visual field (gray area) detects parts of the body when inside it.}
+	\caption{\label{fig:extended_dual_arm_robot} \textbf{The embodied agent.}~The planar dual-arm robot uses antagonistic actuation at each joint. It receives tactile and proprioceptive input from the body and joints, while the visual field (blue area) detects body parts within its range.}
     \vspace{-20pt}
 \end{figure}
 % ---
@@ -201,18 +203,16 @@ In stage \circled{1} of our proposed analytical framework, the perceptual system
 
 % Subsection ==================================================================
 \subsection{\Acl{fc}}
-\ac{fc} is a method for inferring network topology by characterizing the dependencies between observed signals based on their probability distributions \cite{Friston2011FunctionalAE}. Analyzing \ac{fc} helps uncover underlying structures that describe interactions between network entities. Building on the connection between embodiment and information structure%\cite{Pfeifer2007Selforganizationembodiment}
-, we hypothesize that an embodied agent’s structural properties and behavioral patterns 
+\ac{fc} is a method for inferring network topology by characterizing the dependencies between observed signals based on their probability distributions \cite{Friston2011FunctionalAE}. Analyzing \ac{fc} helps uncover underlying structures that describe interactions between network entities. Building on the connection between embodiment and information structure, we hypothesize that an embodied agent’s structural properties and behavioral patterns 
 can be revealed by studying the \ac{fc} among its sensorimotor signals $\bm{s}(t)$. To quantify these relationships, we leverage information-theoretic measures, as their model-free nature captures both linear and nonlinear dependencies between signals. In particular, we focus on \ac{mi}, a widely used measure for quantifying relationships between variables across different domains \cite{Steuer2002mutualinformationdetecting}.
 
-The \ac{mi} between two signals $I\left(X;Y\right)$ can be interpreted as the amount by which a random signal $ Y $ reduces the uncertainty about a random signal $ X $%\cite{Cover1999Elementsinformationtheory}
-. It is a symmetric measure of the information sharing between both signals. By extension, the \ac{mi} matrix $\bm{\mathcal{I}} \in \mathbb{R}^{{N_\text{s}} \times {N_\text{s}}}$ can be constructed by computing the pairwise \ac{mi} between the $\left\lbrace s_i\right\rbrace^{N_\text{s}}_{i=1}$ sensorimotor signals. In practice, computing an entry
-% ---
-\begin{equation}\label{eq:adjacency_mi}
-	\left(\bm{\mathcal{I}}\right)_{i,j} = I(s_i;s_j)
-\end{equation}
-% ---
-for a pair $\left({s}_i(t),{s}_j(t)\right)$ involves centering their samples and using binning, kernel, or nearest-neighbor methods to compute their \ac{mi} \cite{WaltersWilliams2009Estimationmutualinformation}.
+The \ac{mi} between two signals $I\left(X;Y\right)$ can be interpreted as the amount by which a random signal $ Y $ reduces the uncertainty about a random signal $ X $. It is a symmetric measure of the information sharing between both signals. By extension, the \ac{mi} matrix $\bm{\mathcal{I}} \in \mathbb{R}^{{N_\text{s}} \times {N_\text{s}}}$ can be constructed by computing the pairwise \ac{mi} between the $\left\lbrace s_i\right\rbrace^{N_\text{s}}_{i=1}$ sensorimotor signals. In practice, computing an entry $\left(\bm{\mathcal{I}}\right)_{i,j} = I(s_i;s_j)$~
+% % ---
+% \begin{equation}\label{eq:adjacency_mi}
+% 	\left(\bm{\mathcal{I}}\right)_{i,j} = I(s_i;s_j)
+% \end{equation}
+% % ---
+for a pair $\left({s}_i,{s}_j\right)$ involves centering their samples and using binning, kernel, or nearest-neighbor methods to compute their \ac{mi} \cite{WaltersWilliams2009Estimationmutualinformation}.
 
 % Subsection ==================================================================
 \subsection{\Acl{dfc}}
@@ -272,7 +272,8 @@ Reiterating, \ac{nnmf} decomposes the sensorimotor \ac{dfc} in $\bm{H}$ into: (1
 %    \includegraphics[width=0.95\textwidth]{fig/irm_results_figure.png}
     \includegraphics[width=0.95\textwidth]{fig/irm_results_figure_v2.png}
     \vspace{5pt}
-    \caption{\textbf{Extracted sensorimotor modules and their \ac{dfc}.} \textsc{Right}: A total of $N_\text{c}=23$ functional modules---clusters---were found by the \ac{irm}, each assigned to a different color. We see a great separation of modules by modalities, e.g., proprioceptive, tactile, and visual modules. \textsc{Left}: Correspondence between the agent's receptive fields and their associated module color. \textsc{Bottom}: The matrix $\bm{H}$ from the \ac{irm} captures the \ac{dfc} between the $N_\text{c}$ modules.}
+    % \caption{\textbf{Extracted sensorimotor modules and their \ac{dfc}.} \textsc{Right}: $N_\text{c}=23$ functional modules---clusters---found by the \ac{irm}, each assigned to a different color. We see a great separation of modules by modalities, e.g., proprioceptive, tactile, and visual modules. \textsc{Left}: Correspondence between the agent's receptive fields and their associated module color. \textsc{Bottom}: The matrix $\bm{H}$ from the \ac{irm} captures the \ac{dfc} between the $N_\text{c}$ modules.}
+    \caption{\textbf{Extracted sensorimotor modules and their \ac{dfc}.}~\textsc{Right}: $N_\text{c}=23$ functional modules found by the \ac{irm}, each shown in a different color. Modalities (proprioceptive, tactile, visual) are clearly separated. \textsc{Left}: The agent's receptive fields colored by their module assignment. \textsc{Bottom}: Matrix $\bm{H}$ from the \ac{irm} shows \ac{dfc} between modules.}
     \label{fig:irm_modules}
     \vspace{-15pt}
 \end{figure*}
@@ -336,7 +337,8 @@ Each factor represents a specific type of connection between modules. They conne
 \begin{figure*}[h!]
     \centering
     \includegraphics[width=.99\textwidth]{fig/factors_example_time_v2.png}
-    \caption{\textbf{Factors' scores, main factors, and agent's behavior.} \textsc{Top}: agent's behavior at 8 moments, the movements are 10 samples long, they correspond to the time window on which the \acl{imi} is computed, and shown in shades of pink from darker/older to lighter/newer. The agent goes from waving the arms to hands touching, two hands touching the torso, right hand touching the torso, and finally back to no-touch. \textsc{Middle}: stacked plot of each factor's scores. The factors with high sensitivity to connection with visual, tactile, and proprioceptive modules are represented in shades of blue, red, and green, respectively. \textsc{Bottom}: evolution of the main factor, e.g., factor with the highest contribution.}
+    % \caption{\textbf{Factors' scores, main factors, and agent's behavior.}~\textsc{Top}: agent's behavior at 8 moments, the movements are 10 samples long, they correspond to the time window on which the \acl{imi} is computed, and shown in shades of pink from darker/older to lighter/newer. The agent goes from waving the arms to hands touching, two hands touching the torso, right hand touching the torso, and finally back to no-touch. \textsc{Middle}: stacked plot of each factor's scores. The factors with high sensitivity to connection with visual, tactile, and proprioceptive modules are represented in shades of blue, red, and green, respectively. \textsc{Bottom}: evolution of the main factor, e.g., factor with the highest contribution.}
+    \caption{\textbf{Factors' scores, main factors, and agent's behavior.}~\textsc{Top}: Agent’s behavior at 8 time points, each spanning 10 samples—the window used for computing \ac{imi}---shown in pink from darker (earlier) to lighter (later). The sequence moves from arm waving to hands touching, hands on torso, one hand on torso, and back to no-touch. \textsc{Middle}: Stacked plot of factor scores. Factors with strong responses to visual, tactile, and proprioceptive modules are shown in blue, red, and green, respectively. \textsc{Bottom}: Time course of the main factor, i.e., the one with the highest overall contribution.}    
     \label{fig:factors_time}
 \end{figure*}
 %-----
@@ -365,14 +367,15 @@ Factors can be interpreted as a basis \ac{fc} graph, capturing distinct states o
 %                                                                             |
 % =============================================================================
 \section{Discussion}
-How do our findings relate to \acp{smc}? In our work, we obtain an agent that is capable of autonomously clustering functional modules to create a ``patchwork'' of sensory clusters that covers all sensory inputs. Then, from the connection patterns, we obtain a set of descriptors of the impact of movement on the sensory experience like: ``I cannot touch my torso without flexing my shoulder,'' or ``I can generate visual input on the right by waving my right elbow.'' By linking proprioception to vision or touch, we obtain patterns that are functionally different and, when added together, represent the current sensorimotor interaction, just as we can touch our mouth with our left arm while waving the right hand in the air. 
+How do our findings relate to \acp{smc}? This work provides a new approach to studying \acp{smc} by enabling an agent to autonomously organize its sensory space into functional modules. These modules, derived from the dynamic relationships between proprioceptive, tactile, and visual signals, form a structured representation---a ``patchwork'' of sensorimotor interactions. When combined, the connectivity patterns between modules describe the agent’s current state of sensorimotor interaction. This representation allows the agent to evaluate contingencies, such as whether certain sensory outcomes (e.g., touching the torso) depend solely on specific motor actions (e.g., shoulder flexion). Over time, the agent could infer rules such as: ``\emph{I cannot touch my torso without flexing my shoulder},'' or ``\emph{Waving my right elbow generates visual input on the right}.''
 
+The patterns discovered through \ac{nnmf} can be interpreted as behavioral descriptors---sensorimotor synergies---that provide a compact, additive basis for encoding the agent’s experience. These factors serve as candidate motor primitives or latent behaviors that could be reused for planning or control.
 
-The inputs to the information-theoretic analysis are a result of the agent's movements, but the method looks only at the structure of the multimodal sensory signals. Explicitly adding motor or muscle commands would be a logical extension. Furthermore, \ac{mi} is a symmetric measure of the relationship between two variables (that is, time series), and hence it does not pick up the direction of the information flow (potential causality). Alternative directional measures---transfer entropy or Granger causality---could be used.
+While our framework focuses on the structure of sensory signals resulting from motor activity, it does not explicitly model motor or muscle commands. Including these in future work could yield more complete sensorimotor representations. Moreover, \ac{mi}, while effective for capturing non-linear dependencies, is symmetric and does not capture directionality. Alternative information-theoretic measures, such as transfer entropy or Granger causality, could provide insights into the causal flow of information.
 
-We used random motor babbling as the motion policy to collect sensorimotor signals. In the future, alternative strategies, such as goal-directed or active exploration could improve the ability to capture and reproduce specific sensorimotor behaviors. Inspired by \cite{Kanazawa2023Openendedmovements}, one promising approach would be to record motion data from real infants, map it onto musculoskeletal models to extract proprioceptive and tactile signals, and then apply our framework to uncover the underlying motor behaviors. 
+The current setup uses random motor babbling to explore the sensorimotor space. Future work could incorporate goal-directed, curiosity-driven, or active exploration strategies to enrich the set of behaviors discovered. One promising direction is to apply the method to motion capture data from human infants, mapped onto biomechanical models \cite{Kanazawa2023Openendedmovements}, to analyze developmental sensorimotor structures in biologically plausible settings.
 
-Additionally, our framework currently operates offline, requiring precollected data for analysis; other methods, such as incremental \ac{nnmf} \cite{Bucak2007}, can be implemented to adjust the number of factors as the experience increases. This adaptability becomes particularly important as the agent's motor policy evolves, potentially revealing new fundamental behaviors (i.e., factors from the \acl{nnmf}). Furthermore, given the additive nature of these factors, newly discovered ones could gradually replace older ones, reflecting the ongoing adaptation of the agent to its environment. Addressing these limitations in future work could improve the applicability of the framework, particularly for real-time learning and the discovery of adaptive sensorimotor behaviors.
+Finally, computational scalability remains a challenge. The dimensionality of the sensor space and the number of modules directly impact the cost of \ac{mi} estimation and clustering. Dimensionality reduction techniques could help mitigate this issue. Additionally, the current framework operates offline. Incorporating incremental methods such as online \ac{nnmf} \cite{Bucak2007} would enable real-time learning and adaptation. As the agent acquires new experience, novel factors may emerge while older ones fade, supporting continuous refinement of behavioral representations.
 
 \printbibliography 
 \end{document}
